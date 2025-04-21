@@ -5,5 +5,5 @@ export class StaffDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  id: string;
+  staffId: string;
 }

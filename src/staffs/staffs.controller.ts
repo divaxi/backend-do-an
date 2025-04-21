@@ -70,39 +70,39 @@ export class StaffsController {
     );
   }
 
-  @Get(':id')
+  @Get(':staffId')
   @ApiParam({
-    name: 'id',
+    name: 'staffId',
     type: String,
     required: true,
   })
   @ApiOkResponse({
     type: Staff,
   })
-  findById(@Param('id') id: string) {
+  findById(@Param('staffId') id: string) {
     return this.staffsService.findById(id);
   }
 
-  @Patch(':id')
+  @Patch(':staffId')
   @ApiParam({
-    name: 'id',
+    name: 'staffId',
     type: String,
     required: true,
   })
   @ApiOkResponse({
     type: Staff,
   })
-  update(@Param('id') id: string, @Body() updateStaffDto: UpdateStaffDto) {
+  update(@Param('staffId') id: string, @Body() updateStaffDto: UpdateStaffDto) {
     return this.staffsService.update(id, updateStaffDto);
   }
 
-  @Delete(':id')
+  @Delete(':staffId')
   @ApiParam({
-    name: 'id',
+    name: 'staffId',
     type: String,
     required: true,
   })
-  remove(@Param('id') id: string) {
+  remove(@Param('staffId') id: string) {
     return this.staffsService.remove(id);
   }
 }

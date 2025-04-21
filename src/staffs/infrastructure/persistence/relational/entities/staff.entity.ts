@@ -3,6 +3,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  Column,
 } from 'typeorm';
 import { EntityRelationalHelper } from '../../../../../utils/relational-entity-helper';
 
@@ -10,8 +11,38 @@ import { EntityRelationalHelper } from '../../../../../utils/relational-entity-h
   name: 'staff',
 })
 export class StaffEntity extends EntityRelationalHelper {
+  @Column({
+    nullable: true,
+    type: String,
+  })
+  note?: string | null;
+
+  @Column({
+    nullable: false,
+    type: String,
+  })
+  role: string;
+
+  @Column({
+    nullable: true,
+    type: String,
+  })
+  zaloId?: string | null;
+
+  @Column({
+    nullable: false,
+    type: String,
+  })
+  phoneNumber: string;
+
+  @Column({
+    nullable: false,
+    type: String,
+  })
+  fullName: string;
+
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  staffId: string;
 
   @CreateDateColumn()
   createdAt: Date;

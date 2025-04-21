@@ -15,16 +15,22 @@ export class StaffsService {
     private readonly staffRepository: StaffRepository,
   ) {}
 
-  async create(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    createStaffDto: CreateStaffDto,
-  ) {
+  async create(createStaffDto: CreateStaffDto) {
     // Do not remove comment below.
     // <creating-property />
 
     return this.staffRepository.create({
       // Do not remove comment below.
       // <creating-property-payload />
+      note: createStaffDto.note,
+
+      role: createStaffDto.role,
+
+      zaloId: createStaffDto.zaloId,
+
+      phoneNumber: createStaffDto.phoneNumber,
+
+      fullName: createStaffDto.fullName,
     });
   }
 
@@ -41,17 +47,17 @@ export class StaffsService {
     });
   }
 
-  findById(id: Staff['id']) {
+  findById(id: Staff['staffId']) {
     return this.staffRepository.findById(id);
   }
 
-  findByIds(ids: Staff['id'][]) {
+  findByIds(ids: Staff['staffId'][]) {
     return this.staffRepository.findByIds(ids);
   }
 
   async update(
-    id: Staff['id'],
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    id: Staff['staffId'],
+
     updateStaffDto: UpdateStaffDto,
   ) {
     // Do not remove comment below.
@@ -60,10 +66,19 @@ export class StaffsService {
     return this.staffRepository.update(id, {
       // Do not remove comment below.
       // <updating-property-payload />
+      note: updateStaffDto.note,
+
+      role: updateStaffDto.role,
+
+      zaloId: updateStaffDto.zaloId,
+
+      phoneNumber: updateStaffDto.phoneNumber,
+
+      fullName: updateStaffDto.fullName,
     });
   }
 
-  remove(id: Staff['id']) {
+  remove(id: Staff['staffId']) {
     return this.staffRepository.remove(id);
   }
 }

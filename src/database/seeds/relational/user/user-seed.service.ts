@@ -2,9 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
-import bcrypt from 'bcryptjs';
 import { RoleEnum } from '../../../../roles/roles.enum';
-import { StatusEnum } from '../../../../statuses/statuses.enum';
 import { UserEntity } from '../../../../users/infrastructure/persistence/relational/entities/user.entity';
 
 @Injectable()
@@ -24,22 +22,14 @@ export class UserSeedService {
     });
 
     if (!countAdmin) {
-      const salt = await bcrypt.genSalt();
-      const password = await bcrypt.hash('secret', salt);
-
       await this.repository.save(
         this.repository.create({
-          firstName: 'Super',
-          lastName: 'Admin',
-          email: 'admin@example.com',
-          password,
+          userName: 'Super',
+          zaloId: '1231412',
+          phoneNumber: '21431242141',
           role: {
             id: RoleEnum.admin,
             name: 'Admin',
-          },
-          status: {
-            id: StatusEnum.active,
-            name: 'Active',
           },
         }),
       );
@@ -54,22 +44,14 @@ export class UserSeedService {
     });
 
     if (!countUser) {
-      const salt = await bcrypt.genSalt();
-      const password = await bcrypt.hash('secret', salt);
-
       await this.repository.save(
         this.repository.create({
-          firstName: 'John',
-          lastName: 'Doe',
-          email: 'john.doe@example.com',
-          password,
+          userName: 'John',
+          phoneNumber: '1234214324523',
+          zaloId: 'john.doe@example.com',
           role: {
             id: RoleEnum.user,
             name: 'Admin',
-          },
-          status: {
-            id: StatusEnum.active,
-            name: 'Active',
           },
         }),
       );

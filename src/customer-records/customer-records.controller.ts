@@ -9,9 +9,9 @@ import {
   UseGuards,
   Query,
 } from '@nestjs/common';
-import { ResultsService } from './results.service';
-import { CreateResultDto } from './dto/create-result.dto';
-import { UpdateResultDto } from './dto/update-result.dto';
+import { CustomerRecordsService } from './customer-records.service';
+import { CreateCustomerRecordDto } from './dto/create-customer-record.dto';
+import { UpdateCustomerRecordDto } from './dto/update-customer-record.dto';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -19,40 +19,42 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { Result } from './domain/result';
+import { CustomerRecord } from './domain/customer-record';
 import { AuthGuard } from '@nestjs/passport';
 import {
   InfinityPaginationResponse,
   InfinityPaginationResponseDto,
 } from '../utils/dto/infinity-pagination-response.dto';
 import { infinityPagination } from '../utils/infinity-pagination';
-import { FindAllResultsDto } from './dto/find-all-results.dto';
+import { FindAllCustomerRecordsDto } from './dto/find-all-customer-records.dto';
 
-@ApiTags('Results')
+@ApiTags('Customerrecords')
 @ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
 @Controller({
-  path: 'results',
+  path: 'customer-records',
   version: '1',
 })
-export class ResultsController {
-  constructor(private readonly resultsService: ResultsService) {}
+export class CustomerRecordsController {
+  constructor(
+    private readonly customerRecordsService: CustomerRecordsService,
+  ) {}
 
   @Post()
   @ApiCreatedResponse({
-    type: Result,
+    type: CustomerRecord,
   })
-  create(@Body() createResultDto: CreateResultDto) {
-    return this.resultsService.create(createResultDto);
+  create(@Body() createCustomerRecordDto: CreateCustomerRecordDto) {
+    return this.customerRecordsService.create(createCustomerRecordDto);
   }
 
   @Get()
   @ApiOkResponse({
-    type: InfinityPaginationResponse(Result),
+    type: InfinityPaginationResponse(CustomerRecord),
   })
   async findAll(
-    @Query() query: FindAllResultsDto,
-  ): Promise<InfinityPaginationResponseDto<Result>> {
+    @Query() query: FindAllCustomerRecordsDto,
+  ): Promise<InfinityPaginationResponseDto<CustomerRecord>> {
     const page = query?.page ?? 1;
     let limit = query?.limit ?? 10;
     if (limit > 50) {
@@ -60,7 +62,7 @@ export class ResultsController {
     }
 
     return infinityPagination(
-      await this.resultsService.findAllWithPagination({
+      await this.customerRecordsService.findAllWithPagination({
         paginationOptions: {
           page,
           limit,
@@ -77,10 +79,10 @@ export class ResultsController {
     required: true,
   })
   @ApiOkResponse({
-    type: Result,
+    type: CustomerRecord,
   })
   findById(@Param('id') id: string) {
-    return this.resultsService.findById(id);
+    return this.customerRecordsService.findById(id);
   }
 
   @Patch(':id')
@@ -90,10 +92,13 @@ export class ResultsController {
     required: true,
   })
   @ApiOkResponse({
-    type: Result,
+    type: CustomerRecord,
   })
-  update(@Param('id') id: string, @Body() updateResultDto: UpdateResultDto) {
-    return this.resultsService.update(id, updateResultDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateCustomerRecordDto: UpdateCustomerRecordDto,
+  ) {
+    return this.customerRecordsService.update(id, updateCustomerRecordDto);
   }
 
   @Delete(':id')
@@ -103,6 +108,6 @@ export class ResultsController {
     required: true,
   })
   remove(@Param('id') id: string) {
-    return this.resultsService.remove(id);
+    return this.customerRecordsService.remove(id);
   }
 }

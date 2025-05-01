@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class Result {
+export class CustomerRecord {
   @ApiProperty({
     type: String,
   })

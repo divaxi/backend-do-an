@@ -1,25 +1,20 @@
 import { FileEntity } from '../../../../../files/infrastructure/persistence/relational/entities/file.entity';
 import { FileMapper } from '../../../../../files/infrastructure/persistence/relational/mappers/file.mapper';
 import { RoleEntity } from '../../../../../roles/infrastructure/persistence/relational/entities/role.entity';
-import { StatusEntity } from '../../../../../statuses/infrastructure/persistence/relational/entities/status.entity';
 import { User } from '../../../../domain/user';
 import { UserEntity } from '../entities/user.entity';
 
 export class UserMapper {
   static toDomain(raw: UserEntity): User {
     const domainEntity = new User();
-    domainEntity.id = raw.id;
-    domainEntity.email = raw.email;
-    domainEntity.password = raw.password;
-    domainEntity.provider = raw.provider;
-    domainEntity.socialId = raw.socialId;
-    domainEntity.firstName = raw.firstName;
-    domainEntity.lastName = raw.lastName;
-    if (raw.photo) {
-      domainEntity.photo = FileMapper.toDomain(raw.photo);
+    domainEntity.userId = raw.userId;
+    domainEntity.zaloId = raw.zaloId;
+    domainEntity.userName = raw.userName;
+    domainEntity.phoneNumber = raw.phoneNumber;
+    if (raw.avatar) {
+      domainEntity.avatar = FileMapper.toDomain(raw.avatar);
     }
     domainEntity.role = raw.role;
-    domainEntity.status = raw.status;
     domainEntity.createdAt = raw.createdAt;
     domainEntity.updatedAt = raw.updatedAt;
     domainEntity.deletedAt = raw.deletedAt;
@@ -36,34 +31,30 @@ export class UserMapper {
 
     let photo: FileEntity | undefined | null = undefined;
 
-    if (domainEntity.photo) {
+    if (domainEntity.avatar) {
       photo = new FileEntity();
-      photo.id = domainEntity.photo.id;
-      photo.path = domainEntity.photo.path;
-    } else if (domainEntity.photo === null) {
+      photo.id = domainEntity.avatar.id;
+      photo.path = domainEntity.avatar.path;
+    } else if (domainEntity.avatar === null) {
       photo = null;
     }
 
-    let status: StatusEntity | undefined = undefined;
-
-    if (domainEntity.status) {
-      status = new StatusEntity();
-      status.id = Number(domainEntity.status.id);
-    }
-
+    // let status: StatusEntity | undefined = undefined;
+    //
+    // if (domainEntity.status) {
+    //   status = new StatusEntity();
+    //   status.id = Number(domainEntity.status.id);
+    // }
+    //
     const persistenceEntity = new UserEntity();
-    if (domainEntity.id && typeof domainEntity.id === 'number') {
-      persistenceEntity.id = domainEntity.id;
+    if (domainEntity.userId && typeof domainEntity.userId === 'number') {
+      persistenceEntity.userId = domainEntity.userId;
     }
-    persistenceEntity.email = domainEntity.email;
-    persistenceEntity.password = domainEntity.password;
-    persistenceEntity.provider = domainEntity.provider;
-    persistenceEntity.socialId = domainEntity.socialId;
-    persistenceEntity.firstName = domainEntity.firstName;
-    persistenceEntity.lastName = domainEntity.lastName;
-    persistenceEntity.photo = photo;
+    persistenceEntity.zaloId = domainEntity.zaloId;
+    persistenceEntity.userName = domainEntity.userName;
+    persistenceEntity.phoneNumber = domainEntity.phoneNumber;
+    persistenceEntity.avatar = photo;
     persistenceEntity.role = role;
-    persistenceEntity.status = status;
     persistenceEntity.createdAt = domainEntity.createdAt;
     persistenceEntity.updatedAt = domainEntity.updatedAt;
     persistenceEntity.deletedAt = domainEntity.deletedAt;

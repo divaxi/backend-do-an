@@ -7,9 +7,9 @@ import {
 import { EntityRelationalHelper } from '../../../../../utils/relational-entity-helper';
 
 @Entity({
-  name: 'result',
+  name: 'customer_record',
 })
-export class ResultEntity extends EntityRelationalHelper {
+export class CustomerRecordEntity extends EntityRelationalHelper {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

@@ -102,7 +102,7 @@ export class UsersController {
     type: String,
     required: true,
   })
-  findOne(@Param('id') id: User['id']): Promise<NullableType<User>> {
+  findOne(@Param('id') id: User['userId']): Promise<NullableType<User>> {
     return this.usersService.findById(id);
   }
 
@@ -120,7 +120,7 @@ export class UsersController {
     required: true,
   })
   update(
-    @Param('id') id: User['id'],
+    @Param('id') id: User['userId'],
     @Body() updateProfileDto: UpdateUserDto,
   ): Promise<User | null> {
     return this.usersService.update(id, updateProfileDto);
@@ -133,7 +133,7 @@ export class UsersController {
     required: true,
   })
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id') id: User['id']): Promise<void> {
+  remove(@Param('id') id: User['userId']): Promise<void> {
     return this.usersService.remove(id);
   }
 }

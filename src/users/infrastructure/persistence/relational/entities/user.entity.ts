@@ -11,10 +11,8 @@ import {
   OneToOne,
 } from 'typeorm';
 import { RoleEntity } from '../../../../../roles/infrastructure/persistence/relational/entities/role.entity';
-import { StatusEntity } from '../../../../../statuses/infrastructure/persistence/relational/entities/status.entity';
 import { FileEntity } from '../../../../../files/infrastructure/persistence/relational/entities/file.entity';
 
-import { AuthProvidersEnum } from '../../../../../auth/auth-providers.enum';
 import { EntityRelationalHelper } from '../../../../../utils/relational-entity-helper';
 
 @Entity({
@@ -22,46 +20,32 @@ import { EntityRelationalHelper } from '../../../../../utils/relational-entity-h
 })
 export class UserEntity extends EntityRelationalHelper {
   @PrimaryGeneratedColumn()
-  id: number;
+  userId: number;
 
   // For "string | null" we need to use String type.
   // More info: https://github.com/typeorm/typeorm/issues/2567
-  @Column({ type: String, unique: true, nullable: true })
-  email: string | null;
-
-  @Column({ nullable: true })
-  password?: string;
-
-  @Column({ default: AuthProvidersEnum.email })
-  provider: string;
+  @Index()
+  @Column({ type: String, nullable: true })
+  zaloId?: string | null;
 
   @Index()
   @Column({ type: String, nullable: true })
-  socialId?: string | null;
+  userName: string | null;
 
   @Index()
-  @Column({ type: String, nullable: true })
-  firstName: string | null;
-
-  @Index()
-  @Column({ type: String, nullable: true })
-  lastName: string | null;
+  @Column({ type: String, nullable: true, unique: true })
+  phoneNumber: string | null;
 
   @OneToOne(() => FileEntity, {
     eager: true,
   })
   @JoinColumn()
-  photo?: FileEntity | null;
+  avatar?: FileEntity | null;
 
   @ManyToOne(() => RoleEntity, {
     eager: true,
   })
   role?: RoleEntity | null;
-
-  @ManyToOne(() => StatusEntity, {
-    eager: true,
-  })
-  status?: StatusEntity;
 
   @CreateDateColumn()
   createdAt: Date;

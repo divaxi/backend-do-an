@@ -57,51 +57,51 @@ export class UsersRelationalRepository implements UserRepository {
     return entities.map((user) => UserMapper.toDomain(user));
   }
 
-  async findById(id: User['id']): Promise<NullableType<User>> {
+  async findById(id: User['userId']): Promise<NullableType<User>> {
     const entity = await this.usersRepository.findOne({
-      where: { id: Number(id) },
+      where: { userId: Number(id) },
     });
 
     return entity ? UserMapper.toDomain(entity) : null;
   }
 
-  async findByIds(ids: User['id'][]): Promise<User[]> {
+  async findByIds(ids: User['userId'][]): Promise<User[]> {
     const entities = await this.usersRepository.find({
-      where: { id: In(ids) },
+      where: { userId: In(ids) },
     });
 
     return entities.map((user) => UserMapper.toDomain(user));
   }
 
-  async findByEmail(email: User['email']): Promise<NullableType<User>> {
-    if (!email) return null;
+  async findByZaloId(zaloId: User['zaloId']): Promise<NullableType<User>> {
+    if (!zaloId) return null;
 
     const entity = await this.usersRepository.findOne({
-      where: { email },
+      where: { zaloId },
     });
 
     return entity ? UserMapper.toDomain(entity) : null;
   }
 
-  async findBySocialIdAndProvider({
-    socialId,
-    provider,
-  }: {
-    socialId: User['socialId'];
-    provider: User['provider'];
-  }): Promise<NullableType<User>> {
-    if (!socialId || !provider) return null;
-
+  // async findBySocialIdAndProvider({
+  //   socialId,
+  //   provider,
+  // }: {
+  //   socialId: User['socialId'];
+  //   provider: User['provider'];
+  // }): Promise<NullableType<User>> {
+  //   if (!socialId || !provider) return null;
+  //
+  //   const entity = await this.usersRepository.findOne({
+  //     where: { socialId, provider },
+  //   });
+  //
+  //   return entity ? UserMapper.toDomain(entity) : null;
+  // }
+  //
+  async update(id: User['userId'], payload: Partial<User>): Promise<User> {
     const entity = await this.usersRepository.findOne({
-      where: { socialId, provider },
-    });
-
-    return entity ? UserMapper.toDomain(entity) : null;
-  }
-
-  async update(id: User['id'], payload: Partial<User>): Promise<User> {
-    const entity = await this.usersRepository.findOne({
-      where: { id: Number(id) },
+      where: { userId: Number(id) },
     });
 
     if (!entity) {
@@ -120,7 +120,7 @@ export class UsersRelationalRepository implements UserRepository {
     return UserMapper.toDomain(updatedEntity);
   }
 
-  async remove(id: User['id']): Promise<void> {
+  async remove(id: User['userId']): Promise<void> {
     await this.usersRepository.softDelete(id);
   }
 }

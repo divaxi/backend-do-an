@@ -38,17 +38,18 @@ import { StaffsModule } from './staffs/staffs.module';
 
 import { ReceptionsModule } from './receptions/receptions.module';
 
-import { ResultsModule } from './results/results.module';
-
 import { SchedulesModule } from './schedules/schedules.module';
 
 import { ServicesModule } from './services/services.module';
 
+import { CustomerRecordsModule } from './customer-records/customer-records.module';
+
 @Module({
   imports: [
+    CustomerRecordsModule,
+    CustomerRecordsModule,
     ServicesModule,
     SchedulesModule,
-    ResultsModule,
     ReceptionsModule,
     StaffsModule,
     CustomersModule,

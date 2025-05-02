@@ -18,12 +18,10 @@ export abstract class SessionRepository {
 
   abstract deleteById(id: Session['id']): Promise<void>;
 
-  abstract deleteByUserId(conditions: {
-    userId: User['userId'];
-  }): Promise<void>;
+  abstract deleteByUserId(conditions: { id: User['id'] }): Promise<void>;
 
   abstract deleteByUserIdWithExclude(conditions: {
-    userId: User['userId'];
+    id: User['id'];
     excludeSessionId: Session['id'];
   }): Promise<void>;
 }

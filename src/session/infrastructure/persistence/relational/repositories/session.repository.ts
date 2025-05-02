@@ -67,21 +67,21 @@ export class SessionRelationalRepository implements SessionRepository {
     });
   }
 
-  async deleteByUserId(conditions: { userId: User['userId'] }): Promise<void> {
+  async deleteByUserId(conditions: { id: User['id'] }): Promise<void> {
     await this.sessionRepository.softDelete({
       user: {
-        userId: Number(conditions.userId),
+        id: Number(conditions.id),
       },
     });
   }
 
   async deleteByUserIdWithExclude(conditions: {
-    userId: User['userId'];
+    id: User['id'];
     excludeSessionId: Session['id'];
   }): Promise<void> {
     await this.sessionRepository.softDelete({
       user: {
-        userId: Number(conditions.userId),
+        id: Number(conditions.id),
       },
       id: Not(Number(conditions.excludeSessionId)),
     });

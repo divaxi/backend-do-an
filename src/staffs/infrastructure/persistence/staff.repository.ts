@@ -5,7 +5,7 @@ import { Staff } from '../../domain/staff';
 
 export abstract class StaffRepository {
   abstract create(
-    data: Omit<Staff, 'staffId' | 'createdAt' | 'updatedAt'>,
+    data: Omit<Staff, 'id' | 'createdAt' | 'updatedAt'>,
   ): Promise<Staff>;
 
   abstract findAllWithPagination({
@@ -14,14 +14,14 @@ export abstract class StaffRepository {
     paginationOptions: IPaginationOptions;
   }): Promise<Staff[]>;
 
-  abstract findById(id: Staff['staffId']): Promise<NullableType<Staff>>;
+  abstract findById(id: Staff['id']): Promise<NullableType<Staff>>;
 
-  abstract findByIds(ids: Staff['staffId'][]): Promise<Staff[]>;
+  abstract findByIds(ids: Staff['id'][]): Promise<Staff[]>;
 
   abstract update(
-    id: Staff['staffId'],
+    id: Staff['id'],
     payload: DeepPartial<Staff>,
   ): Promise<Staff | null>;
 
-  abstract remove(id: Staff['staffId']): Promise<void>;
+  abstract remove(id: Staff['id']): Promise<void>;
 }

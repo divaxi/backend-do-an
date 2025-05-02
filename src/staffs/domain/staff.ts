@@ -17,7 +17,7 @@ export class Staff {
   @ApiProperty({
     type: String,
   })
-  staffId: string;
+  id: string;
 
   @ApiProperty({
     type: () => User,

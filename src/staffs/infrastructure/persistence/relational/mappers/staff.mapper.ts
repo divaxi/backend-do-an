@@ -1,4 +1,5 @@
 import { Staff } from '../../../../domain/staff';
+import { UserMapper } from '../../../../../users/infrastructure/persistence/relational/mappers/user.mapper';
 
 import { StaffEntity } from '../entities/staff.entity';
 
@@ -8,7 +9,8 @@ export class StaffMapper {
     domainEntity.note = raw.note;
     domainEntity.specialization = raw.specialization;
 
-    domainEntity.staffId = raw.staffId;
+    domainEntity.id = raw.id;
+    domainEntity.user = raw.user ? UserMapper.toDomain(raw.user) : null;
     domainEntity.createdAt = raw.createdAt;
     domainEntity.updatedAt = raw.updatedAt;
 
@@ -20,9 +22,12 @@ export class StaffMapper {
     persistenceEntity.note = domainEntity.note;
 
     persistenceEntity.specialization = domainEntity.specialization;
+    persistenceEntity.user = domainEntity.user
+      ? UserMapper.toPersistence(domainEntity.user)
+      : undefined;
 
-    if (domainEntity.staffId) {
-      persistenceEntity.staffId = domainEntity.staffId;
+    if (domainEntity.id) {
+      persistenceEntity.id = domainEntity.id;
     }
     persistenceEntity.createdAt = domainEntity.createdAt;
     persistenceEntity.updatedAt = domainEntity.updatedAt;

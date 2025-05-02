@@ -67,7 +67,7 @@ export class AuthService {
     });
 
     const { token, refreshToken, tokenExpires } = await this.getTokensData({
-      userId: user.userId,
+      id: user.id,
       role: user.role,
       sessionId: session.id,
       hash,
@@ -82,7 +82,7 @@ export class AuthService {
   }
 
   async me(userJwtPayload: JwtPayloadType): Promise<NullableType<User>> {
-    return this.usersService.findById(userJwtPayload.userId);
+    return this.usersService.findById(userJwtPayload.id);
   }
 
   async refreshToken(
@@ -103,7 +103,7 @@ export class AuthService {
       .update(randomStringGenerator())
       .digest('hex');
 
-    const user = await this.usersService.findById(session.user.userId);
+    const user = await this.usersService.findById(session.user.id);
 
     if (!user?.role) {
       throw new UnauthorizedException();
@@ -114,7 +114,7 @@ export class AuthService {
     });
 
     const { token, refreshToken, tokenExpires } = await this.getTokensData({
-      userId: session.user.userId,
+      id: session.user.id,
       role: {
         id: user.role.id,
       },
@@ -133,7 +133,7 @@ export class AuthService {
   }
 
   private async getTokensData(data: {
-    userId: User['userId'];
+    id: User['id'];
     role: User['role'];
     sessionId: Session['id'];
     hash: Session['hash'];
@@ -149,7 +149,7 @@ export class AuthService {
     const [token, refreshToken] = await Promise.all([
       await this.jwtService.signAsync(
         {
-          userId: data.userId,
+          id: data.id,
           role: data.role,
           sessionId: data.sessionId,
         },

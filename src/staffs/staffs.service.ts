@@ -8,6 +8,7 @@ import { StaffRepository } from './infrastructure/persistence/staff.repository';
 import { IPaginationOptions } from '../utils/types/pagination-options';
 import { Staff } from './domain/staff';
 import { UsersService } from '../users/users.service';
+import { User } from '../users/domain/user';
 @Injectable()
 export class StaffsService {
   constructor(
@@ -16,10 +17,9 @@ export class StaffsService {
     private readonly usersService: UsersService,
   ) {}
 
-  async create(createStaffDto: CreateStaffDto, userId: number) {
+  async create(createStaffDto: CreateStaffDto, userId: User['id']) {
     // Do not remove comment below.
     // <creating-property />
-    console.log('userId', userId);
     const user = await this.usersService.findById(userId);
     return this.staffRepository.create({
       // Do not remove comment below.
@@ -44,16 +44,16 @@ export class StaffsService {
     });
   }
 
-  findById(id: Staff['staffId']) {
+  findById(id: Staff['id']) {
     return this.staffRepository.findById(id);
   }
 
-  findByIds(ids: Staff['staffId'][]) {
+  findByIds(ids: Staff['id'][]) {
     return this.staffRepository.findByIds(ids);
   }
 
   async update(
-    id: Staff['staffId'],
+    id: Staff['id'],
 
     updateStaffDto: UpdateStaffDto,
   ) {
@@ -69,7 +69,7 @@ export class StaffsService {
     });
   }
 
-  remove(id: Staff['staffId']) {
+  remove(id: Staff['id']) {
     return this.staffRepository.remove(id);
   }
 }

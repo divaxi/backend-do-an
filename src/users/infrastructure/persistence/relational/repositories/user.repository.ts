@@ -57,17 +57,17 @@ export class UsersRelationalRepository implements UserRepository {
     return entities.map((user) => UserMapper.toDomain(user));
   }
 
-  async findById(id: User['userId']): Promise<NullableType<User>> {
+  async findById(id: User['id']): Promise<NullableType<User>> {
     const entity = await this.usersRepository.findOne({
-      where: { userId: Number(id) },
+      where: { id: Number(id) },
     });
 
     return entity ? UserMapper.toDomain(entity) : null;
   }
 
-  async findByIds(ids: User['userId'][]): Promise<User[]> {
+  async findByIds(ids: User['id'][]): Promise<User[]> {
     const entities = await this.usersRepository.find({
-      where: { userId: In(ids) },
+      where: { id: In(ids.map(Number)) },
     });
 
     return entities.map((user) => UserMapper.toDomain(user));
@@ -99,9 +99,9 @@ export class UsersRelationalRepository implements UserRepository {
   //   return entity ? UserMapper.toDomain(entity) : null;
   // }
   //
-  async update(id: User['userId'], payload: Partial<User>): Promise<User> {
+  async update(id: User['id'], payload: Partial<User>): Promise<User> {
     const entity = await this.usersRepository.findOne({
-      where: { userId: Number(id) },
+      where: { id: Number(id) },
     });
 
     if (!entity) {
@@ -120,7 +120,7 @@ export class UsersRelationalRepository implements UserRepository {
     return UserMapper.toDomain(updatedEntity);
   }
 
-  async remove(id: User['userId']): Promise<void> {
-    await this.usersRepository.softDelete(id);
+  async remove(id: User['id']): Promise<void> {
+    await this.usersRepository.softDelete(Number(id));
   }
 }

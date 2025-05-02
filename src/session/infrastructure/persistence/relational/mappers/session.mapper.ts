@@ -19,7 +19,12 @@ export class SessionMapper {
 
   static toPersistence(domainEntity: Session): SessionEntity {
     const user = new UserEntity();
-    user.userId = Number(domainEntity.user.userId);
+    if (domainEntity.user && domainEntity.user.id) {
+      user.id = Number(domainEntity.user.id);
+    } else {
+      // Handle the case where user or user.id is missing, e.g., throw error or assign default
+      // For now, we'll assume user is always present based on Session domain definition
+    }
 
     const persistenceEntity = new SessionEntity();
     if (domainEntity.id && typeof domainEntity.id === 'number') {

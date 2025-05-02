@@ -27,13 +27,13 @@ export class StaffEntity extends EntityRelationalHelper {
   specialization?: string | null;
 
   @PrimaryGeneratedColumn('uuid')
-  staffId: string;
+  id: string;
 
   @OneToOne(() => UserEntity, {
     eager: true,
   })
   @JoinColumn()
-  userId?: UserEntity | null;
+  user?: UserEntity | null;
 
   @CreateDateColumn()
   createdAt: Date;

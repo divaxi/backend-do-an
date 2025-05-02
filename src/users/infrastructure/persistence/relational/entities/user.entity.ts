@@ -20,7 +20,7 @@ import { EntityRelationalHelper } from '../../../../../utils/relational-entity-h
 })
 export class UserEntity extends EntityRelationalHelper {
   @PrimaryGeneratedColumn()
-  userId: number;
+  id: number;
 
   // For "string | null" we need to use String type.
   // More info: https://github.com/typeorm/typeorm/issues/2567

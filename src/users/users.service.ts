@@ -138,11 +138,11 @@ export class UsersService {
     });
   }
 
-  findById(id: User['userId']): Promise<NullableType<User>> {
+  findById(id: User['id']): Promise<NullableType<User>> {
     return this.usersRepository.findById(id);
   }
 
-  findByIds(ids: User['userId'][]): Promise<User[]> {
+  findByIds(ids: User['id'][]): Promise<User[]> {
     return this.usersRepository.findByIds(ids);
   }
 
@@ -164,7 +164,7 @@ export class UsersService {
   // }
   //
   async update(
-    id: User['userId'],
+    id: User['id'],
     updateUserDto: UpdateUserDto,
   ): Promise<User | null> {
     // Do not remove comment below.
@@ -264,15 +264,15 @@ export class UsersService {
     return this.usersRepository.update(id, {
       // Do not remove comment below.
       // <updating-property-payload />
-      zaloId: updateUserDto.zaloId,
+      avatar: photo,
       userName: updateUserDto.userName,
       phoneNumber: updateUserDto.phoneNumber,
-      avatar: photo,
-      role,
+      zaloId: updateUserDto.zaloId,
+      role: role,
     });
   }
 
-  async remove(id: User['userId']): Promise<void> {
+  async remove(id: User['id']): Promise<void> {
     await this.usersRepository.remove(id);
   }
 }

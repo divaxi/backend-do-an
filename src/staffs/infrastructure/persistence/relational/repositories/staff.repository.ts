@@ -36,25 +36,25 @@ export class StaffRelationalRepository implements StaffRepository {
     return entities.map((entity) => StaffMapper.toDomain(entity));
   }
 
-  async findById(id: Staff['staffId']): Promise<NullableType<Staff>> {
+  async findById(id: Staff['id']): Promise<NullableType<Staff>> {
     const entity = await this.staffRepository.findOne({
-      where: { staffId: id },
+      where: { id: id },
     });
 
     return entity ? StaffMapper.toDomain(entity) : null;
   }
 
-  async findByIds(ids: Staff['staffId'][]): Promise<Staff[]> {
+  async findByIds(ids: Staff['id'][]): Promise<Staff[]> {
     const entities = await this.staffRepository.find({
-      where: { staffId: In(ids) },
+      where: { id: In(ids) },
     });
 
     return entities.map((entity) => StaffMapper.toDomain(entity));
   }
 
-  async update(id: Staff['staffId'], payload: Partial<Staff>): Promise<Staff> {
+  async update(id: Staff['id'], payload: Partial<Staff>): Promise<Staff> {
     const entity = await this.staffRepository.findOne({
-      where: { staffId: id },
+      where: { id: id },
     });
 
     if (!entity) {
@@ -73,7 +73,7 @@ export class StaffRelationalRepository implements StaffRepository {
     return StaffMapper.toDomain(updatedEntity);
   }
 
-  async remove(id: Staff['staffId']): Promise<void> {
+  async remove(id: Staff['id']): Promise<void> {
     await this.staffRepository.delete(id);
   }
 }

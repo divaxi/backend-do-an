@@ -44,7 +44,7 @@ export class StaffsController {
     type: Staff,
   })
   create(@Body() createStaffDto: CreateStaffDto, @Req() req) {
-    const userId = req.user.userId;
+    const userId = req.user.id;
     return this.staffsService.create(createStaffDto, userId);
   }
 
@@ -72,39 +72,39 @@ export class StaffsController {
     );
   }
 
-  @Get(':staffId')
+  @Get(':id')
   @ApiParam({
-    name: 'staffId',
+    name: 'id',
     type: String,
     required: true,
   })
   @ApiOkResponse({
     type: Staff,
   })
-  findById(@Param('staffId') id: string) {
+  findById(@Param('id') id: string) {
     return this.staffsService.findById(id);
   }
 
-  @Patch(':staffId')
+  @Patch(':id')
   @ApiParam({
-    name: 'staffId',
+    name: 'id',
     type: String,
     required: true,
   })
   @ApiOkResponse({
     type: Staff,
   })
-  update(@Param('staffId') id: string, @Body() updateStaffDto: UpdateStaffDto) {
+  update(@Param('id') id: string, @Body() updateStaffDto: UpdateStaffDto) {
     return this.staffsService.update(id, updateStaffDto);
   }
 
-  @Delete(':staffId')
+  @Delete(':id')
   @ApiParam({
-    name: 'staffId',
+    name: 'id',
     type: String,
     required: true,
   })
-  remove(@Param('staffId') id: string) {
+  remove(@Param('id') id: string) {
     return this.staffsService.remove(id);
   }
 }

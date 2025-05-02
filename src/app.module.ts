@@ -1,23 +1,24 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { FilesModule } from './files/files.module';
-// import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './auth/auth.module';
 import databaseConfig from './database/config/database.config';
-// import authConfig from './auth/config/auth.config';
+import authConfig from './auth/config/auth.config';
 import appConfig from './config/app.config';
-// import mailConfig from './mail/config/mail.config';
+import mailConfig from './mail/config/mail.config';
 import fileConfig from './files/config/file.config';
+import zaloConfig from './auth/config/zalo.config';
 import path from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HeaderResolver, I18nModule } from 'nestjs-i18n';
 import { TypeOrmConfigService } from './database/typeorm-config.service';
-// import { MailModule } from './mail/mail.module';
+import { MailModule } from './mail/mail.module';
 import { HomeModule } from './home/home.module';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { AllConfigType } from './config/config.type';
-// import { SessionModule } from './session/session.module';
-// import { MailerModule } from './mailer/mailer.module';
+import { SessionModule } from './session/session.module';
+import { MailerModule } from './mailer/mailer.module';
 
 const infrastructureDatabaseModule = TypeOrmModule.forRootAsync({
   useClass: TypeOrmConfigService,
@@ -54,10 +55,11 @@ import { CustomerRecordsModule } from './customer-records/customer-records.modul
       isGlobal: true,
       load: [
         databaseConfig,
-        // authConfig,
+        authConfig,
         appConfig,
-        // mailConfig,
+        mailConfig,
         fileConfig,
+        zaloConfig,
         // facebookConfig,
         // googleConfig,
       ],
@@ -89,12 +91,12 @@ import { CustomerRecordsModule } from './customer-records/customer-records.modul
     }),
     UsersModule,
     FilesModule,
-    // AuthModule,
+    AuthModule,
     // AuthFacebookModule,
     // AuthGoogleModule,
-    // SessionModule,
-    // MailModule,
-    // MailerModule,
+    SessionModule,
+    MailModule,
+    MailerModule,
     HomeModule,
   ],
 })

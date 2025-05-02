@@ -4,8 +4,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   Column,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { EntityRelationalHelper } from '../../../../../utils/relational-entity-helper';
+import { UserEntity } from '../../../../../users/infrastructure/persistence/relational/entities/user.entity';
 
 @Entity({
   name: 'staff',
@@ -18,31 +21,19 @@ export class StaffEntity extends EntityRelationalHelper {
   note?: string | null;
 
   @Column({
-    nullable: false,
-    type: String,
-  })
-  role: string;
-
-  @Column({
     nullable: true,
     type: String,
   })
-  zaloId?: string | null;
-
-  @Column({
-    nullable: false,
-    type: String,
-  })
-  phoneNumber: string;
-
-  @Column({
-    nullable: false,
-    type: String,
-  })
-  fullName: string;
+  specialization?: string | null;
 
   @PrimaryGeneratedColumn('uuid')
   staffId: string;
+
+  @OneToOne(() => UserEntity, {
+    eager: true,
+  })
+  @JoinColumn()
+  userId?: UserEntity | null;
 
   @CreateDateColumn()
   createdAt: Date;

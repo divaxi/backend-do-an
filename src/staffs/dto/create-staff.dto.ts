@@ -20,33 +20,12 @@ export class CreateStaffDto {
   note?: string | null;
 
   @ApiProperty({
-    required: true,
-    type: () => String,
-  })
-  @IsString()
-  role: string;
-
-  @ApiProperty({
     required: false,
     type: () => String,
   })
   @IsOptional()
   @IsString()
-  zaloId?: string | null;
-
-  @ApiProperty({
-    required: true,
-    type: () => String,
-  })
-  @IsString()
-  phoneNumber: string;
-
-  @ApiProperty({
-    required: true,
-    type: () => String,
-  })
-  @IsString()
-  fullName: string;
+  specialization?: string | null;
 
   // Don't forget to use the class-validator decorators in the DTO properties.
 }

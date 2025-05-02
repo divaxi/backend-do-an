@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Query,
+  Req,
 } from '@nestjs/common';
 import { StaffsService } from './staffs.service';
 import { CreateStaffDto } from './dto/create-staff.dto';
@@ -42,8 +43,9 @@ export class StaffsController {
   @ApiCreatedResponse({
     type: Staff,
   })
-  create(@Body() createStaffDto: CreateStaffDto) {
-    return this.staffsService.create(createStaffDto);
+  create(@Body() createStaffDto: CreateStaffDto, @Req() req) {
+    const userId = req.user.userId;
+    return this.staffsService.create(createStaffDto, userId);
   }
 
   @Get()

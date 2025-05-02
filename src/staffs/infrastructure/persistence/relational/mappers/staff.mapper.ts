@@ -6,14 +6,7 @@ export class StaffMapper {
   static toDomain(raw: StaffEntity): Staff {
     const domainEntity = new Staff();
     domainEntity.note = raw.note;
-
-    domainEntity.role = raw.role;
-
-    domainEntity.zaloId = raw.zaloId;
-
-    domainEntity.phoneNumber = raw.phoneNumber;
-
-    domainEntity.fullName = raw.fullName;
+    domainEntity.specialization = raw.specialization;
 
     domainEntity.staffId = raw.staffId;
     domainEntity.createdAt = raw.createdAt;
@@ -26,13 +19,7 @@ export class StaffMapper {
     const persistenceEntity = new StaffEntity();
     persistenceEntity.note = domainEntity.note;
 
-    persistenceEntity.role = domainEntity.role;
-
-    persistenceEntity.zaloId = domainEntity.zaloId;
-
-    persistenceEntity.phoneNumber = domainEntity.phoneNumber;
-
-    persistenceEntity.fullName = domainEntity.fullName;
+    persistenceEntity.specialization = domainEntity.specialization;
 
     if (domainEntity.staffId) {
       persistenceEntity.staffId = domainEntity.staffId;

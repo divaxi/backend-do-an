@@ -7,30 +7,27 @@ import { UpdateStaffDto } from './dto/update-staff.dto';
 import { StaffRepository } from './infrastructure/persistence/staff.repository';
 import { IPaginationOptions } from '../utils/types/pagination-options';
 import { Staff } from './domain/staff';
-
+import { UsersService } from '../users/users.service';
 @Injectable()
 export class StaffsService {
   constructor(
     // Dependencies here
     private readonly staffRepository: StaffRepository,
+    private readonly usersService: UsersService,
   ) {}
 
-  async create(createStaffDto: CreateStaffDto) {
+  async create(createStaffDto: CreateStaffDto, userId: number) {
     // Do not remove comment below.
     // <creating-property />
-
+    console.log('userId', userId);
+    const user = await this.usersService.findById(userId);
     return this.staffRepository.create({
       // Do not remove comment below.
       // <creating-property-payload />
       note: createStaffDto.note,
 
-      role: createStaffDto.role,
-
-      zaloId: createStaffDto.zaloId,
-
-      phoneNumber: createStaffDto.phoneNumber,
-
-      fullName: createStaffDto.fullName,
+      specialization: createStaffDto.specialization,
+      user,
     });
   }
 
@@ -68,13 +65,7 @@ export class StaffsService {
       // <updating-property-payload />
       note: updateStaffDto.note,
 
-      role: updateStaffDto.role,
-
-      zaloId: updateStaffDto.zaloId,
-
-      phoneNumber: updateStaffDto.phoneNumber,
-
-      fullName: updateStaffDto.fullName,
+      specialization: updateStaffDto.specialization,
     });
   }
 

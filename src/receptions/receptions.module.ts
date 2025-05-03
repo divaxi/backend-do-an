@@ -1,3 +1,4 @@
+import { AppointmentsModule } from '../appointments/appointments.module';
 import {
   // common
   Module,
@@ -8,6 +9,8 @@ import { RelationalReceptionPersistenceModule } from './infrastructure/persisten
 
 @Module({
   imports: [
+    AppointmentsModule,
+
     // import modules, etc.
     RelationalReceptionPersistenceModule,
   ],

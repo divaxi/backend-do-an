@@ -1,3 +1,4 @@
+import { FilesModule } from '../files/files.module';
 import {
   // common
   Module,
@@ -8,6 +9,8 @@ import { RelationalServicePersistenceModule } from './infrastructure/persistence
 
 @Module({
   imports: [
+    FilesModule,
+
     // import modules, etc.
     RelationalServicePersistenceModule,
   ],

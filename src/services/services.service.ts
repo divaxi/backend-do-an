@@ -15,16 +15,18 @@ export class ServicesService {
     private readonly serviceRepository: ServiceRepository,
   ) {}
 
-  async create(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    createServiceDto: CreateServiceDto,
-  ) {
+  async create(createServiceDto: CreateServiceDto) {
     // Do not remove comment below.
     // <creating-property />
 
     return this.serviceRepository.create({
       // Do not remove comment below.
       // <creating-property-payload />
+      price: createServiceDto.price,
+
+      description: createServiceDto.description,
+
+      serviceName: createServiceDto.serviceName,
     });
   }
 
@@ -51,7 +53,7 @@ export class ServicesService {
 
   async update(
     id: Service['id'],
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     updateServiceDto: UpdateServiceDto,
   ) {
     // Do not remove comment below.
@@ -60,6 +62,11 @@ export class ServicesService {
     return this.serviceRepository.update(id, {
       // Do not remove comment below.
       // <updating-property-payload />
+      price: updateServiceDto.price,
+
+      description: updateServiceDto.description,
+
+      serviceName: updateServiceDto.serviceName,
     });
   }
 

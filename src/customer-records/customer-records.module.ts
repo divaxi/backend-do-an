@@ -9,10 +9,9 @@ import { RelationalCustomerRecordPersistenceModule } from './infrastructure/pers
 
 @Module({
   imports: [
-    UsersModule,
-
     // import modules, etc.
     RelationalCustomerRecordPersistenceModule,
+    UsersModule,
   ],
   controllers: [CustomerRecordsController],
   providers: [CustomerRecordsService],

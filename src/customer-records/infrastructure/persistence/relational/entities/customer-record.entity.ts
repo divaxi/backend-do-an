@@ -17,6 +17,7 @@ export class CustomerRecordEntity extends EntityRelationalHelper {
   @Column({
     nullable: false,
     type: Boolean,
+    default: true,
   })
   active?: boolean;
 

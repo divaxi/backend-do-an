@@ -16,22 +16,20 @@ import { CustomerRecord } from './domain/customer-record';
 @Injectable()
 export class CustomerRecordsService {
   constructor(
-    private readonly userService: UsersService,
-
     // Dependencies here
     private readonly customerRecordRepository: CustomerRecordRepository,
+
+    private readonly usersService: UsersService,
   ) {}
 
-  async create(createCustomerRecordDto: CreateCustomerRecordDto) {
+  async create(createCustomerRecordDto: CreateCustomerRecordDto, id: string) {
     // Do not remove comment below.
     // <creating-property />
 
     let user: User | undefined = undefined;
 
-    if (createCustomerRecordDto.user) {
-      const userObject = await this.userService.findById(
-        createCustomerRecordDto.user.id,
-      );
+    if (id) {
+      const userObject = await this.usersService.findById(id);
       if (!userObject) {
         throw new UnprocessableEntityException({
           status: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -94,7 +92,7 @@ export class CustomerRecordsService {
     let user: User | undefined = undefined;
 
     if (updateCustomerRecordDto.user) {
-      const userObject = await this.userService.findById(
+      const userObject = await this.usersService.findById(
         updateCustomerRecordDto.user.id,
       );
       if (!userObject) {
@@ -128,6 +126,8 @@ export class CustomerRecordsService {
   }
 
   remove(id: CustomerRecord['id']) {
-    return this.customerRecordRepository.remove(id);
+    return this.customerRecordRepository.update(id, {
+      active: false,
+    });
   }
 }

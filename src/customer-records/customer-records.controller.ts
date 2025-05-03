@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Query,
+  Req,
 } from '@nestjs/common';
 import { CustomerRecordsService } from './customer-records.service';
 import { CreateCustomerRecordDto } from './dto/create-customer-record.dto';
@@ -44,8 +45,9 @@ export class CustomerRecordsController {
   @ApiCreatedResponse({
     type: CustomerRecord,
   })
-  create(@Body() createCustomerRecordDto: CreateCustomerRecordDto) {
-    return this.customerRecordsService.create(createCustomerRecordDto);
+  create(@Body() createCustomerRecordDto: CreateCustomerRecordDto, @Req() req) {
+    const userId = req.user.id;
+    return this.customerRecordsService.create(createCustomerRecordDto, userId);
   }
 
   @Get()

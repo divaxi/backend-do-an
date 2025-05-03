@@ -139,6 +139,7 @@ export class UsersService {
   }
 
   findById(id: User['id']): Promise<NullableType<User>> {
+    console.log('service find user');
     return this.usersRepository.findById(id);
   }
 

@@ -17,6 +17,7 @@ export class AppointmentEntity extends EntityRelationalHelper {
   @Column({
     nullable: false,
     type: Boolean,
+    default: true,
   })
   active?: boolean;
 

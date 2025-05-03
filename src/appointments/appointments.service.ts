@@ -12,20 +12,19 @@ import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import { AppointmentRepository } from './infrastructure/persistence/appointment.repository';
 import { IPaginationOptions } from '../utils/types/pagination-options';
 import { Appointment } from './domain/appointment';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class AppointmentsService {
   constructor(
     private readonly customerRecordService: CustomerRecordsService,
-
-    // Dependencies here
     private readonly appointmentRepository: AppointmentRepository,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  async create(createAppointmentDto: CreateAppointmentDto) {
-    // Do not remove comment below.
-    // <creating-property />
-
+  async create(
+    createAppointmentDto: CreateAppointmentDto,
+  ): Promise<Appointment> {
     const customerRecordObject = await this.customerRecordService.findById(
       createAppointmentDto.customerRecord.id,
     );
@@ -37,19 +36,20 @@ export class AppointmentsService {
         },
       });
     }
-    const customerRecord = customerRecordObject;
 
-    return this.appointmentRepository.create({
-      // Do not remove comment below.
-      // <creating-property-payload />
+    const appointmentObject = await this.appointmentRepository.create({
       active: createAppointmentDto.active,
-
       note: createAppointmentDto.note,
-
       status: createAppointmentDto.status,
-
-      customerRecord,
+      customerRecord: customerRecordObject,
     });
+
+    this.eventEmitter.emit('appointment.created', {
+      appointment: appointmentObject,
+      dto: createAppointmentDto,
+    });
+
+    return appointmentObject;
   }
 
   findAllWithPagination({
@@ -78,9 +78,6 @@ export class AppointmentsService {
 
     updateAppointmentDto: UpdateAppointmentDto,
   ) {
-    // Do not remove comment below.
-    // <updating-property />
-
     let customerRecord: CustomerRecord | undefined = undefined;
 
     if (updateAppointmentDto.customerRecord) {
@@ -99,8 +96,6 @@ export class AppointmentsService {
     }
 
     return this.appointmentRepository.update(id, {
-      // Do not remove comment below.
-      // <updating-property-payload />
       active: updateAppointmentDto.active,
 
       note: updateAppointmentDto.note,

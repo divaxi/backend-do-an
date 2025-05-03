@@ -1,7 +1,7 @@
 import {
   Controller,
   Get,
-  Post,
+  // Post,
   Body,
   Patch,
   Param,
@@ -10,11 +10,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { AppointmentSchedulesService } from './appointment-schedules.service';
-import { CreateAppointmentScheduleDto } from './dto/create-appointment-schedule.dto';
+// import { CreateAppointmentScheduleDto } from './dto/create-appointment-schedule.dto';
 import { UpdateAppointmentScheduleDto } from './dto/update-appointment-schedule.dto';
 import {
   ApiBearerAuth,
-  ApiCreatedResponse,
+  // ApiCreatedResponse,
   ApiOkResponse,
   ApiParam,
   ApiTags,
@@ -40,16 +40,16 @@ export class AppointmentSchedulesController {
     private readonly appointmentSchedulesService: AppointmentSchedulesService,
   ) {}
 
-  @Post()
-  @ApiCreatedResponse({
-    type: AppointmentSchedule,
-  })
-  create(@Body() createAppointmentScheduleDto: CreateAppointmentScheduleDto) {
-    return this.appointmentSchedulesService.create(
-      createAppointmentScheduleDto,
-    );
-  }
-
+  // @Post()
+  // @ApiCreatedResponse({
+  //   type: AppointmentSchedule,
+  // })
+  // create(@Body() createAppointmentScheduleDto: CreateAppointmentScheduleDto) {
+  //   return this.appointmentSchedulesService.create(
+  //     createAppointmentScheduleDto,
+  //   );
+  // }
+  //
   @Get()
   @ApiOkResponse({
     type: InfinityPaginationResponse(AppointmentSchedule),

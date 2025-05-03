@@ -19,6 +19,7 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 import { AllConfigType } from './config/config.type';
 import { SessionModule } from './session/session.module';
 import { MailerModule } from './mailer/mailer.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 const infrastructureDatabaseModule = TypeOrmModule.forRootAsync({
   useClass: TypeOrmConfigService,
@@ -47,6 +48,7 @@ import { AppointmentSchedulesModule } from './appointment-schedules/appointment-
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot(),
     AppointmentSchedulesModule,
     AppointmentServicesModule,
     CustomerRecordsModule,

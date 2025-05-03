@@ -14,7 +14,6 @@ import { UpdateAppointmentScheduleDto } from './dto/update-appointment-schedule.
 import { AppointmentScheduleRepository } from './infrastructure/persistence/appointment-schedule.repository';
 import { IPaginationOptions } from '../utils/types/pagination-options';
 import { AppointmentSchedule } from './domain/appointment-schedule';
-import { Appointment } from '../appointments/domain/appointment';
 
 @Injectable()
 export class AppointmentSchedulesService {

@@ -1,3 +1,4 @@
+import { StaffsModule } from '../staffs/staffs.module';
 import {
   // common
   Module,
@@ -8,6 +9,8 @@ import { RelationalSchedulePersistenceModule } from './infrastructure/persistenc
 
 @Module({
   imports: [
+    StaffsModule,
+
     // import modules, etc.
     RelationalSchedulePersistenceModule,
   ],

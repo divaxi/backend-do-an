@@ -1,3 +1,4 @@
+import { CustomerRecordsModule } from '../customer-records/customer-records.module';
 import {
   // common
   Module,
@@ -8,6 +9,8 @@ import { RelationalAppointmentPersistenceModule } from './infrastructure/persist
 
 @Module({
   imports: [
+    CustomerRecordsModule,
+
     // import modules, etc.
     RelationalAppointmentPersistenceModule,
   ],

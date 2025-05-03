@@ -1,9 +1,13 @@
+import { FileEntity } from '../../../../../files/infrastructure/persistence/relational/entities/file.entity';
+
 import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   Column,
+  JoinColumn,
+  OneToOne,
 } from 'typeorm';
 import { EntityRelationalHelper } from '../../../../../utils/relational-entity-helper';
 
@@ -11,6 +15,10 @@ import { EntityRelationalHelper } from '../../../../../utils/relational-entity-h
   name: 'service',
 })
 export class ServiceEntity extends EntityRelationalHelper {
+  @OneToOne(() => FileEntity, { eager: true, nullable: true })
+  @JoinColumn()
+  image?: FileEntity | null;
+
   @Column({
     nullable: true,
     type: Number,

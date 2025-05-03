@@ -1,6 +1,7 @@
 import { AppointmentsService } from '../appointments/appointments.service';
 import { SchedulesService } from '../schedules/schedules.service';
 import { Schedule } from '../schedules/domain/schedule';
+import { Appointment } from '../appointments/domain/appointment';
 
 import {
   // common

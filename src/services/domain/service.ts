@@ -1,6 +1,13 @@
+import { FileType } from '../../files/domain/file';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class Service {
+  @ApiProperty({
+    type: () => FileType,
+    nullable: true,
+  })
+  image?: FileType | null;
+
   @ApiProperty({
     type: () => Number,
     nullable: true,

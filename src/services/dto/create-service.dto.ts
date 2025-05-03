@@ -1,9 +1,13 @@
+import { FileDto } from '../../files/dto/file.dto';
+
 import {
   // decorators here
 
   IsString,
   IsOptional,
   IsNumber,
+  ValidateNested,
+  IsNotEmptyObject,
 } from 'class-validator';
 
 import {
@@ -11,7 +15,22 @@ import {
   ApiProperty,
 } from '@nestjs/swagger';
 
+import {
+  // decorators here
+  Type,
+} from 'class-transformer';
+
 export class CreateServiceDto {
+  @ApiProperty({
+    required: false,
+    type: () => FileDto,
+  })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => FileDto)
+  @IsNotEmptyObject()
+  image?: FileDto | null;
+
   @ApiProperty({
     required: false,
     type: () => Number,

@@ -41,8 +41,11 @@ import { ServicesModule } from './services/services.module';
 
 import { CustomerRecordsModule } from './customer-records/customer-records.module';
 
+import { AppointmentServicesModule } from './appointment-services/appointment-services.module';
+
 @Module({
   imports: [
+    AppointmentServicesModule,
     CustomerRecordsModule,
     CustomerRecordsModule,
     ServicesModule,

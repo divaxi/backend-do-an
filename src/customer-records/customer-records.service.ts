@@ -1,6 +1,11 @@
+import { UsersService } from '../users/users.service';
+import { User } from '../users/domain/user';
+
 import {
   // common
   Injectable,
+  HttpStatus,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { CreateCustomerRecordDto } from './dto/create-customer-record.dto';
 import { UpdateCustomerRecordDto } from './dto/update-customer-record.dto';
@@ -11,20 +16,49 @@ import { CustomerRecord } from './domain/customer-record';
 @Injectable()
 export class CustomerRecordsService {
   constructor(
+    private readonly userService: UsersService,
+
     // Dependencies here
     private readonly customerRecordRepository: CustomerRecordRepository,
   ) {}
 
-  async create(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    createCustomerRecordDto: CreateCustomerRecordDto,
-  ) {
+  async create(createCustomerRecordDto: CreateCustomerRecordDto) {
     // Do not remove comment below.
     // <creating-property />
+
+    let user: User | undefined = undefined;
+
+    if (createCustomerRecordDto.user) {
+      const userObject = await this.userService.findById(
+        createCustomerRecordDto.user.id,
+      );
+      if (!userObject) {
+        throw new UnprocessableEntityException({
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          errors: {
+            user: 'notExists',
+          },
+        });
+      }
+      user = userObject;
+    }
 
     return this.customerRecordRepository.create({
       // Do not remove comment below.
       // <creating-property-payload />
+      active: createCustomerRecordDto.active,
+
+      BHYTNumber: createCustomerRecordDto.BHYTNumber,
+
+      CCCDNumber: createCustomerRecordDto.CCCDNumber,
+
+      DOB: createCustomerRecordDto.DOB,
+
+      sex: createCustomerRecordDto.sex,
+
+      fullName: createCustomerRecordDto.fullName,
+
+      user,
     });
   }
 
@@ -51,15 +85,45 @@ export class CustomerRecordsService {
 
   async update(
     id: CustomerRecord['id'],
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     updateCustomerRecordDto: UpdateCustomerRecordDto,
   ) {
     // Do not remove comment below.
     // <updating-property />
 
+    let user: User | undefined = undefined;
+
+    if (updateCustomerRecordDto.user) {
+      const userObject = await this.userService.findById(
+        updateCustomerRecordDto.user.id,
+      );
+      if (!userObject) {
+        throw new UnprocessableEntityException({
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          errors: {
+            user: 'notExists',
+          },
+        });
+      }
+      user = userObject;
+    }
+
     return this.customerRecordRepository.update(id, {
       // Do not remove comment below.
       // <updating-property-payload />
+      active: updateCustomerRecordDto.active,
+
+      BHYTNumber: updateCustomerRecordDto.BHYTNumber,
+
+      CCCDNumber: updateCustomerRecordDto.CCCDNumber,
+
+      DOB: updateCustomerRecordDto.DOB,
+
+      sex: updateCustomerRecordDto.sex,
+
+      fullName: updateCustomerRecordDto.fullName,
+
+      user,
     });
   }
 

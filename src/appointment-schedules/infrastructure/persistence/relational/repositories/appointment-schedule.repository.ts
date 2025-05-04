@@ -7,6 +7,7 @@ import { AppointmentSchedule } from '../../../../domain/appointment-schedule';
 import { AppointmentScheduleRepository } from '../../appointment-schedule.repository';
 import { AppointmentScheduleMapper } from '../mappers/appointment-schedule.mapper';
 import { IPaginationOptions } from '../../../../../utils/types/pagination-options';
+import { Schedule } from '../../../../../schedules/domain/schedule';
 
 @Injectable()
 export class AppointmentScheduleRelationalRepository
@@ -46,6 +47,13 @@ export class AppointmentScheduleRelationalRepository
     });
 
     return entity ? AppointmentScheduleMapper.toDomain(entity) : null;
+  }
+
+  async findBySchedule(schedule: Schedule): Promise<AppointmentSchedule[]> {
+    const entities = await this.appointmentScheduleRepository.find({
+      where: { schedule: { id: schedule.id } },
+    });
+    return entities.map((entity) => AppointmentScheduleMapper.toDomain(entity));
   }
 
   async findByIds(

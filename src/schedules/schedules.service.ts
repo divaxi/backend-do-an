@@ -6,6 +6,7 @@ import {
   Injectable,
   HttpStatus,
   UnprocessableEntityException,
+  BadRequestException,
 } from '@nestjs/common';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
@@ -21,11 +22,39 @@ export class SchedulesService {
     // Dependencies here
     private readonly scheduleRepository: ScheduleRepository,
   ) {}
+  // async create(createScheduleDto: CreateScheduleDto) {
+  //   // Do not remove comment below.
+  //   // <creating-property />
+  //
+  //   const staffObject = await this.staffService.findById(
+  //     createScheduleDto.staff.id,
+  //   );
+  //   if (!staffObject) {
+  //     throw new UnprocessableEntityException({
+  //       status: HttpStatus.UNPROCESSABLE_ENTITY,
+  //       errors: {
+  //         staff: 'notExists',
+  //       },
+  //     });
+  //   }
+  //   const staff = staffObject;
+  //
+  //   return this.scheduleRepository.create({
+  //     // Do not remove comment below.
+  //     // <creating-property-payload />
+  //     note: createScheduleDto.note,
+  //
+  //     active: createScheduleDto.active,
+  //
+  //     endTime: createScheduleDto.endTime,
+  //
+  //     startTime: createScheduleDto.startTime,
+  //
+  //     staff,
+  //   });
+  // }
 
   async create(createScheduleDto: CreateScheduleDto) {
-    // Do not remove comment below.
-    // <creating-property />
-
     const staffObject = await this.staffService.findById(
       createScheduleDto.staff.id,
     );
@@ -37,21 +66,43 @@ export class SchedulesService {
         },
       });
     }
-    const staff = staffObject;
 
-    return this.scheduleRepository.create({
-      // Do not remove comment below.
-      // <creating-property-payload />
-      note: createScheduleDto.note,
+    const start = new Date(
+      new Date(createScheduleDto.startTime).setHours(0, 0, 0, 0),
+    );
+    const end = new Date(
+      new Date(createScheduleDto.endTime).setHours(0, 0, 0, 0),
+    );
 
-      active: createScheduleDto.active,
+    if (end.getTime() <= start.getTime()) {
+      throw new BadRequestException('End time must be after start time.');
+    }
 
-      endTime: createScheduleDto.endTime,
+    if (start.getDay() !== end.getDay()) {
+      throw new BadRequestException(
+        'Start time and end time must be on the same day.',
+      );
+    }
 
-      startTime: createScheduleDto.startTime,
+    const schedules: Omit<Schedule, 'id' | 'createdAt' | 'updatedAt'>[] = [];
+    let currentStart = new Date(start);
 
-      staff,
-    });
+    while (currentStart.getTime() < end.getTime()) {
+      const currentEnd = new Date(currentStart.getTime() + 30 * 60 * 1000);
+
+      if (currentEnd.getTime() > end.getTime()) break;
+      schedules.push({
+        startTime: new Date(currentStart),
+        endTime: new Date(currentEnd),
+        staff: staffObject,
+        note: createScheduleDto.note,
+        active: createScheduleDto.active ?? true,
+      });
+
+      currentStart = currentEnd;
+    }
+
+    return this.scheduleRepository.bulkCreate(schedules);
   }
 
   findAllWithPagination({
@@ -73,6 +124,9 @@ export class SchedulesService {
 
   findByIds(ids: Schedule['id'][]) {
     return this.scheduleRepository.findByIds(ids);
+  }
+  findByDay(day: Date) {
+    return this.scheduleRepository.findByDay(day);
   }
 
   async update(

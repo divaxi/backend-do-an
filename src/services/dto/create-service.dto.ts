@@ -1,5 +1,3 @@
-import { FileDto } from '../../files/dto/file.dto';
-
 import {
   // decorators here
 
@@ -19,17 +17,18 @@ import {
   // decorators here
   Type,
 } from 'class-transformer';
+import { ImageDto } from '../../files/dto/image.dto';
 
 export class CreateServiceDto {
   @ApiProperty({
     required: false,
-    type: () => FileDto,
+    type: () => ImageDto,
   })
   @IsOptional()
   @ValidateNested()
-  @Type(() => FileDto)
+  @Type(() => ImageDto)
   @IsNotEmptyObject()
-  image?: FileDto | null;
+  image?: ImageDto | null;
 
   @ApiProperty({
     required: false,

@@ -1,5 +1,6 @@
 export type AppConfig = {
   nodeEnv: string;
+  domain: string;
   name: string;
   workingDirectory: string;
   frontendDomain?: string;

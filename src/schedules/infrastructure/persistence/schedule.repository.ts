@@ -8,6 +8,10 @@ export abstract class ScheduleRepository {
     data: Omit<Schedule, 'id' | 'createdAt' | 'updatedAt'>,
   ): Promise<Schedule>;
 
+  abstract bulkCreate(
+    data: Omit<Schedule, 'id' | 'createdAt' | 'updatedAt'>[],
+  ): Promise<Schedule[]>;
+
   abstract findAllWithPagination({
     paginationOptions,
   }: {
@@ -17,6 +21,8 @@ export abstract class ScheduleRepository {
   abstract findById(id: Schedule['id']): Promise<NullableType<Schedule>>;
 
   abstract findByIds(ids: Schedule['id'][]): Promise<Schedule[]>;
+
+  abstract findByDay(day: Date): Promise<Schedule[]>;
 
   abstract update(
     id: Schedule['id'],

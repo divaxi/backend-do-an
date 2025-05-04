@@ -28,10 +28,14 @@ export class ServicesService {
     let image: FileType | null | undefined = undefined;
 
     if (createServiceDto.image) {
-      const imageObject = await this.fileService.findById(
-        createServiceDto.image.id,
-      );
-      if (!imageObject) {
+      const { id, path } = createServiceDto.image;
+      if (path && !id) {
+        image = await this.fileService.create({ path });
+      } else if (id) {
+        image = await this.fileService.findById(id);
+      }
+
+      if (!image) {
         throw new UnprocessableEntityException({
           status: HttpStatus.UNPROCESSABLE_ENTITY,
           errors: {
@@ -39,7 +43,6 @@ export class ServicesService {
           },
         });
       }
-      image = imageObject;
     } else if (createServiceDto.image === null) {
       image = null;
     }
@@ -87,7 +90,7 @@ export class ServicesService {
     // <updating-property />
     let image: FileType | null | undefined = undefined;
 
-    if (updateServiceDto.image) {
+    if (updateServiceDto.image?.id) {
       const imageObject = await this.fileService.findById(
         updateServiceDto.image.id,
       );

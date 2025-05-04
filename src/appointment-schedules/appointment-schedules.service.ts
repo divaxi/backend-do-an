@@ -146,6 +146,9 @@ export class AppointmentSchedulesService {
   findByIds(ids: AppointmentSchedule['id'][]) {
     return this.appointmentScheduleRepository.findByIds(ids);
   }
+  findBySchedule(schedule: Schedule) {
+    return this.appointmentScheduleRepository.findBySchedule(schedule);
+  }
 
   async update(
     id: AppointmentSchedule['id'],

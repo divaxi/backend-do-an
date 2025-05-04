@@ -1,3 +1,4 @@
+import { Schedule } from '../../../schedules/domain/schedule';
 import { DeepPartial } from '../../../utils/types/deep-partial.type';
 import { NullableType } from '../../../utils/types/nullable.type';
 import { IPaginationOptions } from '../../../utils/types/pagination-options';
@@ -21,6 +22,8 @@ export abstract class AppointmentScheduleRepository {
   abstract findByIds(
     ids: AppointmentSchedule['id'][],
   ): Promise<AppointmentSchedule[]>;
+
+  abstract findBySchedule(schedule: Schedule): Promise<AppointmentSchedule[]>;
 
   abstract update(
     id: AppointmentSchedule['id'],

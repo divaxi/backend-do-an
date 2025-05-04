@@ -23,6 +23,7 @@ export class ScheduleEntity extends EntityRelationalHelper {
   @Column({
     nullable: false,
     type: Boolean,
+    default: true,
   })
   active?: boolean;
 

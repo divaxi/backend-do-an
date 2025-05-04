@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In } from 'typeorm';
+import { Repository, In, Between } from 'typeorm';
 import { ScheduleEntity } from '../entities/schedule.entity';
 import { NullableType } from '../../../../../utils/types/nullable.type';
 import { Schedule } from '../../../../domain/schedule';
@@ -21,6 +21,14 @@ export class ScheduleRelationalRepository implements ScheduleRepository {
       this.scheduleRepository.create(persistenceModel),
     );
     return ScheduleMapper.toDomain(newEntity);
+  }
+  async bulkCreate(data: Schedule[]): Promise<Schedule[]> {
+    const persistenceModel = data.map((d) => ScheduleMapper.toPersistence(d));
+    const newEntities = await this.scheduleRepository.save(
+      this.scheduleRepository.create(persistenceModel),
+    );
+    console.log('bulkCreate Schdule', newEntities, data);
+    return newEntities.map((entity) => ScheduleMapper.toDomain(entity));
   }
 
   async findAllWithPagination({
@@ -47,6 +55,16 @@ export class ScheduleRelationalRepository implements ScheduleRepository {
   async findByIds(ids: Schedule['id'][]): Promise<Schedule[]> {
     const entities = await this.scheduleRepository.find({
       where: { id: In(ids) },
+    });
+
+    return entities.map((entity) => ScheduleMapper.toDomain(entity));
+  }
+
+  async findByDay(day: Date): Promise<Schedule[]> {
+    const entities = await this.scheduleRepository.find({
+      where: {
+        startTime: Between(day, new Date(day.getTime() + 24 * 60 * 60 * 1000)),
+      },
     });
 
     return entities.map((entity) => ScheduleMapper.toDomain(entity));

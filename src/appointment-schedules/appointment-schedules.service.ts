@@ -87,6 +87,16 @@ export class AppointmentSchedulesService {
             );
             return null;
           }
+          const specific = new Date(scheduleDto.specificTime);
+          const start = new Date(scheduleObject.startTime);
+          const end = new Date(scheduleObject.endTime);
+
+          if (specific < start || specific > end) {
+            this.logger.warn(
+              `Specific time ${specific.toISOString()} is out of range for schedule ${scheduleObject.id} (start: ${start.toISOString()}, end: ${end.toISOString()}). Skipping.`,
+            );
+            return null;
+          }
 
           try {
             return await this.appointmentScheduleRepository.create({

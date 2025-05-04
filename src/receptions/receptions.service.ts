@@ -12,6 +12,13 @@ import { UpdateReceptionDto } from './dto/update-reception.dto';
 import { ReceptionRepository } from './infrastructure/persistence/reception.repository';
 import { IPaginationOptions } from '../utils/types/pagination-options';
 import { Reception } from './domain/reception';
+import { OnEvent } from '@nestjs/event-emitter';
+import { CreateAppointmentDto } from '../appointments/dto/create-appointment.dto';
+
+interface AppointmentCreatedPayload {
+  appointment: Appointment;
+  dto: CreateAppointmentDto;
+}
 
 @Injectable()
 export class ReceptionsService {
@@ -21,6 +28,19 @@ export class ReceptionsService {
     // Dependencies here
     private readonly receptionRepository: ReceptionRepository,
   ) {}
+
+  @OnEvent(`appointment.created`)
+  async handleAppointmentCreated(payload: AppointmentCreatedPayload) {
+    const { appointment } = payload;
+
+    if (!appointment) {
+      return;
+    }
+    await this.receptionRepository.create({
+      Appointment: appointment,
+      status: 'pending',
+    });
+  }
 
   async create(createReceptionDto: CreateReceptionDto) {
     // Do not remove comment below.

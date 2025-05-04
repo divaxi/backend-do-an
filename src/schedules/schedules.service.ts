@@ -68,10 +68,10 @@ export class SchedulesService {
     }
 
     const start = new Date(
-      new Date(createScheduleDto.startTime).setHours(0, 0, 0, 0),
+      new Date(createScheduleDto.startTime).setMinutes(0, 0, 0),
     );
     const end = new Date(
-      new Date(createScheduleDto.endTime).setHours(0, 0, 0, 0),
+      new Date(createScheduleDto.endTime).setMinutes(0, 0, 0),
     );
 
     if (end.getTime() <= start.getTime()) {

@@ -15,13 +15,33 @@ import {
   IsString,
   IsOptional,
   ArrayMinSize,
+  IsNotEmpty,
 } from 'class-validator';
 
 import {
   // decorators here
   ApiProperty,
 } from '@nestjs/swagger';
-import { AppointmentScheduleDto } from '../../appointment-schedules/dto/appointment-schedule.dto';
+
+class ServiceScheduleDto {
+  @ApiProperty({
+    required: true,
+    type: () => String,
+    example: 'serviceId',
+  })
+  @IsNotEmpty()
+  @IsString()
+  serviceId: string;
+
+  @ApiProperty({
+    required: true,
+    type: () => String,
+    example: 'scheduleId',
+  })
+  @IsNotEmpty()
+  @IsString()
+  scheduleId: string;
+}
 
 export class CreateAppointmentDto {
   @ApiProperty({
@@ -52,21 +72,11 @@ export class CreateAppointmentDto {
   status?: string;
 
   @ApiProperty({
-    type: String,
+    type: () => [ServiceScheduleDto],
     isArray: true,
-    example: ['serviceId 1', 'serviceId 2'],
-  })
-  @IsString({ each: true })
-  @ArrayMinSize(1)
-  serviceIds: string[];
-
-  @ApiProperty({
-    type: () => AppointmentScheduleDto,
-    isArray: true,
-    example: [{ id: 'id', specificTime: new Date() }],
   })
   @ArrayMinSize(1)
-  schedules: AppointmentScheduleDto[];
+  serviceAndScheduleIds: ServiceScheduleDto[];
 
   @ApiProperty({
     required: true,

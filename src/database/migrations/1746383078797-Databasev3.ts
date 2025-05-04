@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class Createwholeschema1746250110888 implements MigrationInterface {
-  name = 'Createwholeschema1746250110888';
+export class Databasev31746383078797 implements MigrationInterface {
+  name = 'Databasev31746383078797';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -35,16 +35,16 @@ export class Createwholeschema1746250110888 implements MigrationInterface {
       `CREATE INDEX "IDX_3d2f174ef04fb312fdebd0ddc5" ON "session" ("userId") `,
     );
     await queryRunner.query(
-      `CREATE TABLE "service" ("price" integer, "description" character varying, "serviceName" character varying NOT NULL, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_85a21558c006647cd76fdce044b" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "service" ("price" integer, "description" character varying, "serviceName" character varying NOT NULL, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "imageId" uuid, CONSTRAINT "REL_9c93c2b5cc0f33d32b28e4a51c" UNIQUE ("imageId"), CONSTRAINT "PK_85a21558c006647cd76fdce044b" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "schedule" ("note" character varying, "active" boolean NOT NULL, "endTime" TIMESTAMP NOT NULL, "startTime" TIMESTAMP NOT NULL, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "staffId" uuid NOT NULL, CONSTRAINT "PK_1c05e42aec7371641193e180046" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "schedule" ("note" character varying, "active" boolean NOT NULL DEFAULT true, "endTime" TIMESTAMP NOT NULL, "startTime" TIMESTAMP NOT NULL, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "staffId" uuid NOT NULL, CONSTRAINT "PK_1c05e42aec7371641193e180046" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "customer_record" ("active" boolean NOT NULL, "BHYTNumber" character varying, "CCCDNumber" character varying, "DOB" TIMESTAMP NOT NULL, "sex" character varying NOT NULL, "fullName" character varying NOT NULL, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "userId" integer NOT NULL, CONSTRAINT "PK_c74c60b74a549b8b7bbfc40a041" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "customer_record" ("active" boolean NOT NULL DEFAULT true, "BHYTNumber" character varying, "CCCDNumber" character varying, "DOB" TIMESTAMP NOT NULL, "sex" character varying NOT NULL, "fullName" character varying NOT NULL, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "userId" integer NOT NULL, CONSTRAINT "PK_c74c60b74a549b8b7bbfc40a041" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "appointment" ("active" boolean NOT NULL, "note" character varying, "status" character varying NOT NULL, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "customerRecordId" uuid NOT NULL, CONSTRAINT "PK_e8be1a53027415e709ce8a2db74" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "appointment" ("active" boolean NOT NULL DEFAULT true, "note" character varying, "status" character varying NOT NULL, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "staffId" uuid NOT NULL, "customerRecordId" uuid NOT NULL, CONSTRAINT "PK_e8be1a53027415e709ce8a2db74" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "reception" ("note" character varying, "status" character varying NOT NULL, "checkinTime" TIMESTAMP, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "appointmentId" uuid NOT NULL, CONSTRAINT "REL_0f2ca2d67c1255427aabab5ea2" UNIQUE ("appointmentId"), CONSTRAINT "PK_68005a51f6e37ca7a0e5c305471" PRIMARY KEY ("id"))`,
@@ -53,7 +53,7 @@ export class Createwholeschema1746250110888 implements MigrationInterface {
       `CREATE TABLE "customer" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_a7a13f4cacb744524e44dfdad32" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "appointment_service" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "appointmentId" uuid NOT NULL, "serviceId" uuid NOT NULL, CONSTRAINT "PK_a170b01d5845a629233fb80a51a" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "appointment_service" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "scheduleId" uuid NOT NULL, "serviceId" uuid NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "appointmentId" uuid NOT NULL, CONSTRAINT "REL_7e23f5dcb500335a31bf593f48" UNIQUE ("scheduleId"), CONSTRAINT "PK_a170b01d5845a629233fb80a51a" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `ALTER TABLE "user" ADD CONSTRAINT "FK_58f5c71eaab331645112cf8cfa5" FOREIGN KEY ("avatarId") REFERENCES "file"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
@@ -68,16 +68,25 @@ export class Createwholeschema1746250110888 implements MigrationInterface {
       `ALTER TABLE "session" ADD CONSTRAINT "FK_3d2f174ef04fb312fdebd0ddc53" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
+      `ALTER TABLE "service" ADD CONSTRAINT "FK_9c93c2b5cc0f33d32b28e4a51c8" FOREIGN KEY ("imageId") REFERENCES "file"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
       `ALTER TABLE "schedule" ADD CONSTRAINT "FK_f7ea080dcc6c08d60b48f620180" FOREIGN KEY ("staffId") REFERENCES "staff"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE "customer_record" ADD CONSTRAINT "FK_c6f634e87ae51466537a33e0965" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
+      `ALTER TABLE "appointment" ADD CONSTRAINT "FK_9c1066af3b6cc0f8c54de747b07" FOREIGN KEY ("staffId") REFERENCES "staff"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
       `ALTER TABLE "appointment" ADD CONSTRAINT "FK_e84b6c9d3d9423add390d6b8ee9" FOREIGN KEY ("customerRecordId") REFERENCES "customer_record"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE "reception" ADD CONSTRAINT "FK_0f2ca2d67c1255427aabab5ea2f" FOREIGN KEY ("appointmentId") REFERENCES "appointment"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "appointment_service" ADD CONSTRAINT "FK_7e23f5dcb500335a31bf593f48c" FOREIGN KEY ("scheduleId") REFERENCES "schedule"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE "appointment_service" ADD CONSTRAINT "FK_040c82b23e660475d29615eaac5" FOREIGN KEY ("appointmentId") REFERENCES "appointment"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
@@ -95,16 +104,25 @@ export class Createwholeschema1746250110888 implements MigrationInterface {
       `ALTER TABLE "appointment_service" DROP CONSTRAINT "FK_040c82b23e660475d29615eaac5"`,
     );
     await queryRunner.query(
+      `ALTER TABLE "appointment_service" DROP CONSTRAINT "FK_7e23f5dcb500335a31bf593f48c"`,
+    );
+    await queryRunner.query(
       `ALTER TABLE "reception" DROP CONSTRAINT "FK_0f2ca2d67c1255427aabab5ea2f"`,
     );
     await queryRunner.query(
       `ALTER TABLE "appointment" DROP CONSTRAINT "FK_e84b6c9d3d9423add390d6b8ee9"`,
     );
     await queryRunner.query(
+      `ALTER TABLE "appointment" DROP CONSTRAINT "FK_9c1066af3b6cc0f8c54de747b07"`,
+    );
+    await queryRunner.query(
       `ALTER TABLE "customer_record" DROP CONSTRAINT "FK_c6f634e87ae51466537a33e0965"`,
     );
     await queryRunner.query(
       `ALTER TABLE "schedule" DROP CONSTRAINT "FK_f7ea080dcc6c08d60b48f620180"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "service" DROP CONSTRAINT "FK_9c93c2b5cc0f33d32b28e4a51c8"`,
     );
     await queryRunner.query(
       `ALTER TABLE "session" DROP CONSTRAINT "FK_3d2f174ef04fb312fdebd0ddc53"`,

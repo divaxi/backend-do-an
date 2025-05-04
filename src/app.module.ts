@@ -44,12 +44,9 @@ import { CustomerRecordsModule } from './customer-records/customer-records.modul
 
 import { AppointmentServicesModule } from './appointment-services/appointment-services.module';
 
-import { AppointmentSchedulesModule } from './appointment-schedules/appointment-schedules.module';
-
 @Module({
   imports: [
     EventEmitterModule.forRoot(),
-    AppointmentSchedulesModule,
     AppointmentServicesModule,
     CustomerRecordsModule,
     CustomerRecordsModule,

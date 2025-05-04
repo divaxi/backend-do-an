@@ -1,3 +1,5 @@
+import { SchedulesService } from '../schedules/schedules.service';
+import { Schedule } from '../schedules/domain/schedule';
 import { AppointmentsService } from '../appointments/appointments.service';
 import { ServicesService } from '../services/services.service';
 import { Service } from '../services/domain/service';
@@ -28,6 +30,8 @@ export class AppointmentServicesService {
   private readonly logger = new Logger(AppointmentServicesService.name);
 
   constructor(
+    private readonly scheduleService: SchedulesService,
+
     private readonly serviceService: ServicesService,
 
     // Dependencies here
@@ -43,67 +47,22 @@ export class AppointmentServicesService {
     );
     const { appointment, dto } = payload;
 
-    if (!dto.serviceIds || dto.serviceIds.length === 0) {
+    if (!dto.serviceAndScheduleIds || dto.serviceAndScheduleIds.length === 0) {
       this.logger.log(
-        `No service IDs provided for appointment ID: ${appointment.id}. Skipping service relation creation.`,
+        `No service or schedule IDs provided for appointment ID: ${appointment.id}. Skipping service relation creation.`,
       );
       return;
     }
 
-    try {
-      const serviceIds = dto.serviceIds;
-
-      const serviceObjects = await this.serviceService.findByIds(serviceIds);
-
-      if (serviceObjects.length !== serviceIds.length) {
-        this.logger.error(
-          `Some service IDs do not exist for appointment ID: ${appointment.id}. Provided IDs: ${serviceIds.join(', ')}`,
-        );
-        const validServiceMap = new Map(serviceObjects.map((s) => [s.id, s]));
-        const validServiceIds = serviceIds.filter((id) =>
-          validServiceMap.has(id),
-        );
-
-        if (validServiceIds.length === 0) {
-          this.logger.error(
-            `No valid services found for appointment ID: ${appointment.id}. Aborting service relation creation.`,
-          );
-          return;
-        }
-        this.logger.warn(
-          `Proceeding with only valid service IDs for appointment ID: ${appointment.id}: ${validServiceIds.join(', ')}`,
-        );
-      }
-
-      const serviceCreationPromises = serviceObjects.map(
-        async (serviceObject) => {
-          try {
-            return await this.appointmentServiceRepository.create({
-              appointment: appointment,
-              service: serviceObject,
-            });
-          } catch (error) {
-            this.logger.error(
-              `Failed to create appointment service relation for appointment ${appointment.id} and service ${serviceObject.id}`,
-              error.stack,
-            );
-            return null;
-          }
-        },
-      );
-
-      const results = await Promise.all(serviceCreationPromises);
-      const createdCount = results.filter((r) => r !== null).length;
-
-      this.logger.log(
-        `Successfully created ${createdCount} appointment service relations for appointment ID: ${appointment.id}`,
-      );
-    } catch (error) {
-      this.logger.error(
-        `Failed to handle appointment.created event (service relations) for appointment ID: ${payload.appointment.id}`,
-        error.stack,
-      );
-    }
+    await Promise.all(
+      dto.serviceAndScheduleIds.map((item) =>
+        this.appointmentServiceRepository.create({
+          scheduleId: item.scheduleId,
+          appointment,
+          serviceId: item.serviceId,
+        }),
+      ),
+    );
   }
 
   findAllWithPagination({
@@ -134,6 +93,23 @@ export class AppointmentServicesService {
   ) {
     // Do not remove comment below.
     // <updating-property />
+    let schedule: Schedule | undefined = undefined;
+
+    if (updateAppointmentServiceDto.schedule) {
+      const scheduleObject = await this.scheduleService.findById(
+        updateAppointmentServiceDto.schedule.id,
+      );
+      if (!scheduleObject) {
+        throw new UnprocessableEntityException({
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          errors: {
+            schedule: 'notExists',
+          },
+        });
+      }
+      schedule = scheduleObject;
+    }
+
     let appointment: Appointment | undefined = undefined;
 
     if (updateAppointmentServiceDto.appointment) {
@@ -171,9 +147,11 @@ export class AppointmentServicesService {
     return this.appointmentServiceRepository.update(id, {
       // Do not remove comment below.
       // <updating-property-payload />
-      appointment,
+      scheduleId: schedule?.id,
 
-      service,
+      appointment: appointment,
+
+      serviceId: service?.id,
     });
   }
 

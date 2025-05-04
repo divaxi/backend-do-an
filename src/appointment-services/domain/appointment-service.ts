@@ -1,8 +1,13 @@
 import { Appointment } from '../../appointments/domain/appointment';
-import { Service } from '../../services/domain/service';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AppointmentService {
+  @ApiProperty({
+    type: () => String,
+    nullable: false,
+  })
+  scheduleId: string;
+
   @ApiProperty({
     type: () => Appointment,
     nullable: false,
@@ -10,10 +15,10 @@ export class AppointmentService {
   appointment: Appointment;
 
   @ApiProperty({
-    type: () => Service,
+    type: () => String,
     nullable: false,
   })
-  service: Service;
+  serviceId: string;
 
   @ApiProperty({
     type: String,

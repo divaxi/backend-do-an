@@ -20,6 +20,8 @@ export abstract class CustomerRecordRepository {
 
   abstract findByIds(ids: CustomerRecord['id'][]): Promise<CustomerRecord[]>;
 
+  abstract findByUser(userId: number): Promise<CustomerRecord[]>;
+
   abstract update(
     id: CustomerRecord['id'],
     payload: DeepPartial<CustomerRecord>,

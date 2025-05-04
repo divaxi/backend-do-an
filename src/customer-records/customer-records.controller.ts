@@ -28,6 +28,7 @@ import {
 } from '../utils/dto/infinity-pagination-response.dto';
 import { infinityPagination } from '../utils/infinity-pagination';
 import { FindAllCustomerRecordsDto } from './dto/find-all-customer-records.dto';
+import { FindByUserDto } from './dto/find-by-user.dto';
 
 @ApiTags('Customerrecords')
 @ApiBearerAuth()
@@ -43,7 +44,7 @@ export class CustomerRecordsController {
 
   @Post()
   @ApiCreatedResponse({
-    type: CustomerRecord,
+    type: () => CustomerRecord,
   })
   create(@Body() createCustomerRecordDto: CreateCustomerRecordDto, @Req() req) {
     const userId = req.user.id;
@@ -74,6 +75,15 @@ export class CustomerRecordsController {
     );
   }
 
+  @Get()
+  @ApiOkResponse({
+    type: () => [CustomerRecord],
+  })
+  async findByUser(@Query() query: FindByUserDto): Promise<CustomerRecord[]> {
+    const userId = query.userId;
+    return await this.customerRecordsService.findByUser(userId);
+  }
+
   @Get(':id')
   @ApiParam({
     name: 'id',
@@ -81,7 +91,7 @@ export class CustomerRecordsController {
     required: true,
   })
   @ApiOkResponse({
-    type: CustomerRecord,
+    type: () => CustomerRecord,
   })
   findById(@Param('id') id: string) {
     return this.customerRecordsService.findById(id);
@@ -94,7 +104,7 @@ export class CustomerRecordsController {
     required: true,
   })
   @ApiOkResponse({
-    type: CustomerRecord,
+    type: () => CustomerRecord,
   })
   update(
     @Param('id') id: string,

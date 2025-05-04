@@ -15,13 +15,13 @@ import { UpdateAppointmentScheduleDto } from './dto/update-appointment-schedule.
 import { AppointmentScheduleRepository } from './infrastructure/persistence/appointment-schedule.repository';
 import { IPaginationOptions } from '../utils/types/pagination-options';
 import { AppointmentSchedule } from './domain/appointment-schedule';
-import { OnEvent } from '@nestjs/event-emitter';
-import { CreateAppointmentDto } from '../appointments/dto/create-appointment.dto';
+// import { OnEvent } from '@nestjs/event-emitter';
+// import { CreateAppointmentDto } from '../appointments/dto/create-appointment.dto';
 
-interface AppointmentCreatedPayload {
-  appointment: Appointment;
-  dto: CreateAppointmentDto;
-}
+// interface AppointmentCreatedPayload {
+//   appointment: Appointment;
+//   dto: CreateAppointmentDto;
+// }
 
 @Injectable()
 export class AppointmentSchedulesService {
@@ -33,98 +33,98 @@ export class AppointmentSchedulesService {
     private readonly appointmentScheduleRepository: AppointmentScheduleRepository,
   ) {}
 
-  @OnEvent('appointment.created')
-  async handleAppointmentCreated(payload: AppointmentCreatedPayload) {
-    this.logger.log(
-      `Handling appointment.created event for appointment ID: ${payload.appointment.id}`,
-    );
-    const { appointment, dto } = payload;
-
-    if (!dto.schedules || dto.schedules.length === 0) {
-      this.logger.log(
-        `No schedules provided for appointment ID: ${appointment.id}. Skipping schedule creation.`,
-      );
-      return;
-    }
-
-    try {
-      const scheduleIds = dto.schedules.map((s) => s.id);
-
-      const scheduleObjects = await this.scheduleService.findByIds(scheduleIds);
-
-      if (scheduleObjects.length !== scheduleIds.length) {
-        this.logger.error(
-          `Some schedule IDs do not exist for appointment ID: ${appointment.id}. Provided IDs: ${scheduleIds.join(', ')}`,
-        );
-        const validScheduleMap = new Map(scheduleObjects.map((s) => [s.id, s]));
-        const validSchedulesData = dto.schedules.filter((sDto) =>
-          validScheduleMap.has(sDto.id),
-        );
-
-        if (validSchedulesData.length === 0) {
-          this.logger.error(
-            `No valid schedules found for appointment ID: ${appointment.id}. Aborting schedule creation.`,
-          );
-          return;
-        }
-        this.logger.warn(
-          `Proceeding with only valid schedules for appointment ID: ${appointment.id}`,
-        );
-      }
-
-      const scheduleCreationPromises = dto.schedules
-        .filter((scheduleDto) =>
-          scheduleObjects.some((s) => s.id === scheduleDto.id),
-        )
-        .map(async (scheduleDto) => {
-          const scheduleObject = scheduleObjects.find(
-            (s) => s.id === scheduleDto.id,
-          );
-
-          if (!scheduleObject) {
-            this.logger.warn(
-              `Schedule object with ID ${scheduleDto.id} unexpectedly not found during creation for appointment ${appointment.id}. Skipping.`,
-            );
-            return null;
-          }
-          const specific = new Date(scheduleDto.specificTime);
-          const start = new Date(scheduleObject.startTime);
-          const end = new Date(scheduleObject.endTime);
-
-          if (specific < start || specific > end) {
-            this.logger.warn(
-              `Specific time ${specific.toISOString()} is out of range for schedule ${scheduleObject.id} (start: ${start.toISOString()}, end: ${end.toISOString()}). Skipping.`,
-            );
-            return null;
-          }
-
-          try {
-            return await this.appointmentScheduleRepository.create({
-              appointment: appointment,
-              schedule: scheduleObject,
-              specificTime: scheduleDto.specificTime,
-            });
-          } catch (error) {
-            this.logger.error(
-              `Failed to create appointment schedule for appointment ${appointment.id} and schedule ${scheduleObject.id}`,
-              error.stack,
-            );
-            return null;
-          }
-        });
-
-      const results = await Promise.all(scheduleCreationPromises);
-      const createdCount = results.filter((r) => r !== null).length;
-      this.logger.log(
-        `Successfully created ${createdCount} appointment schedules for appointment ID: ${appointment.id}`,
-      );
-    } catch (error) {
-      this.logger.error(
-        `Failed to handle appointment.created event for appointment ID: ${payload.appointment.id}`,
-        error.stack,
-      );
-    }
-  }
+  // @OnEvent('appointment.created')
+  // async handleAppointmentCreated(payload: AppointmentCreatedPayload) {
+  //   this.logger.log(
+  //     `Handling appointment.created event for appointment ID: ${payload.appointment.id}`,
+  //   );
+  //   const { appointment, dto } = payload;
+  //
+  //   if (!dto.schedules || dto.schedules.length === 0) {
+  //     this.logger.log(
+  //       `No schedules provided for appointment ID: ${appointment.id}. Skipping schedule creation.`,
+  //     );
+  //     return;
+  //   }
+  //
+  //   try {
+  //     const scheduleIds = dto.schedules.map((s) => s.id);
+  //
+  //     const scheduleObjects = await this.scheduleService.findByIds(scheduleIds);
+  //
+  //     if (scheduleObjects.length !== scheduleIds.length) {
+  //       this.logger.error(
+  //         `Some schedule IDs do not exist for appointment ID: ${appointment.id}. Provided IDs: ${scheduleIds.join(', ')}`,
+  //       );
+  //       const validScheduleMap = new Map(scheduleObjects.map((s) => [s.id, s]));
+  //       const validSchedulesData = dto.schedules.filter((sDto) =>
+  //         validScheduleMap.has(sDto.id),
+  //       );
+  //
+  //       if (validSchedulesData.length === 0) {
+  //         this.logger.error(
+  //           `No valid schedules found for appointment ID: ${appointment.id}. Aborting schedule creation.`,
+  //         );
+  //         return;
+  //       }
+  //       this.logger.warn(
+  //         `Proceeding with only valid schedules for appointment ID: ${appointment.id}`,
+  //       );
+  //     }
+  //
+  //     const scheduleCreationPromises = dto.schedules
+  //       .filter((scheduleDto) =>
+  //         scheduleObjects.some((s) => s.id === scheduleDto.id),
+  //       )
+  //       .map(async (scheduleDto) => {
+  //         const scheduleObject = scheduleObjects.find(
+  //           (s) => s.id === scheduleDto.id,
+  //         );
+  //
+  //         if (!scheduleObject) {
+  //           this.logger.warn(
+  //             `Schedule object with ID ${scheduleDto.id} unexpectedly not found during creation for appointment ${appointment.id}. Skipping.`,
+  //           );
+  //           return null;
+  //         }
+  //         const specific = new Date(scheduleDto.specificTime);
+  //         const start = new Date(scheduleObject.startTime);
+  //         const end = new Date(scheduleObject.endTime);
+  //
+  //         if (specific < start || specific > end) {
+  //           this.logger.warn(
+  //             `Specific time ${specific.toISOString()} is out of range for schedule ${scheduleObject.id} (start: ${start.toISOString()}, end: ${end.toISOString()}). Skipping.`,
+  //           );
+  //           return null;
+  //         }
+  //
+  //         try {
+  //           return await this.appointmentScheduleRepository.create({
+  //             appointment: appointment,
+  //             schedule: scheduleObject,
+  //             specificTime: scheduleDto.specificTime,
+  //           });
+  //         } catch (error) {
+  //           this.logger.error(
+  //             `Failed to create appointment schedule for appointment ${appointment.id} and schedule ${scheduleObject.id}`,
+  //             error.stack,
+  //           );
+  //           return null;
+  //         }
+  //       });
+  //
+  //     const results = await Promise.all(scheduleCreationPromises);
+  //     const createdCount = results.filter((r) => r !== null).length;
+  //     this.logger.log(
+  //       `Successfully created ${createdCount} appointment schedules for appointment ID: ${appointment.id}`,
+  //     );
+  //   } catch (error) {
+  //     this.logger.error(
+  //       `Failed to handle appointment.created event for appointment ID: ${payload.appointment.id}`,
+  //       error.stack,
+  //     );
+  //   }
+  // }
 
   findAllWithPagination({
     paginationOptions,

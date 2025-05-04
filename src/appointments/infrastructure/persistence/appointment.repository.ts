@@ -18,6 +18,14 @@ export abstract class AppointmentRepository {
 
   abstract findByIds(ids: Appointment['id'][]): Promise<Appointment[]>;
 
+  abstract findAllWithPaginationByStaff({
+    staffId,
+    paginationOptions,
+  }: {
+    staffId: string;
+    paginationOptions: IPaginationOptions;
+  }): Promise<Appointment[]>;
+
   abstract update(
     id: Appointment['id'],
     payload: DeepPartial<Appointment>,

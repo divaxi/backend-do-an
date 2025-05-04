@@ -1,4 +1,5 @@
 import { Appointment } from '../../../../domain/appointment';
+import { StaffMapper } from '../../../../../staffs/infrastructure/persistence/relational/mappers/staff.mapper';
 
 import { CustomerRecordMapper } from '../../../../../customer-records/infrastructure/persistence/relational/mappers/customer-record.mapper';
 
@@ -7,6 +8,10 @@ import { AppointmentEntity } from '../entities/appointment.entity';
 export class AppointmentMapper {
   static toDomain(raw: AppointmentEntity): Appointment {
     const domainEntity = new Appointment();
+    if (raw.staff) {
+      domainEntity.staff = StaffMapper.toDomain(raw.staff);
+    }
+
     domainEntity.active = raw.active;
 
     domainEntity.note = raw.note;
@@ -28,6 +33,10 @@ export class AppointmentMapper {
 
   static toPersistence(domainEntity: Appointment): AppointmentEntity {
     const persistenceEntity = new AppointmentEntity();
+    if (domainEntity.staff) {
+      persistenceEntity.staff = StaffMapper.toPersistence(domainEntity.staff);
+    }
+
     persistenceEntity.active = domainEntity.active;
 
     persistenceEntity.note = domainEntity.note;

@@ -27,6 +27,7 @@ import {
 } from '../utils/dto/infinity-pagination-response.dto';
 import { infinityPagination } from '../utils/infinity-pagination';
 import { FindAllAppointmentsDto } from './dto/find-all-appointments.dto';
+import { FindAllAppointmentsByStaffDto } from './dto/find-by-staff.dto';
 
 @ApiTags('Appointments')
 @ApiBearerAuth()
@@ -61,6 +62,32 @@ export class AppointmentsController {
 
     return infinityPagination(
       await this.appointmentsService.findAllWithPagination({
+        paginationOptions: {
+          page,
+          limit,
+        },
+      }),
+      { page, limit },
+    );
+  }
+
+  @Get()
+  @ApiOkResponse({
+    type: InfinityPaginationResponse(Appointment),
+  })
+  async findByStaff(
+    @Query() query: FindAllAppointmentsByStaffDto,
+  ): Promise<InfinityPaginationResponseDto<Appointment>> {
+    const staffId = query.staffId;
+    const page = query?.page ?? 1;
+    let limit = query?.limit ?? 10;
+    if (limit > 50) {
+      limit = 50;
+    }
+
+    return infinityPagination(
+      await this.appointmentsService.findAllWithPaginationByStaff({
+        staffId: staffId,
         paginationOptions: {
           page,
           limit,

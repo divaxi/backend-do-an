@@ -1,3 +1,5 @@
+import { StaffEntity } from '../../../../../staffs/infrastructure/persistence/relational/entities/staff.entity';
+
 import { CustomerRecordEntity } from '../../../../../customer-records/infrastructure/persistence/relational/entities/customer-record.entity';
 
 import {
@@ -14,6 +16,9 @@ import { EntityRelationalHelper } from '../../../../../utils/relational-entity-h
   name: 'appointment',
 })
 export class AppointmentEntity extends EntityRelationalHelper {
+  @ManyToOne(() => StaffEntity, { eager: true, nullable: false })
+  staff: StaffEntity;
+
   @Column({
     nullable: false,
     type: Boolean,

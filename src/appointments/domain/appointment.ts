@@ -1,7 +1,14 @@
+import { Staff } from '../../staffs/domain/staff';
 import { CustomerRecord } from '../../customer-records/domain/customer-record';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class Appointment {
+  @ApiProperty({
+    type: () => Staff,
+    nullable: false,
+  })
+  staff: Staff;
+
   @ApiProperty({
     type: () => Boolean,
     nullable: false,

@@ -118,6 +118,10 @@ export class SchedulesService {
     });
   }
 
+  findByStaff(staffId: string) {
+    return this.scheduleRepository.findByStaff(staffId);
+  }
+
   findById(id: Schedule['id']) {
     return this.scheduleRepository.findById(id);
   }

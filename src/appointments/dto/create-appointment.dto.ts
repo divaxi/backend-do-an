@@ -1,3 +1,5 @@
+import { StaffDto } from '../../staffs/dto/staff.dto';
+
 import { CustomerRecordDto } from '../../customer-records/dto/customer-record.dto';
 
 import {
@@ -22,6 +24,15 @@ import {
 import { AppointmentScheduleDto } from '../../appointment-schedules/dto/appointment-schedule.dto';
 
 export class CreateAppointmentDto {
+  @ApiProperty({
+    required: true,
+    type: () => StaffDto,
+  })
+  @ValidateNested()
+  @Type(() => StaffDto)
+  @IsNotEmptyObject()
+  staff: StaffDto;
+
   active?: boolean;
 
   @ApiProperty({

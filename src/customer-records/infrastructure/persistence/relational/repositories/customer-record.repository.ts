@@ -56,6 +56,13 @@ export class CustomerRecordRelationalRepository
     return entities.map((entity) => CustomerRecordMapper.toDomain(entity));
   }
 
+  async findByUser(userId: number): Promise<CustomerRecord[]> {
+    const entities = await this.customerRecordRepository.find({
+      where: { user: { id: userId } },
+    });
+    return entities.map((entity) => CustomerRecordMapper.toDomain(entity));
+  }
+
   async update(
     id: CustomerRecord['id'],
     payload: Partial<CustomerRecord>,

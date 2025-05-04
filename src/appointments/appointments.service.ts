@@ -1,5 +1,5 @@
+import { StaffsService } from '../staffs/staffs.service';
 import { CustomerRecordsService } from '../customer-records/customer-records.service';
-import { CustomerRecord } from '../customer-records/domain/customer-record';
 
 import {
   // common
@@ -17,6 +17,8 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 @Injectable()
 export class AppointmentsService {
   constructor(
+    private readonly staffService: StaffsService,
+
     private readonly customerRecordService: CustomerRecordsService,
     private readonly appointmentRepository: AppointmentRepository,
     private readonly eventEmitter: EventEmitter2,
@@ -36,12 +38,23 @@ export class AppointmentsService {
         },
       });
     }
-
+    const staffObject = await this.staffService.findById(
+      createAppointmentDto.staff.id,
+    );
+    if (!staffObject) {
+      throw new UnprocessableEntityException({
+        status: HttpStatus.UNPROCESSABLE_ENTITY,
+        errors: {
+          customerRecord: 'notExists',
+        },
+      });
+    }
     const appointmentObject = await this.appointmentRepository.create({
       active: createAppointmentDto.active,
       note: createAppointmentDto.note,
       status: createAppointmentDto.status,
       customerRecord: customerRecordObject,
+      staff: staffObject,
     });
 
     this.eventEmitter.emit('appointment.created', {
@@ -73,28 +86,27 @@ export class AppointmentsService {
     return this.appointmentRepository.findByIds(ids);
   }
 
+  findAllWithPaginationByStaff({
+    staffId,
+    paginationOptions,
+  }: {
+    staffId: string;
+    paginationOptions: IPaginationOptions;
+  }) {
+    return this.appointmentRepository.findAllWithPaginationByStaff({
+      staffId,
+      paginationOptions: {
+        page: paginationOptions.page,
+        limit: paginationOptions.limit,
+      },
+    });
+  }
+
   async update(
     id: Appointment['id'],
 
     updateAppointmentDto: UpdateAppointmentDto,
   ) {
-    let customerRecord: CustomerRecord | undefined = undefined;
-
-    if (updateAppointmentDto.customerRecord) {
-      const customerRecordObject = await this.customerRecordService.findById(
-        updateAppointmentDto.customerRecord.id,
-      );
-      if (!customerRecordObject) {
-        throw new UnprocessableEntityException({
-          status: HttpStatus.UNPROCESSABLE_ENTITY,
-          errors: {
-            customerRecord: 'notExists',
-          },
-        });
-      }
-      customerRecord = customerRecordObject;
-    }
-
     return this.appointmentRepository.update(id, {
       active: updateAppointmentDto.active,
 
@@ -102,7 +114,8 @@ export class AppointmentsService {
 
       status: updateAppointmentDto.status,
 
-      customerRecord,
+      // customerRecord,
+      // staff,
     });
   }
 

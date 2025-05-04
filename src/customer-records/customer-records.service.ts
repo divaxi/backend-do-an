@@ -80,6 +80,9 @@ export class CustomerRecordsService {
   findByIds(ids: CustomerRecord['id'][]) {
     return this.customerRecordRepository.findByIds(ids);
   }
+  findByUser(userId: number) {
+    return this.customerRecordRepository.findByUser(userId);
+  }
 
   async update(
     id: CustomerRecord['id'],

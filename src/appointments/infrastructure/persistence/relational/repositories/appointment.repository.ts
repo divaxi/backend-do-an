@@ -52,6 +52,22 @@ export class AppointmentRelationalRepository implements AppointmentRepository {
     return entities.map((entity) => AppointmentMapper.toDomain(entity));
   }
 
+  async findAllWithPaginationByStaff({
+    staffId,
+    paginationOptions,
+  }: {
+    staffId: string;
+    paginationOptions: IPaginationOptions;
+  }): Promise<Appointment[]> {
+    const entities = await this.appointmentRepository.find({
+      where: { staff: { id: staffId } },
+      skip: (paginationOptions.page - 1) * paginationOptions.limit,
+      take: paginationOptions.limit,
+    });
+
+    return entities.map((entity) => AppointmentMapper.toDomain(entity));
+  }
+
   async update(
     id: Appointment['id'],
     payload: Partial<Appointment>,

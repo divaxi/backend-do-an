@@ -80,6 +80,22 @@ export class AppointmentsController {
     );
   }
 
+  @Get('countCustomer')
+  @ApiOkResponse({
+    type: AppointmentSatisticDto,
+  })
+  countByCustomer(@Query() query: TimeRangeDto) {
+    return this.appointmentsService.countByCustomer(query);
+  }
+
+  @Get('count')
+  @ApiOkResponse({
+    type: AppointmentSatisticDto,
+  })
+  count(@Query() query: TimeRangeDto) {
+    return this.appointmentsService.count(query);
+  }
+
   @Get(':id')
   @ApiParam({
     name: 'id',
@@ -91,14 +107,6 @@ export class AppointmentsController {
   })
   findById(@Param('id') id: string) {
     return this.appointmentsService.findById(id);
-  }
-
-  @Get('count')
-  @ApiOkResponse({
-    type: AppointmentSatisticDto,
-  })
-  count(@Query() query: TimeRangeDto) {
-    return this.appointmentsService.count(query);
   }
 
   @Patch(':id')

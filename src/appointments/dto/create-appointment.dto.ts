@@ -80,7 +80,7 @@ export class CreateAppointmentDto {
   status?: string;
 
   @ApiProperty({
-    type: () => [ServiceScheduleDto],
+    type: () => ServiceScheduleDto,
     isArray: true,
   })
   @ArrayMinSize(1)

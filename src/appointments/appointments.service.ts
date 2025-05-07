@@ -85,6 +85,10 @@ export class AppointmentsService {
     return this.appointmentRepository.count(timeRange);
   }
 
+  countByCustomer(timeRange: TimeRangeDto) {
+    return this.appointmentRepository.countByCustomer(timeRange);
+  }
+
   async update(
     id: Appointment['id'],
 

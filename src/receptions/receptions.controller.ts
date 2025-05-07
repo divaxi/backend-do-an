@@ -83,7 +83,7 @@ export class ReceptionsController {
     return this.receptionsService.findById(id);
   }
 
-  @Get(':appointmentId')
+  @Get('appointment/:appointmentId')
   @ApiParam({
     name: 'appointmentId',
     type: String,

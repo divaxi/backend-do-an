@@ -83,13 +83,14 @@ export class SchedulesController {
     return this.schedulesService.findById(id);
   }
 
-  @Get(':staffId')
+  @Get('staff/:staffId')
   @ApiParam({
     name: 'staffId',
     type: String,
     required: true,
   })
   @ApiOkResponse({
+    isArray: true,
     type: Schedule,
   })
   findByStaff(@Param('staffId') staffId: string) {

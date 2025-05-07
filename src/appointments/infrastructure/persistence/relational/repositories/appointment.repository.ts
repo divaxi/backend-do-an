@@ -79,6 +79,22 @@ export class AppointmentRelationalRepository implements AppointmentRepository {
     return { count };
   }
 
+  async countByCustomer(
+    timeRange: TimeRangeDto,
+  ): Promise<AppointmentSatisticDto> {
+    const count = await this.appointmentRepository
+      .createQueryBuilder('appointment')
+      .leftJoin('appointment.customerRecord', 'customerRecord')
+      .where('appointment.specificTime BETWEEN :start AND :end', {
+        start: timeRange.startTime,
+        end: timeRange.endTime,
+      })
+      .select('COUNT(DISTINCT customerRecord.id)', 'count')
+      .getRawOne();
+
+    return { count: parseInt(count.count, 10) };
+  }
+
   async update(
     id: Appointment['id'],
     payload: Partial<Appointment>,

@@ -25,6 +25,10 @@ export abstract class AppointmentRepository {
 
   abstract count(timeRange: TimeRangeDto): Promise<AppointmentSatisticDto>;
 
+  abstract countByCustomer(
+    timeRange: TimeRangeDto,
+  ): Promise<AppointmentSatisticDto>;
+
   abstract update(
     id: Appointment['id'],
     payload: DeepPartial<Appointment>,

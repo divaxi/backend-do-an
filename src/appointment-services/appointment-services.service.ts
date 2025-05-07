@@ -15,6 +15,7 @@ import { IPaginationOptions } from '../utils/types/pagination-options';
 import { AppointmentService } from './domain/appointment-service';
 import { OnEvent } from '@nestjs/event-emitter';
 import { CreateAppointmentDto } from '../appointments/dto/create-appointment.dto';
+import { SchedulesService } from '../schedules/schedules.service';
 
 interface AppointmentCreatedPayload {
   appointment: Appointment;
@@ -30,6 +31,8 @@ export class AppointmentServicesService {
 
     private readonly appointmentServiceRepository: AppointmentServiceRepository,
     private readonly appointmentService: AppointmentsService,
+
+    private readonly scheduleService: SchedulesService,
   ) {}
 
   @OnEvent('appointment.created')
@@ -45,7 +48,14 @@ export class AppointmentServicesService {
       );
       return;
     }
-
+    console.log(dto);
+    await Promise.all(
+      dto.serviceAndScheduleIds.map((item) =>
+        this.scheduleService.update(item.scheduleId, {
+          active: false,
+        }),
+      ),
+    );
     await Promise.all(
       dto.serviceAndScheduleIds.map((item) =>
         this.appointmentServiceRepository.create({
@@ -83,37 +93,39 @@ export class AppointmentServicesService {
     return this.appointmentServiceRepository.findByStaff(staffId);
   }
 
-  async findAppointmentByStaff(staffId: string) {
-    let appointmentService: AppointmentService[] | undefined = undefined;
-    if (staffId) {
-      const appointmentServiceObjects =
-        await this.appointmentServiceRepository.findByStaff(staffId);
-      if (
-        !appointmentServiceObjects ||
-        appointmentServiceObjects.length === 0
-      ) {
-        throw new UnprocessableEntityException({
-          status: HttpStatus.UNPROCESSABLE_ENTITY,
-          errors: {
-            appointmentService: 'notExists',
-          },
-        });
-      }
-      appointmentService = appointmentServiceObjects;
-    }
-    const appointmentIds = appointmentService?.map(
-      (appointmentService) => appointmentService.appointment.id,
-    );
-    if (!appointmentIds || appointmentIds.length === 0) {
-      throw new UnprocessableEntityException({
-        status: HttpStatus.UNPROCESSABLE_ENTITY,
-        errors: {
-          appointment: 'notExists',
-        },
-      });
-    }
-    return this.appointmentService.findByIds(appointmentIds);
-  }
+  // async findAppointmentByStaff(staffId: string) {
+  //   const appointmentService: AppointmentService[] | undefined = undefined;
+  //   if (staffId) {
+  //     const appointmentServiceObjects =
+  //       await this.appointmentServiceRepository.findByStaff(staffId);
+  //     if (
+  //       !appointmentServiceObjects ||
+  //       appointmentServiceObjects.length === 0
+  //     ) {
+  //       throw new UnprocessableEntityException({
+  //         status: HttpStatus.UNPROCESSABLE_ENTITY,
+  //         errors: {
+  //           appointmentService: 'notExists',
+  //         },
+  //       });
+  //     }
+  //     return await this.appointmentServiceRepository.findByStaff(staffId);
+  //   }
+  //
+  //   return appointmentService;
+  //   // const appointmentIds = appointmentService?.map(
+  //   //   (appointmentService) => appointmentService.appointment.id,
+  //   // );
+  //   // if (!appointmentIds || appointmentIds.length === 0) {
+  //   //   throw new UnprocessableEntityException({
+  //   //     status: HttpStatus.UNPROCESSABLE_ENTITY,
+  //   //     errors: {
+  //   //       appointment: 'notExists',
+  //   //     },
+  //   //   });
+  //   // }
+  //   // return this.appointmentService.findByIds(appointmentIds);
+  // }
 
   async update(
     id: AppointmentService['id'],

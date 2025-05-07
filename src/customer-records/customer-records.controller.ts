@@ -74,14 +74,15 @@ export class CustomerRecordsController {
     );
   }
 
-  @Get(':userId')
+  @Get('user/:userId')
   @ApiParam({
     name: 'userId',
     type: Number,
     required: true,
   })
   @ApiOkResponse({
-    type: () => [CustomerRecord],
+    isArray: true,
+    type: () => CustomerRecord,
   })
   async findByUser(@Param('userId') userId: number): Promise<CustomerRecord[]> {
     return await this.customerRecordsService.findByUser(userId);

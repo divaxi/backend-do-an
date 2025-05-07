@@ -13,6 +13,8 @@ import { UpdateScheduleDto } from './dto/update-schedule.dto';
 import { ScheduleRepository } from './infrastructure/persistence/schedule.repository';
 import { IPaginationOptions } from '../utils/types/pagination-options';
 import { Schedule } from './domain/schedule';
+import { convertToVietnamTimezone } from '../utils/transformers/to-timezone';
+import { isBefore, isSameDay } from 'date-fns';
 
 @Injectable()
 export class SchedulesService {
@@ -67,18 +69,14 @@ export class SchedulesService {
       });
     }
 
-    const start = new Date(
-      new Date(createScheduleDto.startTime).setMinutes(0, 0, 0),
-    );
-    const end = new Date(
-      new Date(createScheduleDto.endTime).setMinutes(0, 0, 0),
-    );
+    const start = convertToVietnamTimezone(createScheduleDto.startTime);
+    const end = convertToVietnamTimezone(createScheduleDto.endTime);
 
-    if (end.getTime() <= start.getTime()) {
+    if (isBefore(end, start)) {
       throw new BadRequestException('End time must be after start time.');
     }
-
-    if (start.getDay() !== end.getDay()) {
+    console.log(start, end);
+    if (!isSameDay(start, end)) {
       throw new BadRequestException(
         'Start time and end time must be on the same day.',
       );

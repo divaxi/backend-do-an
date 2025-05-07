@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In } from 'typeorm';
+import { Repository, In, Between } from 'typeorm';
 import { AppointmentEntity } from '../entities/appointment.entity';
 import { NullableType } from '../../../../../utils/types/nullable.type';
 import { Appointment } from '../../../../domain/appointment';
 import { AppointmentRepository } from '../../appointment.repository';
 import { AppointmentMapper } from '../mappers/appointment.mapper';
 import { IPaginationOptions } from '../../../../../utils/types/pagination-options';
+import { FindAllAppointmentsDto } from '../../../../dto/find-all-appointments.dto';
+import { AppointmentSatisticDto } from '../../../../dto/satistic.dto';
+import { TimeRangeDto } from '../../../../dto/time-range.dto';
 
 @Injectable()
 export class AppointmentRelationalRepository implements AppointmentRepository {
@@ -24,11 +27,28 @@ export class AppointmentRelationalRepository implements AppointmentRepository {
   }
 
   async findAllWithPagination({
+    queryOptions,
     paginationOptions,
   }: {
+    queryOptions: Omit<FindAllAppointmentsDto, 'page' | 'limit'>;
     paginationOptions: IPaginationOptions;
   }): Promise<Appointment[]> {
+    const where: any = {};
+
+    if (queryOptions.startTime && queryOptions.endTime) {
+      where.specificTime = Between(
+        queryOptions.startTime,
+        queryOptions.endTime,
+      );
+    }
+
+    if (queryOptions.status) {
+      where.status = queryOptions.status;
+    }
+
     const entities = await this.appointmentRepository.find({
+      where,
+      order: { specificTime: 'DESC' },
       skip: (paginationOptions.page - 1) * paginationOptions.limit,
       take: paginationOptions.limit,
     });
@@ -52,20 +72,11 @@ export class AppointmentRelationalRepository implements AppointmentRepository {
     return entities.map((entity) => AppointmentMapper.toDomain(entity));
   }
 
-  async findAllWithPaginationByStaff({
-    staffId,
-    paginationOptions,
-  }: {
-    staffId: string;
-    paginationOptions: IPaginationOptions;
-  }): Promise<Appointment[]> {
-    const entities = await this.appointmentRepository.find({
-      where: { staff: { id: staffId } },
-      skip: (paginationOptions.page - 1) * paginationOptions.limit,
-      take: paginationOptions.limit,
+  async count(timeRange: TimeRangeDto): Promise<AppointmentSatisticDto> {
+    const count = await this.appointmentRepository.count({
+      where: { specificTime: Between(timeRange.startTime, timeRange.endTime) },
     });
-
-    return entities.map((entity) => AppointmentMapper.toDomain(entity));
+    return { count };
   }
 
   async update(

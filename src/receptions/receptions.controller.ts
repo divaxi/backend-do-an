@@ -83,6 +83,19 @@ export class ReceptionsController {
     return this.receptionsService.findById(id);
   }
 
+  @Get(':appointmentId')
+  @ApiParam({
+    name: 'appointmentId',
+    type: String,
+    required: true,
+  })
+  @ApiOkResponse({
+    type: Reception,
+  })
+  findByAppointment(@Param('appointmentId') appointmentId: string) {
+    return this.receptionsService.findByAppointment(appointmentId);
+  }
+
   @Patch(':id')
   @ApiParam({
     name: 'id',

@@ -1,3 +1,4 @@
+import { StaffsModule } from '../staffs/staffs.module';
 import { SchedulesModule } from '../schedules/schedules.module';
 import { AppointmentsModule } from '../appointments/appointments.module';
 import { ServicesModule } from '../services/services.module';
@@ -11,6 +12,8 @@ import { RelationalAppointmentServicePersistenceModule } from './infrastructure/
 
 @Module({
   imports: [
+    StaffsModule,
+
     SchedulesModule,
 
     AppointmentsModule,

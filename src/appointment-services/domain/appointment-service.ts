@@ -21,6 +21,12 @@ export class AppointmentService {
   serviceId: string;
 
   @ApiProperty({
+    type: () => String,
+    nullable: false,
+  })
+  staffId: string;
+
+  @ApiProperty({
     type: String,
   })
   id: string;

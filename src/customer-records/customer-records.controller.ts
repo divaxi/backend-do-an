@@ -28,7 +28,6 @@ import {
 } from '../utils/dto/infinity-pagination-response.dto';
 import { infinityPagination } from '../utils/infinity-pagination';
 import { FindAllCustomerRecordsDto } from './dto/find-all-customer-records.dto';
-import { FindByUserDto } from './dto/find-by-user.dto';
 
 @ApiTags('Customerrecords')
 @ApiBearerAuth()
@@ -75,12 +74,16 @@ export class CustomerRecordsController {
     );
   }
 
-  @Get()
+  @Get(':userId')
+  @ApiParam({
+    name: 'userId',
+    type: Number,
+    required: true,
+  })
   @ApiOkResponse({
     type: () => [CustomerRecord],
   })
-  async findByUser(@Query() query: FindByUserDto): Promise<CustomerRecord[]> {
-    const userId = query.userId;
+  async findByUser(@Param('userId') userId: number): Promise<CustomerRecord[]> {
     return await this.customerRecordsService.findByUser(userId);
   }
 

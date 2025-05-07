@@ -58,6 +58,13 @@ export class AppointmentServiceRelationalRepository
     return entities.map((entity) => AppointmentServiceMapper.toDomain(entity));
   }
 
+  async findByStaff(staffId: string): Promise<AppointmentService[]> {
+    const entities = await this.appointmentServiceRepository.find({
+      where: { staffId: staffId },
+    });
+    return entities.map((entity) => AppointmentServiceMapper.toDomain(entity));
+  }
+
   async update(
     id: AppointmentService['id'],
     payload: Partial<AppointmentService>,

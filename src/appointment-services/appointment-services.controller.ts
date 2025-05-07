@@ -85,6 +85,19 @@ export class AppointmentServicesController {
     return this.appointmentServicesService.findById(id);
   }
 
+  @Get(':staffId')
+  @ApiParam({
+    name: 'staffId',
+    type: String,
+    required: true,
+  })
+  @ApiOkResponse({
+    type: AppointmentService,
+  })
+  findAppointmentByStaff(@Param('staffId') staffId: string) {
+    return this.appointmentServicesService.findAppointmentByStaff(staffId);
+  }
+
   @Patch(':id')
   @ApiParam({
     name: 'id',

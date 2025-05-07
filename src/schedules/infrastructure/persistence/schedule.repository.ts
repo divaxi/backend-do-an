@@ -24,7 +24,7 @@ export abstract class ScheduleRepository {
 
   abstract findByDay(day: Date): Promise<Schedule[]>;
 
-  abstract findByStaff(staffId: string): Promise<Schedule[]>;
+  abstract findByStaff(staffId: string, day?: Date): Promise<Schedule[]>;
 
   abstract update(
     id: Schedule['id'],

@@ -27,7 +27,8 @@ import {
 } from '../utils/dto/infinity-pagination-response.dto';
 import { infinityPagination } from '../utils/infinity-pagination';
 import { FindAllAppointmentsDto } from './dto/find-all-appointments.dto';
-import { FindAllAppointmentsByStaffDto } from './dto/find-by-staff.dto';
+import { AppointmentSatisticDto } from './dto/satistic.dto';
+import { TimeRangeDto } from './dto/time-range.dto';
 
 @ApiTags('Appointments')
 @ApiBearerAuth()
@@ -54,6 +55,9 @@ export class AppointmentsController {
   async findAll(
     @Query() query: FindAllAppointmentsDto,
   ): Promise<InfinityPaginationResponseDto<Appointment>> {
+    const startTime = query?.startTime;
+    const endTime = query?.endTime;
+    const status = query?.status;
     const page = query?.page ?? 1;
     let limit = query?.limit ?? 10;
     if (limit > 50) {
@@ -62,32 +66,11 @@ export class AppointmentsController {
 
     return infinityPagination(
       await this.appointmentsService.findAllWithPagination({
-        paginationOptions: {
-          page,
-          limit,
+        queryOptions: {
+          startTime,
+          endTime,
+          status,
         },
-      }),
-      { page, limit },
-    );
-  }
-
-  @Get()
-  @ApiOkResponse({
-    type: InfinityPaginationResponse(Appointment),
-  })
-  async findByStaff(
-    @Query() query: FindAllAppointmentsByStaffDto,
-  ): Promise<InfinityPaginationResponseDto<Appointment>> {
-    const staffId = query.staffId;
-    const page = query?.page ?? 1;
-    let limit = query?.limit ?? 10;
-    if (limit > 50) {
-      limit = 50;
-    }
-
-    return infinityPagination(
-      await this.appointmentsService.findAllWithPaginationByStaff({
-        staffId: staffId,
         paginationOptions: {
           page,
           limit,
@@ -108,6 +91,14 @@ export class AppointmentsController {
   })
   findById(@Param('id') id: string) {
     return this.appointmentsService.findById(id);
+  }
+
+  @Get('count')
+  @ApiOkResponse({
+    type: AppointmentSatisticDto,
+  })
+  count(@Query() query: TimeRangeDto) {
+    return this.appointmentsService.count(query);
   }
 
   @Patch(':id')

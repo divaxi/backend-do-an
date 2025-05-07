@@ -52,6 +52,16 @@ export class ReceptionRelationalRepository implements ReceptionRepository {
     return entities.map((entity) => ReceptionMapper.toDomain(entity));
   }
 
+  async findByAppointment(
+    appointmentId: string,
+  ): Promise<NullableType<Reception>> {
+    const entity = await this.receptionRepository.findOne({
+      where: { Appointment: { id: appointmentId } },
+    });
+
+    return entity ? ReceptionMapper.toDomain(entity) : null;
+  }
+
   async update(
     id: Reception['id'],
     payload: Partial<Reception>,

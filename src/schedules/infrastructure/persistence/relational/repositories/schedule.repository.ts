@@ -70,9 +70,19 @@ export class ScheduleRelationalRepository implements ScheduleRepository {
     return entities.map((entity) => ScheduleMapper.toDomain(entity));
   }
 
-  async findByStaff(staffId: string): Promise<Schedule[]> {
+  async findByStaff(staffId: string, day?: Date): Promise<Schedule[]> {
+    const where: any = {};
+    where.staff = { id: staffId };
+
+    if (day) {
+      where.startTime = Between(
+        day,
+        new Date(day.getTime() + 24 * 60 * 60 * 1000),
+      );
+    }
     const entities = await this.scheduleRepository.find({
-      where: { staff: { id: staffId } },
+      where,
+      order: { startTime: 'DESC' },
     });
 
     return entities.map((entity) => ScheduleMapper.toDomain(entity));

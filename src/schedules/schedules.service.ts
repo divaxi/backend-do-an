@@ -119,7 +119,8 @@ export class SchedulesService {
   }
 
   findByStaff(staffId: string) {
-    return this.scheduleRepository.findByStaff(staffId);
+    const today = new Date().setHours(0, 0, 0, 0);
+    return this.scheduleRepository.findByStaff(staffId, new Date(today));
   }
 
   findById(id: Schedule['id']) {

@@ -1,3 +1,5 @@
+import { StaffDto } from '../../staffs/dto/staff.dto';
+
 import { ScheduleDto } from '../../schedules/dto/schedule.dto';
 
 import { AppointmentDto } from '../../appointments/dto/appointment.dto';
@@ -22,6 +24,15 @@ import {
 } from '@nestjs/swagger';
 
 export class CreateAppointmentServiceDto {
+  @ApiProperty({
+    required: true,
+    type: () => StaffDto,
+  })
+  @ValidateNested()
+  @Type(() => StaffDto)
+  @IsNotEmptyObject()
+  staff: StaffDto;
+
   @ApiProperty({
     required: true,
     type: () => ScheduleDto,

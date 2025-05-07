@@ -30,8 +30,6 @@ const infrastructureDatabaseModule = TypeOrmModule.forRootAsync({
 
 import { AppointmentsModule } from './appointments/appointments.module';
 
-import { CustomersModule } from './customers/customers.module';
-
 import { StaffsModule } from './staffs/staffs.module';
 
 import { ReceptionsModule } from './receptions/receptions.module';
@@ -54,7 +52,6 @@ import { AppointmentServicesModule } from './appointment-services/appointment-se
     SchedulesModule,
     ReceptionsModule,
     StaffsModule,
-    CustomersModule,
     AppointmentsModule,
     ConfigModule.forRoot({
       isGlobal: true,

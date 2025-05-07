@@ -18,6 +18,10 @@ export abstract class ReceptionRepository {
 
   abstract findByIds(ids: Reception['id'][]): Promise<Reception[]>;
 
+  abstract findByAppointment(
+    appointmentId: string,
+  ): Promise<NullableType<Reception>>;
+
   abstract update(
     id: Reception['id'],
     payload: DeepPartial<Reception>,

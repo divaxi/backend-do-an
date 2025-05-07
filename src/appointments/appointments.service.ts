@@ -1,4 +1,3 @@
-import { StaffsService } from '../staffs/staffs.service';
 import { CustomerRecordsService } from '../customer-records/customer-records.service';
 
 import {
@@ -13,12 +12,12 @@ import { AppointmentRepository } from './infrastructure/persistence/appointment.
 import { IPaginationOptions } from '../utils/types/pagination-options';
 import { Appointment } from './domain/appointment';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { FindAllAppointmentsDto } from './dto/find-all-appointments.dto';
+import { TimeRangeDto } from './dto/time-range.dto';
 
 @Injectable()
 export class AppointmentsService {
   constructor(
-    private readonly staffService: StaffsService,
-
     private readonly customerRecordService: CustomerRecordsService,
     private readonly appointmentRepository: AppointmentRepository,
     private readonly eventEmitter: EventEmitter2,
@@ -38,23 +37,12 @@ export class AppointmentsService {
         },
       });
     }
-    const staffObject = await this.staffService.findById(
-      createAppointmentDto.staff.id,
-    );
-    if (!staffObject) {
-      throw new UnprocessableEntityException({
-        status: HttpStatus.UNPROCESSABLE_ENTITY,
-        errors: {
-          customerRecord: 'notExists',
-        },
-      });
-    }
     const appointmentObject = await this.appointmentRepository.create({
       active: createAppointmentDto.active,
       note: createAppointmentDto.note,
       status: createAppointmentDto.status,
       customerRecord: customerRecordObject,
-      staff: staffObject,
+      specificTime: createAppointmentDto.specificTime,
     });
 
     this.eventEmitter.emit('appointment.created', {
@@ -66,11 +54,18 @@ export class AppointmentsService {
   }
 
   findAllWithPagination({
+    queryOptions,
     paginationOptions,
   }: {
     paginationOptions: IPaginationOptions;
+    queryOptions: Omit<FindAllAppointmentsDto, 'page' | 'limit'>;
   }) {
     return this.appointmentRepository.findAllWithPagination({
+      queryOptions: {
+        startTime: queryOptions.startTime,
+        endTime: queryOptions.endTime,
+        status: queryOptions.status,
+      },
       paginationOptions: {
         page: paginationOptions.page,
         limit: paginationOptions.limit,
@@ -86,20 +81,8 @@ export class AppointmentsService {
     return this.appointmentRepository.findByIds(ids);
   }
 
-  findAllWithPaginationByStaff({
-    staffId,
-    paginationOptions,
-  }: {
-    staffId: string;
-    paginationOptions: IPaginationOptions;
-  }) {
-    return this.appointmentRepository.findAllWithPaginationByStaff({
-      staffId,
-      paginationOptions: {
-        page: paginationOptions.page,
-        limit: paginationOptions.limit,
-      },
-    });
+  count(timeRange: TimeRangeDto) {
+    return this.appointmentRepository.count(timeRange);
   }
 
   async update(

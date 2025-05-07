@@ -22,6 +22,8 @@ export abstract class AppointmentServiceRepository {
     ids: AppointmentService['id'][],
   ): Promise<AppointmentService[]>;
 
+  abstract findByStaff(staffId: string): Promise<AppointmentService[]>;
+
   abstract update(
     id: AppointmentService['id'],
     payload: DeepPartial<AppointmentService>,

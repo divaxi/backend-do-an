@@ -93,6 +93,10 @@ export class ReceptionsService {
     return this.receptionRepository.findByIds(ids);
   }
 
+  findByAppointment(appointmentId) {
+    return this.receptionRepository.findByAppointment(appointmentId);
+  }
+
   async update(
     id: Reception['id'],
 

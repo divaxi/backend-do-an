@@ -7,6 +7,7 @@ import { AppointmentServiceEntity } from '../entities/appointment-service.entity
 export class AppointmentServiceMapper {
   static toDomain(raw: AppointmentServiceEntity): AppointmentService {
     const domainEntity = new AppointmentService();
+
     if (raw.scheduleId) {
       domainEntity.scheduleId = raw.scheduleId;
     }
@@ -17,6 +18,10 @@ export class AppointmentServiceMapper {
 
     if (raw.serviceId) {
       domainEntity.serviceId = raw.serviceId;
+    }
+
+    if (raw.staffId) {
+      domainEntity.staffId = raw.staffId;
     }
 
     domainEntity.id = raw.id;
@@ -35,6 +40,10 @@ export class AppointmentServiceMapper {
       persistenceEntity.appointment = AppointmentMapper.toPersistence(
         domainEntity.appointment,
       );
+    }
+
+    if (domainEntity.staffId) {
+      persistenceEntity.staffId = domainEntity.staffId;
     }
 
     if (domainEntity.serviceId) {

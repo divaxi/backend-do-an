@@ -1,10 +1,9 @@
-import { StaffDto } from '../../staffs/dto/staff.dto';
-
 import { CustomerRecordDto } from '../../customer-records/dto/customer-record.dto';
 
 import {
   // decorators here
   Type,
+  Transform,
 } from 'class-transformer';
 
 import {
@@ -16,6 +15,7 @@ import {
   IsOptional,
   ArrayMinSize,
   IsNotEmpty,
+  IsDate,
 } from 'class-validator';
 
 import {
@@ -41,17 +41,25 @@ class ServiceScheduleDto {
   @IsNotEmpty()
   @IsString()
   scheduleId: string;
+
+  @ApiProperty({
+    required: true,
+    type: () => String,
+    example: 'staffId',
+  })
+  @IsNotEmpty()
+  @IsString()
+  staffId: string;
 }
 
 export class CreateAppointmentDto {
   @ApiProperty({
     required: true,
-    type: () => StaffDto,
+    type: () => Date,
   })
-  @ValidateNested()
-  @Type(() => StaffDto)
-  @IsNotEmptyObject()
-  staff: StaffDto;
+  @Transform(({ value }) => new Date(value))
+  @IsDate()
+  specificTime: Date;
 
   active?: boolean;
 

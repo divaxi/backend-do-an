@@ -1,3 +1,5 @@
+import { StaffEntity } from '../../../../../staffs/infrastructure/persistence/relational/entities/staff.entity';
+
 import { ScheduleEntity } from '../../../../../schedules/infrastructure/persistence/relational/entities/schedule.entity';
 
 import { AppointmentEntity } from '../../../../../appointments/infrastructure/persistence/relational/entities/appointment.entity';
@@ -25,6 +27,13 @@ export class AppointmentServiceEntity extends EntityRelationalHelper {
 
   @Column()
   scheduleId: string;
+
+  @Column()
+  staffId: string;
+
+  @ManyToOne(() => StaffEntity, { eager: false, nullable: false })
+  @JoinColumn({ name: 'staffId' })
+  staff: StaffEntity;
 
   @OneToOne(() => ScheduleEntity, { eager: false, nullable: false })
   @JoinColumn({ name: 'scheduleId' })

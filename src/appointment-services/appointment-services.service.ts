@@ -1,8 +1,4 @@
-import { SchedulesService } from '../schedules/schedules.service';
-import { Schedule } from '../schedules/domain/schedule';
 import { AppointmentsService } from '../appointments/appointments.service';
-import { ServicesService } from '../services/services.service';
-import { Service } from '../services/domain/service';
 import { Appointment } from '../appointments/domain/appointment';
 
 import {
@@ -30,10 +26,6 @@ export class AppointmentServicesService {
   private readonly logger = new Logger(AppointmentServicesService.name);
 
   constructor(
-    private readonly scheduleService: SchedulesService,
-
-    private readonly serviceService: ServicesService,
-
     // Dependencies here
 
     private readonly appointmentServiceRepository: AppointmentServiceRepository,
@@ -60,6 +52,7 @@ export class AppointmentServicesService {
           scheduleId: item.scheduleId,
           appointment,
           serviceId: item.serviceId,
+          staffId: item.staffId,
         }),
       ),
     );
@@ -86,6 +79,42 @@ export class AppointmentServicesService {
     return this.appointmentServiceRepository.findByIds(ids);
   }
 
+  findByStaff(staffId: string) {
+    return this.appointmentServiceRepository.findByStaff(staffId);
+  }
+
+  async findAppointmentByStaff(staffId: string) {
+    let appointmentService: AppointmentService[] | undefined = undefined;
+    if (staffId) {
+      const appointmentServiceObjects =
+        await this.appointmentServiceRepository.findByStaff(staffId);
+      if (
+        !appointmentServiceObjects ||
+        appointmentServiceObjects.length === 0
+      ) {
+        throw new UnprocessableEntityException({
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          errors: {
+            appointmentService: 'notExists',
+          },
+        });
+      }
+      appointmentService = appointmentServiceObjects;
+    }
+    const appointmentIds = appointmentService?.map(
+      (appointmentService) => appointmentService.appointment.id,
+    );
+    if (!appointmentIds || appointmentIds.length === 0) {
+      throw new UnprocessableEntityException({
+        status: HttpStatus.UNPROCESSABLE_ENTITY,
+        errors: {
+          appointment: 'notExists',
+        },
+      });
+    }
+    return this.appointmentService.findByIds(appointmentIds);
+  }
+
   async update(
     id: AppointmentService['id'],
 
@@ -93,22 +122,6 @@ export class AppointmentServicesService {
   ) {
     // Do not remove comment below.
     // <updating-property />
-    let schedule: Schedule | undefined = undefined;
-
-    if (updateAppointmentServiceDto.schedule) {
-      const scheduleObject = await this.scheduleService.findById(
-        updateAppointmentServiceDto.schedule.id,
-      );
-      if (!scheduleObject) {
-        throw new UnprocessableEntityException({
-          status: HttpStatus.UNPROCESSABLE_ENTITY,
-          errors: {
-            schedule: 'notExists',
-          },
-        });
-      }
-      schedule = scheduleObject;
-    }
 
     let appointment: Appointment | undefined = undefined;
 
@@ -127,31 +140,15 @@ export class AppointmentServicesService {
       appointment = appointmentObject;
     }
 
-    let service: Service | undefined = undefined;
-
-    if (updateAppointmentServiceDto.service) {
-      const serviceObject = await this.serviceService.findById(
-        updateAppointmentServiceDto.service.id,
-      );
-      if (!serviceObject) {
-        throw new UnprocessableEntityException({
-          status: HttpStatus.UNPROCESSABLE_ENTITY,
-          errors: {
-            service: 'notExists',
-          },
-        });
-      }
-      service = serviceObject;
-    }
-
     return this.appointmentServiceRepository.update(id, {
       // Do not remove comment below.
       // <updating-property-payload />
-      scheduleId: schedule?.id,
+
+      scheduleId: updateAppointmentServiceDto.schedule?.id,
 
       appointment: appointment,
 
-      serviceId: service?.id,
+      serviceId: updateAppointmentServiceDto.service?.id,
     });
   }
 

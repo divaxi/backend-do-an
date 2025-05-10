@@ -14,6 +14,7 @@ import { IPaginationOptions } from '../utils/types/pagination-options';
 import { Reception } from './domain/reception';
 import { OnEvent } from '@nestjs/event-emitter';
 import { CreateAppointmentDto } from '../appointments/dto/create-appointment.dto';
+import { StatusEnum } from './status.enum';
 
 interface AppointmentCreatedPayload {
   appointment: Appointment;
@@ -38,7 +39,7 @@ export class ReceptionsService {
     }
     await this.receptionRepository.create({
       Appointment: appointment,
-      status: 'pending',
+      status: StatusEnum.notCheckin,
     });
   }
 
@@ -64,7 +65,7 @@ export class ReceptionsService {
       // <creating-property-payload />
       note: createReceptionDto.note,
 
-      status: createReceptionDto.status,
+      status: StatusEnum.notCheckin,
 
       checkinTime: createReceptionDto.checkinTime,
 
@@ -127,9 +128,9 @@ export class ReceptionsService {
       // <updating-property-payload />
       note: updateReceptionDto.note,
 
-      status: updateReceptionDto.status,
-
       checkinTime: updateReceptionDto.checkinTime,
+
+      status: updateReceptionDto.status,
 
       Appointment,
     });

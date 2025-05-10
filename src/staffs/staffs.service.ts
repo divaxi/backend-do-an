@@ -9,6 +9,7 @@ import { IPaginationOptions } from '../utils/types/pagination-options';
 import { Staff } from './domain/staff';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/domain/user';
+import { RoleEnum } from '../roles/roles.enum';
 @Injectable()
 export class StaffsService {
   constructor(
@@ -20,7 +21,9 @@ export class StaffsService {
   async create(createStaffDto: CreateStaffDto, userId: User['id']) {
     // Do not remove comment below.
     // <creating-property />
-    const user = await this.usersService.findById(userId);
+    const user = await this.usersService.update(userId, {
+      role: { id: RoleEnum.staff },
+    });
     return this.staffRepository.create({
       // Do not remove comment below.
       // <creating-property-payload />

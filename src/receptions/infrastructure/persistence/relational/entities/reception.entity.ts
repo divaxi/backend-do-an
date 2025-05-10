@@ -10,6 +10,7 @@ import {
   Column,
 } from 'typeorm';
 import { EntityRelationalHelper } from '../../../../../utils/relational-entity-helper';
+import { StatusEnum } from '../../../../status.enum';
 
 @Entity({
   name: 'reception',
@@ -23,9 +24,10 @@ export class ReceptionEntity extends EntityRelationalHelper {
 
   @Column({
     nullable: false,
-    type: String,
+    type: 'enum',
+    enum: StatusEnum,
   })
-  status: string;
+  status: StatusEnum;
 
   @Column({
     nullable: true,

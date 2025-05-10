@@ -72,14 +72,6 @@ export class CreateAppointmentDto {
   note?: string | null;
 
   @ApiProperty({
-    required: false,
-    type: () => String,
-  })
-  @IsOptional()
-  @IsString()
-  status?: string;
-
-  @ApiProperty({
     type: () => ServiceScheduleDto,
     isArray: true,
   })

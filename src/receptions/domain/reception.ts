@@ -1,5 +1,7 @@
 import { Appointment } from '../../appointments/domain/appointment';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum, IsNotEmpty } from 'class-validator';
+import { StatusEnum } from '../status.enum';
 
 export class Reception {
   @ApiProperty({
@@ -9,10 +11,14 @@ export class Reception {
   note?: string | null;
 
   @ApiProperty({
-    type: () => String,
-    nullable: false,
+    enum: StatusEnum,
+    enumName: 'StatusEnum',
+    description: 'Status of the appointment (1 = notCheckin, 2 = checkin)',
+    example: 1,
   })
-  status: string;
+  @IsNotEmpty()
+  @IsEnum(StatusEnum)
+  status: StatusEnum;
 
   @ApiProperty({
     type: () => Date,

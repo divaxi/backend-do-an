@@ -31,13 +31,6 @@ export class CreateReceptionDto {
   note?: string | null;
 
   @ApiProperty({
-    required: true,
-    type: () => String,
-  })
-  @IsString()
-  status: string;
-
-  @ApiProperty({
     required: false,
     type: () => Date,
   })

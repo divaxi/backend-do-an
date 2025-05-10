@@ -29,6 +29,7 @@ import { SessionService } from '../session/session.service';
 // import { StatusEnum } from '../statuses/statuses.enum';
 import { User } from '../users/domain/user';
 import { AuthZaloLoginDto } from './dto/auth-zalo-login.dto';
+import { RoleEnum } from '../roles/roles.enum';
 
 @Injectable()
 export class AuthService {
@@ -54,6 +55,7 @@ export class AuthService {
         zaloId: loginDto.zaloAccessToken,
         userName: 'Gustav',
         phoneNumber: loginDto.zaloAccessToken,
+        role: { id: RoleEnum.user },
       });
     }
     const hash = crypto

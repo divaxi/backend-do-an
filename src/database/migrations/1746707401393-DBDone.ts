@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class DbV311746462192614 implements MigrationInterface {
-  name = 'DbV3.11746462192614';
+export class DBDone1746707401393 implements MigrationInterface {
+  name = 'DBDone1746707401393';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -26,13 +26,13 @@ export class DbV311746462192614 implements MigrationInterface {
       `CREATE TABLE "status" ("id" integer NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_e12743a7086ec826733f54e1d95" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
+      `CREATE TABLE "staff" ("note" character varying, "specialization" character varying, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "userId" integer, CONSTRAINT "REL_eba76c23bcfc9dad2479b7fd2a" UNIQUE ("userId"), CONSTRAINT "PK_e4ee98bb552756c180aec1e854a" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
       `CREATE TABLE "session" ("id" SERIAL NOT NULL, "hash" character varying NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "userId" integer, CONSTRAINT "PK_f55da76ac1c3ac420f444d2ff11" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE INDEX "IDX_3d2f174ef04fb312fdebd0ddc5" ON "session" ("userId") `,
-    );
-    await queryRunner.query(
-      `CREATE TABLE "staff" ("note" character varying, "specialization" character varying, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "userId" integer, CONSTRAINT "REL_eba76c23bcfc9dad2479b7fd2a" UNIQUE ("userId"), CONSTRAINT "PK_e4ee98bb552756c180aec1e854a" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "service" ("price" integer, "description" character varying, "serviceName" character varying NOT NULL, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "imageId" uuid, CONSTRAINT "REL_9c93c2b5cc0f33d32b28e4a51c" UNIQUE ("imageId"), CONSTRAINT "PK_85a21558c006647cd76fdce044b" PRIMARY KEY ("id"))`,
@@ -44,10 +44,16 @@ export class DbV311746462192614 implements MigrationInterface {
       `CREATE TABLE "customer_record" ("active" boolean NOT NULL DEFAULT true, "BHYTNumber" character varying, "CCCDNumber" character varying, "DOB" TIMESTAMP NOT NULL, "sex" character varying NOT NULL, "fullName" character varying NOT NULL, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "userId" integer NOT NULL, CONSTRAINT "PK_c74c60b74a549b8b7bbfc40a041" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "appointment" ("active" boolean NOT NULL DEFAULT true, "note" character varying, "status" character varying NOT NULL, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "customerRecordId" uuid NOT NULL, CONSTRAINT "PK_e8be1a53027415e709ce8a2db74" PRIMARY KEY ("id"))`,
+      `CREATE TYPE "public"."appointment_status_enum" AS ENUM('1', '2', '3')`,
     );
     await queryRunner.query(
-      `CREATE TABLE "reception" ("note" character varying, "status" character varying NOT NULL, "checkinTime" TIMESTAMP, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "appointmentId" uuid NOT NULL, CONSTRAINT "REL_0f2ca2d67c1255427aabab5ea2" UNIQUE ("appointmentId"), CONSTRAINT "PK_68005a51f6e37ca7a0e5c305471" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "appointment" ("specificTime" TIMESTAMP NOT NULL, "active" boolean NOT NULL DEFAULT true, "note" character varying, "status" "public"."appointment_status_enum" NOT NULL, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "customerRecordId" uuid NOT NULL, CONSTRAINT "PK_e8be1a53027415e709ce8a2db74" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE TYPE "public"."reception_status_enum" AS ENUM('1', '2')`,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "reception" ("note" character varying, "status" "public"."reception_status_enum" NOT NULL, "checkinTime" TIMESTAMP, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "appointmentId" uuid NOT NULL, CONSTRAINT "REL_0f2ca2d67c1255427aabab5ea2" UNIQUE ("appointmentId"), CONSTRAINT "PK_68005a51f6e37ca7a0e5c305471" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "appointment_service" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "scheduleId" uuid NOT NULL, "staffId" uuid NOT NULL, "serviceId" uuid NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "appointmentId" uuid NOT NULL, CONSTRAINT "UQ_7e23f5dcb500335a31bf593f48c" UNIQUE ("scheduleId"), CONSTRAINT "REL_7e23f5dcb500335a31bf593f48" UNIQUE ("scheduleId"), CONSTRAINT "PK_a170b01d5845a629233fb80a51a" PRIMARY KEY ("id"))`,
@@ -59,10 +65,10 @@ export class DbV311746462192614 implements MigrationInterface {
       `ALTER TABLE "user" ADD CONSTRAINT "FK_c28e52f758e7bbc53828db92194" FOREIGN KEY ("roleId") REFERENCES "role"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "session" ADD CONSTRAINT "FK_3d2f174ef04fb312fdebd0ddc53" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "staff" ADD CONSTRAINT "FK_eba76c23bcfc9dad2479b7fd2ad" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "staff" ADD CONSTRAINT "FK_eba76c23bcfc9dad2479b7fd2ad" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "session" ADD CONSTRAINT "FK_3d2f174ef04fb312fdebd0ddc53" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE "service" ADD CONSTRAINT "FK_9c93c2b5cc0f33d32b28e4a51c8" FOREIGN KEY ("imageId") REFERENCES "file"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
@@ -122,10 +128,10 @@ export class DbV311746462192614 implements MigrationInterface {
       `ALTER TABLE "service" DROP CONSTRAINT "FK_9c93c2b5cc0f33d32b28e4a51c8"`,
     );
     await queryRunner.query(
-      `ALTER TABLE "staff" DROP CONSTRAINT "FK_eba76c23bcfc9dad2479b7fd2ad"`,
+      `ALTER TABLE "session" DROP CONSTRAINT "FK_3d2f174ef04fb312fdebd0ddc53"`,
     );
     await queryRunner.query(
-      `ALTER TABLE "session" DROP CONSTRAINT "FK_3d2f174ef04fb312fdebd0ddc53"`,
+      `ALTER TABLE "staff" DROP CONSTRAINT "FK_eba76c23bcfc9dad2479b7fd2ad"`,
     );
     await queryRunner.query(
       `ALTER TABLE "user" DROP CONSTRAINT "FK_c28e52f758e7bbc53828db92194"`,
@@ -135,15 +141,17 @@ export class DbV311746462192614 implements MigrationInterface {
     );
     await queryRunner.query(`DROP TABLE "appointment_service"`);
     await queryRunner.query(`DROP TABLE "reception"`);
+    await queryRunner.query(`DROP TYPE "public"."reception_status_enum"`);
     await queryRunner.query(`DROP TABLE "appointment"`);
+    await queryRunner.query(`DROP TYPE "public"."appointment_status_enum"`);
     await queryRunner.query(`DROP TABLE "customer_record"`);
     await queryRunner.query(`DROP TABLE "schedule"`);
     await queryRunner.query(`DROP TABLE "service"`);
-    await queryRunner.query(`DROP TABLE "staff"`);
     await queryRunner.query(
       `DROP INDEX "public"."IDX_3d2f174ef04fb312fdebd0ddc5"`,
     );
     await queryRunner.query(`DROP TABLE "session"`);
+    await queryRunner.query(`DROP TABLE "staff"`);
     await queryRunner.query(`DROP TABLE "status"`);
     await queryRunner.query(
       `DROP INDEX "public"."IDX_f2578043e491921209f5dadd08"`,

@@ -1,5 +1,7 @@
 import { CustomerRecord } from '../../customer-records/domain/customer-record';
 import { ApiProperty } from '@nestjs/swagger';
+import { StatusEnum } from '../status.enum';
+import { IsEnum, IsNotEmpty } from 'class-validator';
 
 export class Appointment {
   @ApiProperty({
@@ -21,10 +23,15 @@ export class Appointment {
   note?: string | null;
 
   @ApiProperty({
-    type: () => String,
-    nullable: false,
+    enum: StatusEnum,
+    enumName: 'StatusEnum',
+    description:
+      'Status of the appointment (1 = pending, 2 = inprogress, 3 = done)',
+    example: 1,
   })
-  status?: string;
+  @IsNotEmpty()
+  @IsEnum(StatusEnum)
+  status: StatusEnum;
 
   @ApiProperty({
     type: () => CustomerRecord,

@@ -14,6 +14,7 @@ import { Appointment } from './domain/appointment';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { FindAllAppointmentsDto } from './dto/find-all-appointments.dto';
 import { TimeRangeDto } from './dto/time-range.dto';
+import { StatusEnum } from './status.enum';
 
 @Injectable()
 export class AppointmentsService {
@@ -40,9 +41,9 @@ export class AppointmentsService {
     const appointmentObject = await this.appointmentRepository.create({
       active: createAppointmentDto.active,
       note: createAppointmentDto.note,
-      status: createAppointmentDto.status,
       customerRecord: customerRecordObject,
       specificTime: createAppointmentDto.specificTime,
+      status: StatusEnum.pending,
     });
 
     this.eventEmitter.emit('appointment.created', {
@@ -100,9 +101,6 @@ export class AppointmentsService {
       note: updateAppointmentDto.note,
 
       status: updateAppointmentDto.status,
-
-      // customerRecord,
-      // staff,
     });
   }
 

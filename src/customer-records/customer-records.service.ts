@@ -22,7 +22,10 @@ export class CustomerRecordsService {
     private readonly usersService: UsersService,
   ) {}
 
-  async create(createCustomerRecordDto: CreateCustomerRecordDto, id: string) {
+  async create(
+    createCustomerRecordDto: CreateCustomerRecordDto,
+    id: User['id'],
+  ) {
     // Do not remove comment below.
     // <creating-property />
 

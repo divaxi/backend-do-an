@@ -42,8 +42,14 @@ import { CustomerRecordsModule } from './customer-records/customer-records.modul
 
 import { AppointmentServicesModule } from './appointment-services/appointment-services.module';
 
+import openAiConfig from './chatbot/config/open-ai.config';
+
+import { MessagesModule } from './messages/messages.module';
+import { ChatbotModule } from './chatbot/chatbot.module';
+
 @Module({
   imports: [
+    MessagesModule,
     EventEmitterModule.forRoot(),
     AppointmentServicesModule,
     CustomerRecordsModule,
@@ -53,6 +59,7 @@ import { AppointmentServicesModule } from './appointment-services/appointment-se
     ReceptionsModule,
     StaffsModule,
     AppointmentsModule,
+    ChatbotModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [
@@ -62,6 +69,7 @@ import { AppointmentServicesModule } from './appointment-services/appointment-se
         mailConfig,
         fileConfig,
         zaloConfig,
+        openAiConfig,
         // facebookConfig,
         // googleConfig,
       ],

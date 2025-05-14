@@ -27,7 +27,6 @@ export class ScheduleRelationalRepository implements ScheduleRepository {
     const newEntities = await this.scheduleRepository.save(
       this.scheduleRepository.create(persistenceModel),
     );
-    console.log('bulkCreate Schdule', newEntities, data);
     return newEntities.map((entity) => ScheduleMapper.toDomain(entity));
   }
 

@@ -9,5 +9,10 @@ Trước khi bắt đầu, hãy chắc chắn rằng bạn đã cài đặt:
 1. Clone repository:
 
    ```bash
-   git clone https://github.com/your-username/your-project.git
-   cd your-project
+   git clone https://github.com/divaxi/backend-do-an.git
+
+
+2. Run:
+
+   ```bash
+   docker compose up -d

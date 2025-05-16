@@ -6,7 +6,7 @@ export class Message {
     type: () => String,
     nullable: true,
   })
-  role?: string | null;
+  role: string;
 
   @ApiProperty({
     type: () => String,

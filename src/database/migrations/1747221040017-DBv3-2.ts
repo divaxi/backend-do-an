@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class DBDone1746707401393 implements MigrationInterface {
-  name = 'DBDone1746707401393';
+export class DBv321747221040017 implements MigrationInterface {
+  name = 'DBv321747221040017';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -56,6 +56,9 @@ export class DBDone1746707401393 implements MigrationInterface {
       `CREATE TABLE "reception" ("note" character varying, "status" "public"."reception_status_enum" NOT NULL, "checkinTime" TIMESTAMP, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "appointmentId" uuid NOT NULL, CONSTRAINT "REL_0f2ca2d67c1255427aabab5ea2" UNIQUE ("appointmentId"), CONSTRAINT "PK_68005a51f6e37ca7a0e5c305471" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
+      `CREATE TABLE "message" ("role" character varying, "content" character varying NOT NULL, "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "userId" integer NOT NULL, CONSTRAINT "PK_ba01f0a3e0123651915008bc578" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
       `CREATE TABLE "appointment_service" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "scheduleId" uuid NOT NULL, "staffId" uuid NOT NULL, "serviceId" uuid NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "appointmentId" uuid NOT NULL, CONSTRAINT "UQ_7e23f5dcb500335a31bf593f48c" UNIQUE ("scheduleId"), CONSTRAINT "REL_7e23f5dcb500335a31bf593f48" UNIQUE ("scheduleId"), CONSTRAINT "PK_a170b01d5845a629233fb80a51a" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
@@ -86,6 +89,9 @@ export class DBDone1746707401393 implements MigrationInterface {
       `ALTER TABLE "reception" ADD CONSTRAINT "FK_0f2ca2d67c1255427aabab5ea2f" FOREIGN KEY ("appointmentId") REFERENCES "appointment"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
+      `ALTER TABLE "message" ADD CONSTRAINT "FK_446251f8ceb2132af01b68eb593" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
       `ALTER TABLE "appointment_service" ADD CONSTRAINT "FK_054035892daa7cd56acc828ff1c" FOREIGN KEY ("staffId") REFERENCES "staff"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
@@ -111,6 +117,9 @@ export class DBDone1746707401393 implements MigrationInterface {
     );
     await queryRunner.query(
       `ALTER TABLE "appointment_service" DROP CONSTRAINT "FK_054035892daa7cd56acc828ff1c"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "message" DROP CONSTRAINT "FK_446251f8ceb2132af01b68eb593"`,
     );
     await queryRunner.query(
       `ALTER TABLE "reception" DROP CONSTRAINT "FK_0f2ca2d67c1255427aabab5ea2f"`,
@@ -140,6 +149,7 @@ export class DBDone1746707401393 implements MigrationInterface {
       `ALTER TABLE "user" DROP CONSTRAINT "FK_58f5c71eaab331645112cf8cfa5"`,
     );
     await queryRunner.query(`DROP TABLE "appointment_service"`);
+    await queryRunner.query(`DROP TABLE "message"`);
     await queryRunner.query(`DROP TABLE "reception"`);
     await queryRunner.query(`DROP TYPE "public"."reception_status_enum"`);
     await queryRunner.query(`DROP TABLE "appointment"`);

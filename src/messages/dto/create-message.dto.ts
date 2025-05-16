@@ -11,7 +11,7 @@ import {
   ValidateNested,
   IsNotEmptyObject,
   IsString,
-  IsOptional,
+  IsNotEmpty,
 } from 'class-validator';
 
 import {
@@ -24,9 +24,9 @@ export class CreateMessageDto {
     required: false,
     type: () => String,
   })
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  role?: string | null;
+  role: string;
 
   @ApiProperty({
     required: true,

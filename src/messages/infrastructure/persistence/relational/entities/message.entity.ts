@@ -18,7 +18,7 @@ export class MessageEntity extends EntityRelationalHelper {
     nullable: true,
     type: String,
   })
-  role?: string | null;
+  role: string;
 
   @Column({
     nullable: false,

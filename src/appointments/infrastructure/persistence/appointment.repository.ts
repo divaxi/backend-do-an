@@ -1,3 +1,5 @@
+import { EnumerateCountAppointmentDto } from '../../../satistic/dto/count-order.dto';
+import { EnumerateResponseDto } from '../../../satistic/dto/satistic.dto';
 import { DeepPartial } from '../../../utils/types/deep-partial.type';
 import { NullableType } from '../../../utils/types/nullable.type';
 import { IPaginationOptions } from '../../../utils/types/pagination-options';
@@ -28,6 +30,18 @@ export abstract class AppointmentRepository {
   abstract countByCustomer(
     timeRange: TimeRangeDto,
   ): Promise<AppointmentSatisticDto>;
+
+  abstract countDayByDay(
+    query: EnumerateCountAppointmentDto,
+  ): Promise<EnumerateResponseDto>;
+
+  abstract countMonthByMonth(
+    query: EnumerateCountAppointmentDto,
+  ): Promise<EnumerateResponseDto>;
+
+  abstract countYearByYear(
+    query: EnumerateCountAppointmentDto,
+  ): Promise<EnumerateResponseDto>;
 
   abstract update(
     id: Appointment['id'],

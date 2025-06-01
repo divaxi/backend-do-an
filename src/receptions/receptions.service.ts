@@ -15,6 +15,7 @@ import { Reception } from './domain/reception';
 import { OnEvent } from '@nestjs/event-emitter';
 import { CreateAppointmentDto } from '../appointments/dto/create-appointment.dto';
 import { StatusEnum } from './status.enum';
+import { StatusEnum as AppointmentStatuses } from '../appointments/status.enum';
 
 interface AppointmentCreatedPayload {
   appointment: Appointment;
@@ -96,6 +97,36 @@ export class ReceptionsService {
 
   findByAppointment(appointmentId) {
     return this.receptionRepository.findByAppointment(appointmentId);
+  }
+
+  async checkin(id) {
+    const reception = await this.update(id, {
+      status: StatusEnum.checkin,
+    });
+    if (!reception) {
+      throw new UnprocessableEntityException({
+        status: HttpStatus.UNPROCESSABLE_ENTITY,
+        errors: {
+          Reception: 'notExists',
+        },
+      });
+    }
+    const appointment = await this.appointmentService.update(
+      reception?.Appointment.id,
+      {
+        status: AppointmentStatuses.waiting,
+      },
+    );
+
+    if (!appointment) {
+      throw new UnprocessableEntityException({
+        status: HttpStatus.UNPROCESSABLE_ENTITY,
+        errors: {
+          Appointment: 'notExists',
+        },
+      });
+    }
+    return reception;
   }
 
   async update(

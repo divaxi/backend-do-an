@@ -20,6 +20,7 @@ import {
   // decorators here
   ApiProperty,
 } from '@nestjs/swagger';
+import { parseISO } from 'date-fns';
 
 export class CreateScheduleDto {
   @ApiProperty({
@@ -36,7 +37,7 @@ export class CreateScheduleDto {
     required: true,
     type: () => Date,
   })
-  @Transform(({ value }) => new Date(value))
+  @Transform(({ value }) => parseISO(value))
   @IsDate()
   endTime: Date;
 
@@ -44,7 +45,7 @@ export class CreateScheduleDto {
     required: true,
     type: () => Date,
   })
-  @Transform(({ value }) => new Date(value))
+  @Transform(({ value }) => parseISO(value))
   @IsDate()
   startTime: Date;
 

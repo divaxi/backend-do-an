@@ -1,13 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsNotEmpty } from 'class-validator';
 // import { Transform } from 'class-transformer';
 // import { lowerCaseTransformer } from '../../utils/transformers/lower-case.transformer';
 
 export class MessageDto {
-  @ApiProperty({ example: 'Any thing to ask with chat bot', type: String })
+  @ApiProperty({
+    example: {
+      role: 'user',
+      content: 'hahahahhah',
+    },
+  })
   @IsNotEmpty()
-  @IsString()
-  content: string;
+  @IsArray()
+  content: {
+    role: string;
+    content: string;
+  }[];
 
   @ApiProperty({
     description: 'new to get chat context',

@@ -15,6 +15,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { FindAllAppointmentsDto } from './dto/find-all-appointments.dto';
 import { TimeRangeDto } from './dto/time-range.dto';
 import { StatusEnum } from './status.enum';
+import { EnumerateCountAppointmentDto } from '../satistic/dto/count-order.dto';
 
 @Injectable()
 export class AppointmentsService {
@@ -43,7 +44,7 @@ export class AppointmentsService {
       note: createAppointmentDto.note,
       customerRecord: customerRecordObject,
       specificTime: createAppointmentDto.specificTime,
-      status: StatusEnum.pending,
+      status: StatusEnum.scheduled,
     });
 
     this.eventEmitter.emit('appointment.created', {
@@ -88,6 +89,18 @@ export class AppointmentsService {
 
   countByCustomer(timeRange: TimeRangeDto) {
     return this.appointmentRepository.countByCustomer(timeRange);
+  }
+
+  countDayByDay(query: EnumerateCountAppointmentDto) {
+    return this.appointmentRepository.countDayByDay(query);
+  }
+
+  countMonthByMonth(query: EnumerateCountAppointmentDto) {
+    return this.appointmentRepository.countDayByDay(query);
+  }
+
+  countYearByYear(query: EnumerateCountAppointmentDto) {
+    return this.appointmentRepository.countDayByDay(query);
   }
 
   async update(

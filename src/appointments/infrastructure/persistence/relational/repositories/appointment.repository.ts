@@ -10,6 +10,9 @@ import { IPaginationOptions } from '../../../../../utils/types/pagination-option
 import { FindAllAppointmentsDto } from '../../../../dto/find-all-appointments.dto';
 import { AppointmentSatisticDto } from '../../../../dto/satistic.dto';
 import { TimeRangeDto } from '../../../../dto/time-range.dto';
+import { EnumerateCountAppointmentDto } from '../../../../../satistic/dto/count-order.dto';
+import { EnumerateResponseDto } from '../../../../../satistic/dto/satistic.dto';
+import { format } from 'date-fns';
 
 @Injectable()
 export class AppointmentRelationalRepository implements AppointmentRepository {
@@ -93,6 +96,120 @@ export class AppointmentRelationalRepository implements AppointmentRepository {
       .getRawOne();
 
     return { count: parseInt(count.count, 10) };
+  }
+
+  async countDayByDay(
+    query: EnumerateCountAppointmentDto,
+  ): Promise<EnumerateResponseDto> {
+    const result = await this.appointmentRepository
+      .createQueryBuilder('appointment')
+      .select('DATE(appointment.specificTime)', 'date')
+      .addSelect('COUNT(*)', 'count')
+      .where('appointment.specificTime BETWEEN :start AND :end', {
+        start: query.startDate,
+        end: query.endDate,
+      })
+      .groupBy('DATE(appointment.specificTime)')
+      .orderBy('DATE(appointment.specificTime)', 'ASC')
+      .getRawMany();
+
+    const countsByDate = new Map<string, number>();
+    result.forEach((r) => {
+      countsByDate.set(r.date, parseInt(r.count));
+    });
+
+    const allDates: EnumerateResponseDto = {
+      data: [],
+    };
+    const current = new Date(query.startDate);
+    const end = new Date(query.endDate);
+
+    while (current <= end) {
+      const dateStr = format(current, 'yyyy-MM-dd');
+      allDates.data.push({
+        day: dateStr,
+        count: countsByDate.get(dateStr) || 0,
+      });
+      current.setDate(current.getDate() + 1);
+    }
+
+    return allDates;
+  }
+
+  async countMonthByMonth(
+    query: EnumerateCountAppointmentDto,
+  ): Promise<EnumerateResponseDto> {
+    const result = await this.appointmentRepository
+      .createQueryBuilder('appointment')
+      .select("TO_CHAR(appointment.specificTime, 'YYYY-MM')", 'month')
+      .addSelect('COUNT(*)', 'count')
+      .where('appointment.specificTime BETWEEN :start AND :end', {
+        start: query.startDate,
+        end: query.endDate,
+      })
+      .groupBy("TO_CHAR(appointment.specificTime, 'YYYY-MM')")
+      .orderBy("TO_CHAR(appointment.specificTime, 'YYYY-MM')", 'ASC')
+      .getRawMany();
+
+    const countsByMonth = new Map<string, number>();
+    result.forEach((r) => {
+      countsByMonth.set(r.month, parseInt(r.count));
+    });
+
+    const allMonths: EnumerateResponseDto = {
+      data: [],
+    };
+    const current = new Date(query.startDate);
+    const end = new Date(query.endDate);
+
+    while (current <= end) {
+      const monthStr = format(current, 'yyyy-MM');
+      allMonths.data.push({
+        month: monthStr,
+        count: countsByMonth.get(monthStr) || 0,
+      });
+      current.setMonth(current.getMonth() + 1);
+    }
+
+    return allMonths;
+  }
+
+  async countYearByYear(
+    query: EnumerateCountAppointmentDto,
+  ): Promise<EnumerateResponseDto> {
+    const result = await this.appointmentRepository
+      .createQueryBuilder('appointment')
+      .select("TO_CHAR(appointment.specificTime, 'YYYY')", 'year')
+      .addSelect('COUNT(*)', 'count')
+      .where('appointment.specificTime BETWEEN :start AND :end', {
+        start: query.startDate,
+        end: query.endDate,
+      })
+      .groupBy("TO_CHAR(appointment.specificTime, 'YYYY')")
+      .orderBy("TO_CHAR(appointment.specificTime, 'YYYY')", 'ASC')
+      .getRawMany();
+
+    const countsByYear = new Map<string, number>();
+    result.forEach((r) => {
+      countsByYear.set(r.year, parseInt(r.count));
+    });
+
+    const allYears: EnumerateResponseDto = {
+      data: [],
+    };
+    const current = new Date(query.startDate);
+    const end = new Date(query.endDate);
+
+    while (current <= end) {
+      const yearStr = format(current, 'yyyy');
+      allYears.data.push({
+        year: yearStr,
+        count: countsByYear.get(yearStr) || 0,
+      });
+      current.setFullYear(current.getFullYear() + 1);
+    }
+
+    return allYears;
   }
 
   async update(

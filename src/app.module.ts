@@ -46,6 +46,7 @@ import openAiConfig from './chatbot/config/open-ai.config';
 
 import { MessagesModule } from './messages/messages.module';
 import { ChatbotModule } from './chatbot/chatbot.module';
+import { SatisticModule } from './satistic/satistic.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { ChatbotModule } from './chatbot/chatbot.module';
     StaffsModule,
     AppointmentsModule,
     ChatbotModule,
+    SatisticModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [

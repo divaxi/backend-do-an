@@ -27,6 +27,7 @@ import {
 } from '../utils/dto/infinity-pagination-response.dto';
 import { infinityPagination } from '../utils/infinity-pagination';
 import { FindAllSchedulesDto } from './dto/find-all-schedules.dto';
+import { FindByDayDto } from './dto/find-by-day.dto';
 
 @ApiTags('Schedules')
 @ApiBearerAuth()
@@ -68,6 +69,16 @@ export class SchedulesController {
       }),
       { page, limit },
     );
+  }
+
+  @Get('by-day')
+  @ApiOkResponse({
+    isArray: true,
+    type: Schedule,
+  })
+  async findByDay(@Query() query: FindByDayDto) {
+    const { date } = query;
+    return this.schedulesService.findByDay(date);
   }
 
   @Get(':id')

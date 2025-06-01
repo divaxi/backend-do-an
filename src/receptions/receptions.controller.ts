@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ReceptionsService } from './receptions.service';
 import { CreateReceptionDto } from './dto/create-reception.dto';
-import { UpdateReceptionDto } from './dto/update-reception.dto';
+// import { UpdateReceptionDto } from './dto/update-reception.dto';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -96,7 +96,7 @@ export class ReceptionsController {
     return this.receptionsService.findByAppointment(appointmentId);
   }
 
-  @Patch(':id')
+  @Patch('checkin/:id')
   @ApiParam({
     name: 'id',
     type: String,
@@ -105,11 +105,8 @@ export class ReceptionsController {
   @ApiOkResponse({
     type: Reception,
   })
-  update(
-    @Param('id') id: string,
-    @Body() updateReceptionDto: UpdateReceptionDto,
-  ) {
-    return this.receptionsService.update(id, updateReceptionDto);
+  checkin(@Param('id') id: string) {
+    return this.receptionsService.checkin(id);
   }
 
   @Delete(':id')

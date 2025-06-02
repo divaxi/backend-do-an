@@ -14,7 +14,11 @@ export class FileSeedService {
     const count = await this.repository.count();
 
     if (count === 0) {
-      await this.repository.save(this.repository.create({}));
+      const dummyImage = 'https://placehold.co/600x400?text=Kim+Cuong';
+      const dummyFile = this.repository.create({
+        path: dummyImage,
+      });
+      await this.repository.save(dummyFile);
     }
   }
 }

@@ -8,7 +8,6 @@ import { AppointmentServiceSeedService } from './appointment-service/appointment
 import { AppointmentSeedService } from './appointment/appointment-seed.service';
 import { CustomerRecordSeedService } from './customer-record/customer-record-seed.service';
 import { RoleSeedService } from './role/role-seed.service';
-// import { RoleSeedService } from './role/role-seed.service';
 import { SeedModule } from './seed.module';
 import { UserSeedService } from './user/user-seed.service';
 
@@ -17,27 +16,26 @@ const runSeed = async () => {
 
   // run
   // await app.get(RoleSeedService).run();
-  await app.get(UserSeedService).run();
-
-  await app.get(UserSeedService).run();
 
   await app.get(RoleSeedService).run();
 
+  await app.get(FileSeedService).run();
+
+  await app.get(UserSeedService).run();
+
   await app.get(CustomerRecordSeedService).run();
+
+  await app.get(StaffSeedService).run();
+
+  await app.get(ServiceSeedService).run();
+
+  await app.get(ScheduleSeedService).run();
 
   await app.get(AppointmentSeedService).run();
 
   await app.get(AppointmentServiceSeedService).run();
 
-  await app.get(FileSeedService).run();
-
   await app.get(ReceptionSeedService).run();
-
-  await app.get(ScheduleSeedService).run();
-
-  await app.get(ServiceSeedService).run();
-
-  await app.get(StaffSeedService).run();
 
   await app.close();
 };

@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
   Column,
   JoinColumn,
-  OneToOne,
+  ManyToOne,
 } from 'typeorm';
 import { EntityRelationalHelper } from '../../../../../utils/relational-entity-helper';
 
@@ -15,7 +15,7 @@ import { EntityRelationalHelper } from '../../../../../utils/relational-entity-h
   name: 'service',
 })
 export class ServiceEntity extends EntityRelationalHelper {
-  @OneToOne(() => FileEntity, { eager: true, nullable: true })
+  @ManyToOne(() => FileEntity, { eager: true, nullable: true })
   @JoinColumn()
   image?: FileEntity | null;
 

@@ -31,7 +31,6 @@ import { FindAllStaffsDto } from './dto/find-all-staffs.dto';
 
 @ApiTags('Staffs')
 @ApiBearerAuth()
-@UseGuards(AuthGuard('jwt'))
 @Controller({
   path: 'staffs',
   version: '1',
@@ -40,6 +39,7 @@ export class StaffsController {
   constructor(private readonly staffsService: StaffsService) {}
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   @ApiCreatedResponse({
     type: Staff,
   })
@@ -49,6 +49,7 @@ export class StaffsController {
   }
 
   @Get()
+  @UseGuards()
   @ApiOkResponse({
     type: InfinityPaginationResponse(Staff),
   })
@@ -73,6 +74,7 @@ export class StaffsController {
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiParam({
     name: 'id',
     type: String,
@@ -86,6 +88,7 @@ export class StaffsController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiParam({
     name: 'id',
     type: String,
@@ -99,6 +102,7 @@ export class StaffsController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiParam({
     name: 'id',
     type: String,

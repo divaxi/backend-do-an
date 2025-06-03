@@ -75,7 +75,6 @@ export class SchedulesService {
     if (isBefore(end, start)) {
       throw new BadRequestException('End time must be after start time.');
     }
-    console.log(start, end);
     if (!isSameDay(start, end)) {
       throw new BadRequestException(
         'Start time and end time must be on the same day.',

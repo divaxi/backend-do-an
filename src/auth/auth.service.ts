@@ -41,7 +41,6 @@ export class AuthService {
   ) {}
 
   async validateLogin(loginDto: AuthZaloLoginDto): Promise<LoginResponseDto> {
-    console.log(loginDto.zaloAccessToken);
     let user = await this.usersService.findByZaloId(loginDto.zaloAccessToken);
 
     if (!user) {

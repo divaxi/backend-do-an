@@ -48,7 +48,6 @@ export class AppointmentServicesService {
       );
       return;
     }
-    console.log(dto);
     await Promise.all(
       dto.serviceAndScheduleIds.map((item) =>
         this.scheduleService.update(item.scheduleId, {

@@ -39,7 +39,6 @@ export class ReceptionSeedService {
       });
 
       await this.repository.save(receptions);
-      console.log(`✅ Seeded ${receptions.length} receptions.`);
     }
   }
 }

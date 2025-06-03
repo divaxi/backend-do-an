@@ -61,7 +61,6 @@ export class UsersRelationalRepository implements UserRepository {
     const entity = await this.usersRepository.findOne({
       where: { id: Number(id) },
     });
-    console.log('entity', entity);
 
     return entity ? UserMapper.toDomain(entity) : null;
   }

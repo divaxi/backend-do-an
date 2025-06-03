@@ -12,7 +12,6 @@ export function convertToVietnamTimezone(inputDate: string | Date): Date {
 
   // Convert from UTC to VN timezone
   const zonedDate = toZonedTime(date.getTime() - timezoneOffset, timeZone);
-  console.log(new Date());
   // Return formatted string
   return zonedDate;
 }
@@ -27,7 +26,6 @@ export function FormatToVietnamTimezone(inputDate: string | Date): string {
 
   // Convert from UTC to VN timezone
   const zonedDate = formatInTimeZone(date, timeZone, 'yyyy-MM-dd HH:mm:ss zzz');
-  console.log(new Date());
   // Return formatted string
   return zonedDate;
 }

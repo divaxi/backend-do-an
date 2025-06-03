@@ -19,7 +19,6 @@ export class ScheduleSeedService {
   async run() {
     const count = await this.repository.count();
     if (count > 0) {
-      console.log('ℹ️ Schedule already seeded.');
       return;
     }
 
@@ -58,6 +57,5 @@ export class ScheduleSeedService {
     }
 
     await this.repository.save(schedules);
-    console.log(`✅ Seeded schedules for ${staffs.length} staff(s).`);
   }
 }

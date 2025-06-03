@@ -35,9 +35,6 @@ export class UserSeedService {
         }),
       );
       await this.repository.save(users);
-      console.log(`✅ Seeded ${repeater} users.`);
-    } else {
-      console.log(`ℹ️ Found ${count} users, seeding skipped.`);
     }
   }
 }

@@ -49,8 +49,5 @@ export class AppointmentServiceSeedService {
     });
 
     await this.repository.save(appointmentServices);
-    console.log(
-      `✅ Seeded ${appointmentServices.length} appointment services.`,
-    );
   }
 }

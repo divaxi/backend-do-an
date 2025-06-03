@@ -30,7 +30,6 @@ import { FindAllServicesDto } from './dto/find-all-services.dto';
 
 @ApiTags('Services')
 @ApiBearerAuth()
-@UseGuards(AuthGuard('jwt'))
 @Controller({
   path: 'services',
   version: '1',
@@ -39,6 +38,7 @@ export class ServicesController {
   constructor(private readonly servicesService: ServicesService) {}
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   @ApiCreatedResponse({
     type: Service,
   })
@@ -71,6 +71,7 @@ export class ServicesController {
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiParam({
     name: 'id',
     type: String,
@@ -84,6 +85,7 @@ export class ServicesController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiParam({
     name: 'id',
     type: String,
@@ -97,6 +99,7 @@ export class ServicesController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiParam({
     name: 'id',
     type: String,

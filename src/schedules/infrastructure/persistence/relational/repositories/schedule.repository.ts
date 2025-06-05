@@ -7,6 +7,7 @@ import { Schedule } from '../../../../domain/schedule';
 import { ScheduleRepository } from '../../schedule.repository';
 import { ScheduleMapper } from '../mappers/schedule.mapper';
 import { IPaginationOptions } from '../../../../../utils/types/pagination-options';
+import { endOfDay, startOfDay } from 'date-fns';
 
 @Injectable()
 export class ScheduleRelationalRepository implements ScheduleRepository {
@@ -32,10 +33,18 @@ export class ScheduleRelationalRepository implements ScheduleRepository {
 
   async findAllWithPagination({
     paginationOptions,
+    staffId,
   }: {
     paginationOptions: IPaginationOptions;
+    staffId: string;
   }): Promise<Schedule[]> {
     const entities = await this.scheduleRepository.find({
+      where: {
+        staff: { id: staffId },
+        startTime: Between(startOfDay(new Date()), endOfDay(new Date())),
+        active: true,
+      },
+      order: { startTime: 'ASC' },
       skip: (paginationOptions.page - 1) * paginationOptions.limit,
       take: paginationOptions.limit,
     });
@@ -69,19 +78,14 @@ export class ScheduleRelationalRepository implements ScheduleRepository {
     return entities.map((entity) => ScheduleMapper.toDomain(entity));
   }
 
-  async findByStaff(staffId: string, day?: Date): Promise<Schedule[]> {
-    const where: any = {};
-    where.staff = { id: staffId };
-
-    if (day) {
-      where.startTime = Between(
-        day,
-        new Date(day.getTime() + 24 * 60 * 60 * 1000),
-      );
-    }
+  async findByStaff(staffId: string, day: Date): Promise<Schedule[]> {
     const entities = await this.scheduleRepository.find({
-      where,
-      order: { startTime: 'DESC' },
+      where: {
+        staff: { id: staffId },
+        active: true,
+        startTime: Between(day, new Date(day.getTime() + 24 * 60 * 60 * 1000)),
+      },
+      order: { startTime: 'ASC' },
     });
 
     return entities.map((entity) => ScheduleMapper.toDomain(entity));

@@ -47,6 +47,10 @@ export class StaffsService {
     });
   }
 
+  findByUser(id: number) {
+    return this.staffRepository.findByUser(id);
+  }
+
   findById(id: Staff['id']) {
     return this.staffRepository.findById(id);
   }

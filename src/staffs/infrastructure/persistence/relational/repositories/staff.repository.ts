@@ -44,6 +44,14 @@ export class StaffRelationalRepository implements StaffRepository {
     return entity ? StaffMapper.toDomain(entity) : null;
   }
 
+  async findByUser(id: number): Promise<NullableType<Staff>> {
+    const entity = await this.staffRepository.findOne({
+      where: { user: { id: id } },
+    });
+
+    return entity ? StaffMapper.toDomain(entity) : null;
+  }
+
   async findByIds(ids: Staff['id'][]): Promise<Staff[]> {
     const entities = await this.staffRepository.find({
       where: { id: In(ids) },

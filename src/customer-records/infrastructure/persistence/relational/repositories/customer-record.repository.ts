@@ -59,6 +59,7 @@ export class CustomerRecordRelationalRepository
   async findByUser(userId: number): Promise<CustomerRecord[]> {
     const entities = await this.customerRecordRepository.find({
       where: { user: { id: userId } },
+      order: { createdAt: 'DESC' },
     });
     return entities.map((entity) => CustomerRecordMapper.toDomain(entity));
   }

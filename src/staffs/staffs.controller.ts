@@ -73,6 +73,20 @@ export class StaffsController {
     );
   }
 
+  @Get('user/:id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    required: true,
+  })
+  @ApiOkResponse({
+    type: Staff,
+  })
+  findByUser(@Param('id') id: number) {
+    return this.staffsService.findByUser(id);
+  }
+
   @Get(':id')
   @UseGuards(AuthGuard('jwt'))
   @ApiParam({

@@ -67,6 +67,7 @@ export class AppointmentsService {
         startTime: queryOptions.startTime,
         endTime: queryOptions.endTime,
         status: queryOptions.status,
+        userId: queryOptions.userId,
       },
       paginationOptions: {
         page: paginationOptions.page,

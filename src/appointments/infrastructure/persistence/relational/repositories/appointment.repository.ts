@@ -36,17 +36,22 @@ export class AppointmentRelationalRepository implements AppointmentRepository {
     queryOptions: Omit<FindAllAppointmentsDto, 'page' | 'limit'>;
     paginationOptions: IPaginationOptions;
   }): Promise<Appointment[]> {
-    const where: any = {};
+    const { userId, status, startTime, endTime } = queryOptions;
 
-    if (queryOptions.startTime && queryOptions.endTime) {
-      where.specificTime = Between(
-        queryOptions.startTime,
-        queryOptions.endTime,
-      );
+    const where: any = {
+      customerRecord: {
+        user: {
+          id: userId,
+        },
+      },
+    };
+
+    if (status) {
+      where.status = status;
     }
 
-    if (queryOptions.status) {
-      where.status = queryOptions.status;
+    if (startTime && endTime) {
+      where.specificTime = Between(startTime, endTime);
     }
 
     const entities = await this.appointmentRepository.find({

@@ -18,6 +18,7 @@ import {
 
   Transform,
 } from 'class-transformer';
+import { parseISO } from 'date-fns';
 
 export class CreateCustomerRecordDto {
   active?: boolean;
@@ -42,7 +43,7 @@ export class CreateCustomerRecordDto {
     required: true,
     type: () => Date,
   })
-  @Transform(({ value }) => new Date(value))
+  @Transform(({ value }) => parseISO(value))
   @IsDate()
   DOB: Date;
 

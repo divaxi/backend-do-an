@@ -488,6 +488,14 @@
             "schema": {
               "type": "number"
             }
+          },
+          {
+            "name": "staffId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -754,6 +762,39 @@
         "tags": ["Staffs"]
       }
     },
+    "/api/v1/staffs/user/{id}": {
+      "get": {
+        "operationId": "StaffsController_findByUser_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Staff"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": ["Staffs"]
+      }
+    },
     "/api/v1/staffs/{id}": {
       "get": {
         "operationId": "StaffsController_findById_v1",
@@ -928,6 +969,14 @@
             "in": "query",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
             }
           }
         ],

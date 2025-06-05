@@ -13,7 +13,6 @@ import { UpdateScheduleDto } from './dto/update-schedule.dto';
 import { ScheduleRepository } from './infrastructure/persistence/schedule.repository';
 import { IPaginationOptions } from '../utils/types/pagination-options';
 import { Schedule } from './domain/schedule';
-import { convertToVietnamTimezone } from '../utils/transformers/to-timezone';
 import { isBefore, isSameDay } from 'date-fns';
 
 @Injectable()
@@ -69,8 +68,8 @@ export class SchedulesService {
       });
     }
 
-    const start = convertToVietnamTimezone(createScheduleDto.startTime);
-    const end = convertToVietnamTimezone(createScheduleDto.endTime);
+    const start = createScheduleDto.startTime;
+    const end = createScheduleDto.endTime;
 
     if (isBefore(end, start)) {
       throw new BadRequestException('End time must be after start time.');
@@ -104,14 +103,17 @@ export class SchedulesService {
 
   findAllWithPagination({
     paginationOptions,
+    staffId,
   }: {
     paginationOptions: IPaginationOptions;
+    staffId: string;
   }) {
     return this.scheduleRepository.findAllWithPagination({
       paginationOptions: {
         page: paginationOptions.page,
         limit: paginationOptions.limit,
       },
+      staffId,
     });
   }
 
@@ -172,6 +174,8 @@ export class SchedulesService {
   }
 
   remove(id: Schedule['id']) {
-    return this.scheduleRepository.remove(id);
+    return this.scheduleRepository.update(id, {
+      active: false,
+    });
   }
 }

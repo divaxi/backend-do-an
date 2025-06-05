@@ -58,6 +58,7 @@ export class AppointmentsController {
     const startTime = query?.startTime;
     const endTime = query?.endTime;
     const status = query?.status;
+    const userId = query.userId;
     const page = query?.page ?? 1;
     let limit = query?.limit ?? 10;
     if (limit > 50) {
@@ -70,6 +71,7 @@ export class AppointmentsController {
           startTime,
           endTime,
           status,
+          userId,
         },
         paginationOptions: {
           page,

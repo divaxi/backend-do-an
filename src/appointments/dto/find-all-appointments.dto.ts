@@ -1,4 +1,4 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 
@@ -31,4 +31,8 @@ export class FindAllAppointmentsDto {
   @IsString()
   @IsOptional()
   status?: string;
+
+  @ApiProperty()
+  @IsString()
+  userId: number;
 }

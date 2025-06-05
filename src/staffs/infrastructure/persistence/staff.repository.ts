@@ -14,6 +14,8 @@ export abstract class StaffRepository {
     paginationOptions: IPaginationOptions;
   }): Promise<Staff[]>;
 
+  abstract findByUser(id: number): Promise<NullableType<Staff>>;
+
   abstract findById(id: Staff['id']): Promise<NullableType<Staff>>;
 
   abstract findByIds(ids: Staff['id'][]): Promise<Staff[]>;

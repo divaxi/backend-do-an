@@ -1,5 +1,5 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNumber, IsOptional } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class FindAllSchedulesDto {
@@ -14,4 +14,8 @@ export class FindAllSchedulesDto {
   @IsNumber()
   @IsOptional()
   limit?: number;
+
+  @ApiProperty()
+  @IsString()
+  staffId: string;
 }

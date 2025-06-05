@@ -14,8 +14,10 @@ export abstract class ScheduleRepository {
 
   abstract findAllWithPagination({
     paginationOptions,
+    staffId,
   }: {
     paginationOptions: IPaginationOptions;
+    staffId: string;
   }): Promise<Schedule[]>;
 
   abstract findById(id: Schedule['id']): Promise<NullableType<Schedule>>;

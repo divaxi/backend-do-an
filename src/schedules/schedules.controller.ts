@@ -56,6 +56,7 @@ export class SchedulesController {
   ): Promise<InfinityPaginationResponseDto<Schedule>> {
     const page = query?.page ?? 1;
     let limit = query?.limit ?? 10;
+    const staffId = query.staffId;
     if (limit > 50) {
       limit = 50;
     }
@@ -66,6 +67,7 @@ export class SchedulesController {
           page,
           limit,
         },
+        staffId,
       }),
       { page, limit },
     );

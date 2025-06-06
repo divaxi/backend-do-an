@@ -262,9 +262,41 @@
         "tags": ["Files"]
       }
     },
-    "/api/v1/appointment-services": {
+    "/api/v1/customer-records": {
+      "post": {
+        "operationId": "CustomerRecordsController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCustomerRecordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerRecord"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": ["Customerrecords"]
+      },
       "get": {
-        "operationId": "AppointmentServicesController_findAll_v1",
+        "operationId": "CustomerRecordsController_findAll_v1",
         "parameters": [
           {
             "name": "page",
@@ -289,7 +321,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InfinityPaginationAppointmentServiceResponseDto"
+                  "$ref": "#/components/schemas/InfinityPaginationCustomerRecordResponseDto"
                 }
               }
             }
@@ -300,12 +332,48 @@
             "bearer": []
           }
         ],
-        "tags": ["Appointmentservices"]
+        "tags": ["Customerrecords"]
       }
     },
-    "/api/v1/appointment-services/{id}": {
+    "/api/v1/customer-records/user/{userId}": {
       "get": {
-        "operationId": "AppointmentServicesController_findById_v1",
+        "operationId": "CustomerRecordsController_findByUser_v1",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomerRecord"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": ["Customerrecords"]
+      }
+    },
+    "/api/v1/customer-records/{id}": {
+      "get": {
+        "operationId": "CustomerRecordsController_findById_v1",
         "parameters": [
           {
             "name": "id",
@@ -322,7 +390,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AppointmentService"
+                  "$ref": "#/components/schemas/CustomerRecord"
                 }
               }
             }
@@ -333,10 +401,10 @@
             "bearer": []
           }
         ],
-        "tags": ["Appointmentservices"]
+        "tags": ["Customerrecords"]
       },
       "patch": {
-        "operationId": "AppointmentServicesController_update_v1",
+        "operationId": "CustomerRecordsController_update_v1",
         "parameters": [
           {
             "name": "id",
@@ -352,7 +420,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateAppointmentServiceDto"
+                "$ref": "#/components/schemas/UpdateCustomerRecordDto"
               }
             }
           }
@@ -363,7 +431,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AppointmentService"
+                  "$ref": "#/components/schemas/CustomerRecord"
                 }
               }
             }
@@ -374,10 +442,10 @@
             "bearer": []
           }
         ],
-        "tags": ["Appointmentservices"]
+        "tags": ["Customerrecords"]
       },
       "delete": {
-        "operationId": "AppointmentServicesController_remove_v1",
+        "operationId": "CustomerRecordsController_remove_v1",
         "parameters": [
           {
             "name": "id",
@@ -398,15 +466,88 @@
             "bearer": []
           }
         ],
-        "tags": ["Appointmentservices"]
+        "tags": ["Customerrecords"]
       }
     },
-    "/api/v1/appointment-services/staff/{staffId}": {
+    "/api/v1/services": {
+      "post": {
+        "operationId": "ServicesController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateServiceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": ["Services"]
+      },
       "get": {
-        "operationId": "AppointmentServicesController_findAppointmentByStaff_v1",
+        "operationId": "ServicesController_findAll_v1",
         "parameters": [
           {
-            "name": "staffId",
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfinityPaginationServiceResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": ["Services"]
+      }
+    },
+    "/api/v1/services/{id}": {
+      "get": {
+        "operationId": "ServicesController_findById_v1",
+        "parameters": [
+          {
+            "name": "id",
             "required": true,
             "in": "path",
             "schema": {
@@ -420,10 +561,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AppointmentService"
-                  }
+                  "$ref": "#/components/schemas/Service"
                 }
               }
             }
@@ -434,7 +572,72 @@
             "bearer": []
           }
         ],
-        "tags": ["Appointmentservices"]
+        "tags": ["Services"]
+      },
+      "patch": {
+        "operationId": "ServicesController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateServiceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": ["Services"]
+      },
+      "delete": {
+        "operationId": "ServicesController_remove_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": ["Services"]
       }
     },
     "/api/v1/schedules": {
@@ -893,6 +1096,202 @@
         "tags": ["Staffs"]
       }
     },
+    "/api/v1/receptions": {
+      "post": {
+        "operationId": "ReceptionsController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReceptionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reception"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": ["Receptions"]
+      },
+      "get": {
+        "operationId": "ReceptionsController_findAll_v1",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfinityPaginationReceptionResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": ["Receptions"]
+      }
+    },
+    "/api/v1/receptions/{id}": {
+      "get": {
+        "operationId": "ReceptionsController_findById_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reception"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": ["Receptions"]
+      },
+      "delete": {
+        "operationId": "ReceptionsController_remove_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": ["Receptions"]
+      }
+    },
+    "/api/v1/receptions/appointment/{appointmentId}": {
+      "get": {
+        "operationId": "ReceptionsController_findByAppointment_v1",
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reception"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": ["Receptions"]
+      }
+    },
+    "/api/v1/receptions/checkin/{id}": {
+      "patch": {
+        "operationId": "ReceptionsController_checkin_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reception"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": ["Receptions"]
+      }
+    },
     "/api/v1/appointments": {
       "post": {
         "operationId": "AppointmentsController_create_v1",
@@ -927,7 +1326,7 @@
         "tags": ["Appointments"]
       },
       "get": {
-        "operationId": "AppointmentsController_findAll_v1",
+        "operationId": "AppointmentsController_findAllByCustomer_v1",
         "parameters": [
           {
             "name": "page",
@@ -974,6 +1373,55 @@
           {
             "name": "userId",
             "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfinityPaginationAppointmentResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": ["Appointments"]
+      }
+    },
+    "/api/v1/appointments/staff": {
+      "get": {
+        "operationId": "AppointmentsController_findAllByStaff_v1",
+        "parameters": [
+          {
+            "name": "staffId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
             "in": "query",
             "schema": {
               "type": "number"
@@ -1182,580 +1630,6 @@
           }
         ],
         "tags": ["Appointments"]
-      }
-    },
-    "/api/v1/customer-records": {
-      "post": {
-        "operationId": "CustomerRecordsController_create_v1",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateCustomerRecordDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomerRecord"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": ["Customerrecords"]
-      },
-      "get": {
-        "operationId": "CustomerRecordsController_findAll_v1",
-        "parameters": [
-          {
-            "name": "page",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "limit",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InfinityPaginationCustomerRecordResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": ["Customerrecords"]
-      }
-    },
-    "/api/v1/customer-records/user/{userId}": {
-      "get": {
-        "operationId": "CustomerRecordsController_findByUser_v1",
-        "parameters": [
-          {
-            "name": "userId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CustomerRecord"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": ["Customerrecords"]
-      }
-    },
-    "/api/v1/customer-records/{id}": {
-      "get": {
-        "operationId": "CustomerRecordsController_findById_v1",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomerRecord"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": ["Customerrecords"]
-      },
-      "patch": {
-        "operationId": "CustomerRecordsController_update_v1",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateCustomerRecordDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomerRecord"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": ["Customerrecords"]
-      },
-      "delete": {
-        "operationId": "CustomerRecordsController_remove_v1",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": ["Customerrecords"]
-      }
-    },
-    "/api/v1/services": {
-      "post": {
-        "operationId": "ServicesController_create_v1",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateServiceDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Service"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": ["Services"]
-      },
-      "get": {
-        "operationId": "ServicesController_findAll_v1",
-        "parameters": [
-          {
-            "name": "page",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "limit",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InfinityPaginationServiceResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": ["Services"]
-      }
-    },
-    "/api/v1/services/{id}": {
-      "get": {
-        "operationId": "ServicesController_findById_v1",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Service"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": ["Services"]
-      },
-      "patch": {
-        "operationId": "ServicesController_update_v1",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateServiceDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Service"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": ["Services"]
-      },
-      "delete": {
-        "operationId": "ServicesController_remove_v1",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": ["Services"]
-      }
-    },
-    "/api/v1/receptions": {
-      "post": {
-        "operationId": "ReceptionsController_create_v1",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateReceptionDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Reception"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": ["Receptions"]
-      },
-      "get": {
-        "operationId": "ReceptionsController_findAll_v1",
-        "parameters": [
-          {
-            "name": "page",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "limit",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InfinityPaginationReceptionResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": ["Receptions"]
-      }
-    },
-    "/api/v1/receptions/{id}": {
-      "get": {
-        "operationId": "ReceptionsController_findById_v1",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Reception"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": ["Receptions"]
-      },
-      "delete": {
-        "operationId": "ReceptionsController_remove_v1",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": ["Receptions"]
-      }
-    },
-    "/api/v1/receptions/appointment/{appointmentId}": {
-      "get": {
-        "operationId": "ReceptionsController_findByAppointment_v1",
-        "parameters": [
-          {
-            "name": "appointmentId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Reception"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": ["Receptions"]
-      }
-    },
-    "/api/v1/receptions/checkin/{id}": {
-      "patch": {
-        "operationId": "ReceptionsController_checkin_v1",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Reception"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": ["Receptions"]
       }
     },
     "/api/v1/bot/chat": {
@@ -2136,10 +2010,27 @@
         },
         "required": ["file"]
       },
-      "StatusEnum": {
-        "type": "number",
-        "enum": [1, 2, 3, 4, 5, 6, 7, 8],
-        "description": "Status of the appointment (1 = pending, 2 = inprogress, 3 = done)"
+      "CreateCustomerRecordDto": {
+        "type": "object",
+        "properties": {
+          "BHYTNumber": {
+            "type": "string"
+          },
+          "CCCDNumber": {
+            "type": "string"
+          },
+          "DOB": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "sex": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          }
+        },
+        "required": ["DOB", "sex", "fullName"]
       },
       "CustomerRecord": {
         "type": "object",
@@ -2202,114 +2093,13 @@
           "updatedAt"
         ]
       },
-      "Appointment": {
-        "type": "object",
-        "properties": {
-          "specificTime": {
-            "format": "date-time",
-            "type": "string",
-            "nullable": false
-          },
-          "active": {
-            "type": "boolean",
-            "nullable": false
-          },
-          "note": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "description": "Status of the appointment (1 = pending, 2 = inprogress, 3 = done)",
-            "example": 1,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/StatusEnum"
-              }
-            ]
-          },
-          "customerRecord": {
-            "nullable": false,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CustomerRecord"
-              }
-            ]
-          },
-          "id": {
-            "type": "string"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "specificTime",
-          "active",
-          "note",
-          "status",
-          "customerRecord",
-          "id",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "AppointmentService": {
-        "type": "object",
-        "properties": {
-          "scheduleId": {
-            "type": "string",
-            "nullable": false
-          },
-          "appointment": {
-            "nullable": false,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Appointment"
-              }
-            ]
-          },
-          "serviceId": {
-            "type": "string",
-            "nullable": false
-          },
-          "staffId": {
-            "type": "string",
-            "nullable": false
-          },
-          "id": {
-            "type": "string"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "scheduleId",
-          "appointment",
-          "serviceId",
-          "staffId",
-          "id",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "InfinityPaginationAppointmentServiceResponseDto": {
+      "InfinityPaginationCustomerRecordResponseDto": {
         "type": "object",
         "properties": {
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AppointmentService"
+              "$ref": "#/components/schemas/CustomerRecord"
             }
           },
           "hasNextPage": {
@@ -2319,6 +2109,127 @@
         },
         "required": ["data", "hasNextPage"]
       },
+      "UpdateCustomerRecordDto": {
+        "type": "object",
+        "properties": {
+          "BHYTNumber": {
+            "type": "string"
+          },
+          "CCCDNumber": {
+            "type": "string"
+          },
+          "DOB": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "sex": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          }
+        }
+      },
+      "ImageDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateServiceDto": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "$ref": "#/components/schemas/ImageDto"
+          },
+          "price": {
+            "type": "number"
+          },
+          "description": {
+            "type": "string"
+          },
+          "serviceName": {
+            "type": "string"
+          }
+        },
+        "required": ["serviceName"]
+      },
+      "Service": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FileType"
+              }
+            ]
+          },
+          "price": {
+            "type": "number",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "serviceName": {
+            "type": "string",
+            "nullable": false
+          },
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "image",
+          "price",
+          "description",
+          "serviceName",
+          "id",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "InfinityPaginationServiceResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Service"
+            }
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": ["data", "hasNextPage"]
+      },
+      "UpdateServiceDto": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "$ref": "#/components/schemas/ImageDto"
+          },
+          "price": {
+            "type": "number"
+          },
+          "description": {
+            "type": "string"
+          },
+          "serviceName": {
+            "type": "string"
+          }
+        }
+      },
       "StaffDto": {
         "type": "object",
         "properties": {
@@ -2327,50 +2238,6 @@
           }
         },
         "required": ["id"]
-      },
-      "ScheduleDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          }
-        },
-        "required": ["id"]
-      },
-      "AppointmentDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          }
-        },
-        "required": ["id"]
-      },
-      "ServiceDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          }
-        },
-        "required": ["id"]
-      },
-      "UpdateAppointmentServiceDto": {
-        "type": "object",
-        "properties": {
-          "staff": {
-            "$ref": "#/components/schemas/StaffDto"
-          },
-          "schedule": {
-            "$ref": "#/components/schemas/ScheduleDto"
-          },
-          "appointment": {
-            "$ref": "#/components/schemas/AppointmentDto"
-          },
-          "service": {
-            "$ref": "#/components/schemas/ServiceDto"
-          }
-        }
       },
       "CreateScheduleDto": {
         "type": "object",
@@ -2557,25 +2424,7 @@
           }
         }
       },
-      "ServiceScheduleDto": {
-        "type": "object",
-        "properties": {
-          "serviceId": {
-            "type": "string",
-            "example": "serviceId"
-          },
-          "scheduleId": {
-            "type": "string",
-            "example": "scheduleId"
-          },
-          "staffId": {
-            "type": "string",
-            "example": "staffId"
-          }
-        },
-        "required": ["serviceId", "scheduleId", "staffId"]
-      },
-      "CustomerRecordDto": {
+      "AppointmentDto": {
         "type": "object",
         "properties": {
           "id": {
@@ -2583,243 +2432,6 @@
           }
         },
         "required": ["id"]
-      },
-      "CreateAppointmentDto": {
-        "type": "object",
-        "properties": {
-          "specificTime": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "note": {
-            "type": "string"
-          },
-          "serviceAndScheduleIds": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ServiceScheduleDto"
-            }
-          },
-          "customerRecord": {
-            "$ref": "#/components/schemas/CustomerRecordDto"
-          }
-        },
-        "required": ["specificTime", "serviceAndScheduleIds", "customerRecord"]
-      },
-      "InfinityPaginationAppointmentResponseDto": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Appointment"
-            }
-          },
-          "hasNextPage": {
-            "type": "boolean",
-            "example": true
-          }
-        },
-        "required": ["data", "hasNextPage"]
-      },
-      "AppointmentSatisticDto": {
-        "type": "object",
-        "properties": {
-          "count": {
-            "type": "number"
-          }
-        },
-        "required": ["count"]
-      },
-      "UpdateAppointmentDto": {
-        "type": "object",
-        "properties": {
-          "specificTime": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "note": {
-            "type": "string"
-          },
-          "serviceAndScheduleIds": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ServiceScheduleDto"
-            }
-          },
-          "customerRecord": {
-            "$ref": "#/components/schemas/CustomerRecordDto"
-          },
-          "status": {
-            "description": "Status of the appointment (1 = pending, 2 = inprogress, 3 = done)",
-            "example": 1,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/StatusEnum"
-              }
-            ]
-          }
-        },
-        "required": ["status"]
-      },
-      "CreateCustomerRecordDto": {
-        "type": "object",
-        "properties": {
-          "BHYTNumber": {
-            "type": "string"
-          },
-          "CCCDNumber": {
-            "type": "string"
-          },
-          "DOB": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "sex": {
-            "type": "string"
-          },
-          "fullName": {
-            "type": "string"
-          }
-        },
-        "required": ["DOB", "sex", "fullName"]
-      },
-      "InfinityPaginationCustomerRecordResponseDto": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CustomerRecord"
-            }
-          },
-          "hasNextPage": {
-            "type": "boolean",
-            "example": true
-          }
-        },
-        "required": ["data", "hasNextPage"]
-      },
-      "UpdateCustomerRecordDto": {
-        "type": "object",
-        "properties": {
-          "BHYTNumber": {
-            "type": "string"
-          },
-          "CCCDNumber": {
-            "type": "string"
-          },
-          "DOB": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "sex": {
-            "type": "string"
-          },
-          "fullName": {
-            "type": "string"
-          }
-        }
-      },
-      "ImageDto": {
-        "type": "object",
-        "properties": {}
-      },
-      "CreateServiceDto": {
-        "type": "object",
-        "properties": {
-          "image": {
-            "$ref": "#/components/schemas/ImageDto"
-          },
-          "price": {
-            "type": "number"
-          },
-          "description": {
-            "type": "string"
-          },
-          "serviceName": {
-            "type": "string"
-          }
-        },
-        "required": ["serviceName"]
-      },
-      "Service": {
-        "type": "object",
-        "properties": {
-          "image": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FileType"
-              }
-            ]
-          },
-          "price": {
-            "type": "number",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "serviceName": {
-            "type": "string",
-            "nullable": false
-          },
-          "id": {
-            "type": "string"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "image",
-          "price",
-          "description",
-          "serviceName",
-          "id",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "InfinityPaginationServiceResponseDto": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Service"
-            }
-          },
-          "hasNextPage": {
-            "type": "boolean",
-            "example": true
-          }
-        },
-        "required": ["data", "hasNextPage"]
-      },
-      "UpdateServiceDto": {
-        "type": "object",
-        "properties": {
-          "image": {
-            "$ref": "#/components/schemas/ImageDto"
-          },
-          "price": {
-            "type": "number"
-          },
-          "description": {
-            "type": "string"
-          },
-          "serviceName": {
-            "type": "string"
-          }
-        }
       },
       "CreateReceptionDto": {
         "type": "object",
@@ -2836,6 +2448,85 @@
           }
         },
         "required": ["Appointment"]
+      },
+      "StatusEnum": {
+        "type": "number",
+        "enum": [1, 2],
+        "description": "Status of the appointment (1 = notCheckin, 2 = checkin)"
+      },
+      "Appointment": {
+        "type": "object",
+        "properties": {
+          "service": {
+            "nullable": false,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Service"
+              }
+            ]
+          },
+          "schedule": {
+            "nullable": false,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Schedule"
+              }
+            ]
+          },
+          "specificTime": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": false
+          },
+          "active": {
+            "type": "boolean",
+            "nullable": false
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "description": "Status of the appointment (1 = pending, 2 = inprogress, 3 = done)",
+            "example": 1,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusEnum"
+              }
+            ]
+          },
+          "customerRecord": {
+            "nullable": false,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerRecord"
+              }
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "service",
+          "schedule",
+          "specificTime",
+          "active",
+          "note",
+          "status",
+          "customerRecord",
+          "id",
+          "createdAt",
+          "updatedAt"
+        ]
       },
       "Reception": {
         "type": "object",
@@ -2903,6 +2594,147 @@
           }
         },
         "required": ["data", "hasNextPage"]
+      },
+      "ServiceDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": ["id"]
+      },
+      "ScheduleDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": ["id"]
+      },
+      "ServiceScheduleDto": {
+        "type": "object",
+        "properties": {
+          "serviceId": {
+            "type": "string",
+            "example": "serviceId"
+          },
+          "scheduleId": {
+            "type": "string",
+            "example": "scheduleId"
+          },
+          "staffId": {
+            "type": "string",
+            "example": "staffId"
+          }
+        },
+        "required": ["serviceId", "scheduleId", "staffId"]
+      },
+      "CustomerRecordDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": ["id"]
+      },
+      "CreateAppointmentDto": {
+        "type": "object",
+        "properties": {
+          "service": {
+            "$ref": "#/components/schemas/ServiceDto"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/ScheduleDto"
+          },
+          "specificTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "serviceAndScheduleIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceScheduleDto"
+            }
+          },
+          "customerRecord": {
+            "$ref": "#/components/schemas/CustomerRecordDto"
+          }
+        },
+        "required": [
+          "service",
+          "schedule",
+          "specificTime",
+          "serviceAndScheduleIds",
+          "customerRecord"
+        ]
+      },
+      "InfinityPaginationAppointmentResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Appointment"
+            }
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": ["data", "hasNextPage"]
+      },
+      "AppointmentSatisticDto": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "number"
+          }
+        },
+        "required": ["count"]
+      },
+      "UpdateAppointmentDto": {
+        "type": "object",
+        "properties": {
+          "service": {
+            "$ref": "#/components/schemas/ServiceDto"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/ScheduleDto"
+          },
+          "specificTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "serviceAndScheduleIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceScheduleDto"
+            }
+          },
+          "customerRecord": {
+            "$ref": "#/components/schemas/CustomerRecordDto"
+          },
+          "status": {
+            "description": "Status of the appointment (1 = pending, 2 = inprogress, 3 = done)",
+            "example": 1,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusEnum"
+              }
+            ]
+          }
+        },
+        "required": ["status"]
       },
       "MessageDto": {
         "type": "object",

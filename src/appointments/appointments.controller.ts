@@ -82,7 +82,7 @@ export class AppointmentsController {
     );
   }
 
-  @Get()
+  @Get('staff')
   @ApiOkResponse({
     type: InfinityPaginationResponse(Appointment),
   })

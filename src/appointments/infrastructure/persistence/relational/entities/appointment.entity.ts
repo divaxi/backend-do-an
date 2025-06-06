@@ -1,3 +1,7 @@
+import { ServiceEntity } from '../../../../../services/infrastructure/persistence/relational/entities/service.entity';
+
+import { ScheduleEntity } from '../../../../../schedules/infrastructure/persistence/relational/entities/schedule.entity';
+
 import { CustomerRecordEntity } from '../../../../../customer-records/infrastructure/persistence/relational/entities/customer-record.entity';
 
 import {
@@ -7,6 +11,8 @@ import {
   UpdateDateColumn,
   ManyToOne,
   Column,
+  JoinColumn,
+  OneToOne,
 } from 'typeorm';
 import { EntityRelationalHelper } from '../../../../../utils/relational-entity-helper';
 import { StatusEnum } from '../../../../status.enum';
@@ -15,6 +21,13 @@ import { StatusEnum } from '../../../../status.enum';
   name: 'appointment',
 })
 export class AppointmentEntity extends EntityRelationalHelper {
+  @ManyToOne(() => ServiceEntity, { eager: true, nullable: false })
+  service: ServiceEntity;
+
+  @OneToOne(() => ScheduleEntity, { eager: true, nullable: false })
+  @JoinColumn()
+  schedule: ScheduleEntity;
+
   @Column({
     nullable: false,
     type: Date,

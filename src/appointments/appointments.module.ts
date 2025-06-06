@@ -1,3 +1,5 @@
+import { ServicesModule } from '../services/services.module';
+import { SchedulesModule } from '../schedules/schedules.module';
 import { CustomerRecordsModule } from '../customer-records/customer-records.module';
 import {
   // common
@@ -14,7 +16,8 @@ import { RelationalAppointmentPersistenceModule } from './infrastructure/persist
   imports: [
     // import modules, etc.
     RelationalAppointmentPersistenceModule,
-
+    ServicesModule,
+    SchedulesModule,
     CustomerRecordsModule,
     // ReceptionsModule,
     // AppointmentSchedulesModule,

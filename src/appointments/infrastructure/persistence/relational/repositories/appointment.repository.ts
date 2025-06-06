@@ -64,6 +64,25 @@ export class AppointmentRelationalRepository implements AppointmentRepository {
     return entities.map((entity) => AppointmentMapper.toDomain(entity));
   }
 
+  async findByStaffId({
+    staffId,
+    page,
+    limit,
+  }: {
+    staffId: string;
+    page: number;
+    limit: number;
+  }): Promise<Appointment[]> {
+    const entities = await this.appointmentRepository.find({
+      where: { schedule: { staff: { id: staffId } } },
+      order: { specificTime: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    return entities.map((entity) => AppointmentMapper.toDomain(entity));
+  }
+
   async findById(id: Appointment['id']): Promise<NullableType<Appointment>> {
     const entity = await this.appointmentRepository.findOne({
       where: { id },

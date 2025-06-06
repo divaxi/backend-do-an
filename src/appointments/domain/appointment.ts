@@ -1,9 +1,23 @@
+import { Service } from '../../services/domain/service';
+import { Schedule } from '../../schedules/domain/schedule';
 import { CustomerRecord } from '../../customer-records/domain/customer-record';
 import { ApiProperty } from '@nestjs/swagger';
 import { StatusEnum } from '../status.enum';
 import { IsEnum, IsNotEmpty } from 'class-validator';
 
 export class Appointment {
+  @ApiProperty({
+    type: () => Service,
+    nullable: false,
+  })
+  service: Service;
+
+  @ApiProperty({
+    type: () => Schedule,
+    nullable: false,
+  })
+  schedule: Schedule;
+
   @ApiProperty({
     type: () => Date,
     nullable: false,

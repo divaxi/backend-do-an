@@ -1,3 +1,7 @@
+import { ServiceDto } from '../../services/dto/service.dto';
+
+import { ScheduleDto } from '../../schedules/dto/schedule.dto';
+
 import { CustomerRecordDto } from '../../customer-records/dto/customer-record.dto';
 
 import {
@@ -53,6 +57,24 @@ class ServiceScheduleDto {
 }
 
 export class CreateAppointmentDto {
+  @ApiProperty({
+    required: true,
+    type: () => ServiceDto,
+  })
+  @ValidateNested()
+  @Type(() => ServiceDto)
+  @IsNotEmptyObject()
+  service: ServiceDto;
+
+  @ApiProperty({
+    required: true,
+    type: () => ScheduleDto,
+  })
+  @ValidateNested()
+  @Type(() => ScheduleDto)
+  @IsNotEmptyObject()
+  schedule: ScheduleDto;
+
   @ApiProperty({
     required: true,
     type: () => Date,

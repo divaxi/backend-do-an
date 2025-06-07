@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { AppointmentEntity } from '../../../../appointments/infrastructure/persistence/relational/entities/appointment.entity';
 import { faker } from '@faker-js/faker';
 import { StatusEnum as ReceptionStatus } from '../../../../receptions/status.enum';
+import { StatusEnum } from '../../../../appointments/status.enum';
 
 @Injectable()
 export class ReceptionSeedService {
@@ -22,6 +23,7 @@ export class ReceptionSeedService {
       const appointments = await this.appointmentRepository.find({
         where: {
           active: true,
+          status: StatusEnum.scheduled,
         },
       });
 

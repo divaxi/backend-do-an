@@ -4,7 +4,6 @@ import { ServiceSeedService } from './service/service-seed.service';
 import { ScheduleSeedService } from './schedule/schedule-seed.service';
 import { ReceptionSeedService } from './reception/reception-seed.service';
 import { FileSeedService } from './file/file-seed.service';
-import { AppointmentServiceSeedService } from './appointment-service/appointment-service-seed.service';
 import { AppointmentSeedService } from './appointment/appointment-seed.service';
 import { CustomerRecordSeedService } from './customer-record/customer-record-seed.service';
 import { RoleSeedService } from './role/role-seed.service';
@@ -32,8 +31,6 @@ const runSeed = async () => {
   await app.get(ScheduleSeedService).run();
 
   await app.get(AppointmentSeedService).run();
-
-  await app.get(AppointmentServiceSeedService).run();
 
   await app.get(ReceptionSeedService).run();
 

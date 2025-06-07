@@ -16,10 +16,15 @@ import { FindAllAppointmentsDto } from './dto/find-all-appointments.dto';
 import { TimeRangeDto } from './dto/time-range.dto';
 import { StatusEnum } from './status.enum';
 import { EnumerateCountAppointmentDto } from '../satistic/dto/count-order.dto';
-
+import { ServicesService } from '../services/services.service';
+import { SchedulesService } from '../schedules/schedules.service';
 @Injectable()
 export class AppointmentsService {
   constructor(
+    private readonly serviceService: ServicesService,
+
+    private readonly scheduleService: SchedulesService,
+
     private readonly customerRecordService: CustomerRecordsService,
     private readonly appointmentRepository: AppointmentRepository,
     private readonly eventEmitter: EventEmitter2,
@@ -39,12 +44,39 @@ export class AppointmentsService {
         },
       });
     }
+
+    const serviceObject = await this.serviceService.findById(
+      createAppointmentDto.service.id,
+    );
+    if (!serviceObject) {
+      throw new UnprocessableEntityException({
+        status: HttpStatus.UNPROCESSABLE_ENTITY,
+        errors: {
+          service: 'notExists',
+        },
+      });
+    }
+
+    const scheduleObject = await this.scheduleService.findById(
+      createAppointmentDto.schedule.id,
+    );
+    if (!scheduleObject) {
+      throw new UnprocessableEntityException({
+        status: HttpStatus.UNPROCESSABLE_ENTITY,
+        errors: {
+          schedule: 'notExists',
+        },
+      });
+    }
+
     const appointmentObject = await this.appointmentRepository.create({
       active: createAppointmentDto.active,
       note: createAppointmentDto.note,
       customerRecord: customerRecordObject,
       specificTime: createAppointmentDto.specificTime,
       status: StatusEnum.scheduled,
+      service: serviceObject,
+      schedule: scheduleObject,
     });
 
     this.eventEmitter.emit('appointment.created', {
@@ -76,6 +108,10 @@ export class AppointmentsService {
     });
   }
 
+  findByStaffId(query: { staffId: string; page: number; limit: number }) {
+    return this.appointmentRepository.findByStaffId(query);
+  }
+
   findById(id: Appointment['id']) {
     return this.appointmentRepository.findById(id);
   }
@@ -97,11 +133,11 @@ export class AppointmentsService {
   }
 
   countMonthByMonth(query: EnumerateCountAppointmentDto) {
-    return this.appointmentRepository.countDayByDay(query);
+    return this.appointmentRepository.countMonthByMonth(query);
   }
 
   countYearByYear(query: EnumerateCountAppointmentDto) {
-    return this.appointmentRepository.countDayByDay(query);
+    return this.appointmentRepository.countYearByYear(query);
   }
 
   async update(

@@ -14,8 +14,6 @@ import { CustomerRecordSeedModule } from './customer-record/customer-record-seed
 
 import { AppointmentSeedModule } from './appointment/appointment-seed.module';
 
-import { AppointmentServiceSeedModule } from './appointment-service/appointment-service-seed.module';
-
 import { FileSeedModule } from './file/file-seed.module';
 
 import { ReceptionSeedModule } from './reception/reception-seed.module';
@@ -34,7 +32,6 @@ import { TypeOrmConfigService } from '../../typeorm-config.service';
     ScheduleSeedModule,
     ReceptionSeedModule,
     FileSeedModule,
-    AppointmentServiceSeedModule,
     AppointmentSeedModule,
     CustomerRecordSeedModule,
     RoleSeedModule,

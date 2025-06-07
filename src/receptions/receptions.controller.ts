@@ -96,17 +96,28 @@ export class ReceptionsController {
     return this.receptionsService.findByAppointment(appointmentId);
   }
 
-  @Patch('checkin/:id')
+  @Patch('checkin/:id/:appointmentId')
   @ApiParam({
     name: 'id',
     type: String,
     required: true,
+    description: 'ID của reception cần check-in',
+  })
+  @ApiParam({
+    name: 'appointmentId',
+    type: String,
+    required: true,
+    description: 'ID của cuộc hẹn liên quan đến reception',
   })
   @ApiOkResponse({
+    description: 'Check-in thành công',
     type: Reception,
   })
-  checkin(@Param('id') id: string) {
-    return this.receptionsService.checkin(id);
+  checkin(
+    @Param('id') id: string,
+    @Param('appointmentId') appointmentId: string,
+  ) {
+    return this.receptionsService.checkin(id, appointmentId);
   }
 
   @Delete(':id')

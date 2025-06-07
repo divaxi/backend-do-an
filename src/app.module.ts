@@ -40,8 +40,6 @@ import { ServicesModule } from './services/services.module';
 
 import { CustomerRecordsModule } from './customer-records/customer-records.module';
 
-import { AppointmentServicesModule } from './appointment-services/appointment-services.module';
-
 import openAiConfig from './chatbot/config/open-ai.config';
 
 import { MessagesModule } from './messages/messages.module';
@@ -52,7 +50,6 @@ import { SatisticModule } from './satistic/satistic.module';
   imports: [
     MessagesModule,
     EventEmitterModule.forRoot(),
-    AppointmentServicesModule,
     CustomerRecordsModule,
     CustomerRecordsModule,
     ServicesModule,

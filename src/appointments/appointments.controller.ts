@@ -29,7 +29,7 @@ import { infinityPagination } from '../utils/infinity-pagination';
 import { FindAllAppointmentsDto } from './dto/find-all-appointments.dto';
 import { AppointmentSatisticDto } from './dto/satistic.dto';
 import { TimeRangeDto } from './dto/time-range.dto';
-
+import { FindAllAppointmentsByStaffDto } from './dto/find-by-staff.dto';
 @ApiTags('Appointments')
 @ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
@@ -52,7 +52,7 @@ export class AppointmentsController {
   @ApiOkResponse({
     type: InfinityPaginationResponse(Appointment),
   })
-  async findAll(
+  async findAllByCustomer(
     @Query() query: FindAllAppointmentsDto,
   ): Promise<InfinityPaginationResponseDto<Appointment>> {
     const startTime = query?.startTime;
@@ -77,6 +77,30 @@ export class AppointmentsController {
           page,
           limit,
         },
+      }),
+      { page, limit },
+    );
+  }
+
+  @Get('staff')
+  @ApiOkResponse({
+    type: InfinityPaginationResponse(Appointment),
+  })
+  async findAllByStaff(
+    @Query() query: FindAllAppointmentsByStaffDto,
+  ): Promise<InfinityPaginationResponseDto<Appointment>> {
+    const staffId = query.staffId;
+    const page = query?.page ?? 1;
+    let limit = query?.limit ?? 10;
+    if (limit > 50) {
+      limit = 50;
+    }
+
+    return infinityPagination(
+      await this.appointmentsService.findByStaffId({
+        staffId,
+        page,
+        limit,
       }),
       { page, limit },
     );

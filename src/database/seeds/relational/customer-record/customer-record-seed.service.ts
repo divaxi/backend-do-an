@@ -17,8 +17,10 @@ export class CustomerRecordSeedService {
     const count = await this.repository.count();
 
     if (count === 0) {
-      const users = await this.userRepository.find();
-      const repeater = 10;
+      const users = await this.userRepository.find({
+        where: { role: { id: 3 } },
+      });
+      const repeater = 4;
       const customerRecords: CustomerRecordEntity[] = Array.from(
         { length: repeater },
         () =>

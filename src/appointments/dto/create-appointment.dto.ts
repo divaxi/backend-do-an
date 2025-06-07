@@ -1,3 +1,7 @@
+import { ServiceDto } from '../../services/dto/service.dto';
+
+import { ScheduleDto } from '../../schedules/dto/schedule.dto';
+
 import { CustomerRecordDto } from '../../customer-records/dto/customer-record.dto';
 
 import {
@@ -13,8 +17,6 @@ import {
   IsNotEmptyObject,
   IsString,
   IsOptional,
-  ArrayMinSize,
-  IsNotEmpty,
   IsDate,
 } from 'class-validator';
 
@@ -23,36 +25,25 @@ import {
   ApiProperty,
 } from '@nestjs/swagger';
 
-class ServiceScheduleDto {
-  @ApiProperty({
-    required: true,
-    type: () => String,
-    example: 'serviceId',
-  })
-  @IsNotEmpty()
-  @IsString()
-  serviceId: string;
-
-  @ApiProperty({
-    required: true,
-    type: () => String,
-    example: 'scheduleId',
-  })
-  @IsNotEmpty()
-  @IsString()
-  scheduleId: string;
-
-  @ApiProperty({
-    required: true,
-    type: () => String,
-    example: 'staffId',
-  })
-  @IsNotEmpty()
-  @IsString()
-  staffId: string;
-}
-
 export class CreateAppointmentDto {
+  @ApiProperty({
+    required: true,
+    type: () => ServiceDto,
+  })
+  @ValidateNested()
+  @Type(() => ServiceDto)
+  @IsNotEmptyObject()
+  service: ServiceDto;
+
+  @ApiProperty({
+    required: true,
+    type: () => ScheduleDto,
+  })
+  @ValidateNested()
+  @Type(() => ScheduleDto)
+  @IsNotEmptyObject()
+  schedule: ScheduleDto;
+
   @ApiProperty({
     required: true,
     type: () => Date,
@@ -70,13 +61,6 @@ export class CreateAppointmentDto {
   @IsOptional()
   @IsString()
   note?: string | null;
-
-  @ApiProperty({
-    type: () => ServiceScheduleDto,
-    isArray: true,
-  })
-  @ArrayMinSize(1)
-  serviceAndScheduleIds: ServiceScheduleDto[];
 
   @ApiProperty({
     required: true,

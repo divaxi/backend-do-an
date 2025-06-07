@@ -21,6 +21,16 @@ export abstract class AppointmentRepository {
     paginationOptions: IPaginationOptions;
   }): Promise<Appointment[]>;
 
+  abstract findByStaffId({
+    staffId,
+    page,
+    limit,
+  }: {
+    staffId: string;
+    page: number;
+    limit: number;
+  }): Promise<Appointment[]>;
+
   abstract findById(id: Appointment['id']): Promise<NullableType<Appointment>>;
 
   abstract findByIds(ids: Appointment['id'][]): Promise<Appointment[]>;

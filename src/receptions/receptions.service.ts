@@ -99,9 +99,10 @@ export class ReceptionsService {
     return this.receptionRepository.findByAppointment(appointmentId);
   }
 
-  async checkin(id) {
+  async checkin(id: string, appointmentId: string) {
     const reception = await this.update(id, {
       status: StatusEnum.checkin,
+      checkinTime: new Date(),
     });
     if (!reception) {
       throw new UnprocessableEntityException({
@@ -111,12 +112,10 @@ export class ReceptionsService {
         },
       });
     }
-    const appointment = await this.appointmentService.update(
-      reception?.Appointment.id,
-      {
-        status: AppointmentStatuses.waiting,
-      },
-    );
+
+    const appointment = await this.appointmentService.update(appointmentId, {
+      status: AppointmentStatuses.waiting,
+    });
 
     if (!appointment) {
       throw new UnprocessableEntityException({

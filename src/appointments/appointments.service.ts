@@ -133,11 +133,11 @@ export class AppointmentsService {
   }
 
   countMonthByMonth(query: EnumerateCountAppointmentDto) {
-    return this.appointmentRepository.countDayByDay(query);
+    return this.appointmentRepository.countMonthByMonth(query);
   }
 
   countYearByYear(query: EnumerateCountAppointmentDto) {
-    return this.appointmentRepository.countDayByDay(query);
+    return this.appointmentRepository.countYearByYear(query);
   }
 
   async update(

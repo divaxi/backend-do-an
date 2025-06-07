@@ -1259,7 +1259,7 @@
         "tags": ["Receptions"]
       }
     },
-    "/api/v1/receptions/checkin/{id}": {
+    "/api/v1/receptions/checkin/{id}/{appointmentId}": {
       "patch": {
         "operationId": "ReceptionsController_checkin_v1",
         "parameters": [
@@ -1267,6 +1267,16 @@
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "ID của reception cần check-in",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "appointmentId",
+            "required": true,
+            "in": "path",
+            "description": "ID của cuộc hẹn liên quan đến reception",
             "schema": {
               "type": "string"
             }
@@ -1274,7 +1284,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "Check-in thành công",
             "content": {
               "application/json": {
                 "schema": {
@@ -2613,24 +2623,6 @@
         },
         "required": ["id"]
       },
-      "ServiceScheduleDto": {
-        "type": "object",
-        "properties": {
-          "serviceId": {
-            "type": "string",
-            "example": "serviceId"
-          },
-          "scheduleId": {
-            "type": "string",
-            "example": "scheduleId"
-          },
-          "staffId": {
-            "type": "string",
-            "example": "staffId"
-          }
-        },
-        "required": ["serviceId", "scheduleId", "staffId"]
-      },
       "CustomerRecordDto": {
         "type": "object",
         "properties": {
@@ -2656,23 +2648,11 @@
           "note": {
             "type": "string"
           },
-          "serviceAndScheduleIds": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ServiceScheduleDto"
-            }
-          },
           "customerRecord": {
             "$ref": "#/components/schemas/CustomerRecordDto"
           }
         },
-        "required": [
-          "service",
-          "schedule",
-          "specificTime",
-          "serviceAndScheduleIds",
-          "customerRecord"
-        ]
+        "required": ["service", "schedule", "specificTime", "customerRecord"]
       },
       "InfinityPaginationAppointmentResponseDto": {
         "type": "object",
@@ -2714,12 +2694,6 @@
           },
           "note": {
             "type": "string"
-          },
-          "serviceAndScheduleIds": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ServiceScheduleDto"
-            }
           },
           "customerRecord": {
             "$ref": "#/components/schemas/CustomerRecordDto"

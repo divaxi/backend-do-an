@@ -18,23 +18,31 @@ export class UserSeedService {
 
     if (count === 0) {
       const roles = await this.roleRepository.find();
-      const repeater = 10;
-      const admin = this.repository.create({
-        zaloId: faker.string.uuid(),
-        userName: `admin`,
-        phoneNumber: `0000000001`,
-        role: roles[0],
+
+      // Tạo người dùng với role roles[1]
+      const user1 = this.repository.create({
+        zaloId: '0000000001',
+        userName: faker.person.fullName(),
+        phoneNumber: '0000000001',
+        role: roles[1],
       });
-      await this.repository.save(admin);
-      const users = Array.from({ length: repeater }, () =>
-        this.repository.create({
-          zaloId: faker.string.uuid(),
-          userName: faker.person.fullName(),
-          phoneNumber: faker.phone.number({ style: 'national' }),
-          role: faker.helpers.arrayElement([roles[1], roles[2]]),
-        }),
-      );
-      await this.repository.save(users);
+
+      // Tạo người dùng với role roles[2]
+      const user2 = this.repository.create({
+        zaloId: '0000000002',
+        userName: faker.person.fullName(),
+        phoneNumber: '0000000002',
+        role: roles[2],
+      });
+
+      const user3 = this.repository.create({
+        zaloId: '0000000003',
+        userName: faker.person.fullName(),
+        phoneNumber: '0000000003',
+        role: roles[2],
+      });
+
+      await this.repository.save([user1, user2, user3]);
     }
   }
 }

@@ -38,25 +38,30 @@ export class AppointmentSeedService {
         },
       });
 
-      const repeater = 10;
+      const repeater = Math.min(4, schedules.length);
 
-      const appointments = Array.from({ length: repeater }, () =>
-        this.repository.create({
+      const availableSchedules = [...schedules];
+
+      const appointments = Array.from({ length: repeater }, () => {
+        const randomIndex = Math.floor(
+          Math.random() * availableSchedules.length,
+        );
+        const selectedSchedule = availableSchedules.splice(randomIndex, 1)[0];
+
+        return this.repository.create({
           customerRecord: faker.helpers.arrayElement(customerRecords),
           service: faker.helpers.arrayElement(services),
-          schedule: faker.helpers.arrayElement(schedules),
-          specificTime: faker.date.future({
-            years: 2025,
-            refDate: new Date(),
-          }),
+          schedule: selectedSchedule,
+          specificTime: selectedSchedule.startTime,
           note: faker.lorem.sentence({
             min: 10,
             max: 20,
           }),
           active: true,
           status: faker.helpers.enumValue(AppointmentStatus),
-        }),
-      );
+        });
+      });
+
       await this.repository.save(appointments);
     }
   }

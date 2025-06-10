@@ -1,24 +1,42 @@
+// file: message.dto.ts
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsBoolean, IsNotEmpty } from 'class-validator';
-// import { Transform } from 'class-transformer';
-// import { lowerCaseTransformer } from '../../utils/transformers/lower-case.transformer';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsBoolean,
+  IsString,
+  IsNotEmpty,
+  ValidateNested,
+} from 'class-validator';
+
+export class MessageContentDto {
+  @ApiProperty({ example: 'user' })
+  @IsString()
+  role: string;
+
+  @ApiProperty({ example: 'hahahahhah' })
+  @IsString()
+  content: string;
+}
 
 export class MessageDto {
   @ApiProperty({
-    example: {
-      role: 'user',
-      content: 'hahahahhah',
-    },
+    description: 'Danh sách nội dung tin nhắn của user',
+    type: [MessageContentDto],
+    example: [
+      {
+        role: 'user',
+        content: 'hahahahhah',
+      },
+    ],
   })
-  @IsNotEmpty()
   @IsArray()
-  content: {
-    role: string;
-    content: string;
-  }[];
+  @ValidateNested({ each: true })
+  @Type(() => MessageContentDto)
+  content: MessageContentDto[];
 
   @ApiProperty({
-    description: 'new to get chat context',
+    description: 'Dùng để xác định có lấy lịch sử tin nhắn không',
     example: true,
     type: Boolean,
   })

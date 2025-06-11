@@ -64,8 +64,9 @@ export class MessageRelationalRepository implements MessageRepository {
   async findByUser(id: User['id']): Promise<Message[]> {
     const entities = await this.messageRepository.find({
       skip: 1,
-      take: 20,
+      take: 6,
       where: { user: { id } },
+      order: { createdAt: 'DESC' },
     });
 
     return entities.map((entity) => MessageMapper.toDomain(entity));

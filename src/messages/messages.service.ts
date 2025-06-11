@@ -18,14 +18,10 @@ export class MessagesService {
   constructor(
     private readonly userService: UsersService,
 
-    // Dependencies here
     private readonly messageRepository: MessageRepository,
   ) {}
 
   async create(createMessageDto: CreateMessageDto) {
-    // Do not remove comment below.
-    // <creating-property />
-
     const userObject = await this.userService.findById(
       createMessageDto.user.id,
     );
@@ -40,8 +36,6 @@ export class MessagesService {
     const user = userObject;
 
     return this.messageRepository.create({
-      // Do not remove comment below.
-      // <creating-property-payload />
       role: createMessageDto.role,
 
       content: createMessageDto.content,
@@ -86,9 +80,6 @@ export class MessagesService {
 
     updateMessageDto: UpdateMessageDto,
   ) {
-    // Do not remove comment below.
-    // <updating-property />
-
     let user: User | undefined = undefined;
 
     if (updateMessageDto.user) {
@@ -107,8 +98,6 @@ export class MessagesService {
     }
 
     return this.messageRepository.update(id, {
-      // Do not remove comment below.
-      // <updating-property-payload />
       role: updateMessageDto.role,
 
       content: updateMessageDto.content,

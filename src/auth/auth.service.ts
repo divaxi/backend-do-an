@@ -1,7 +1,6 @@
 import {
   HttpStatus,
   Injectable,
-  InternalServerErrorException,
   UnauthorizedException,
   UnprocessableEntityException,
 } from '@nestjs/common';
@@ -65,16 +64,15 @@ export class AuthService {
         },
       },
     );
-
-    if (!zaloUser) {
-      throw new InternalServerErrorException({
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
+    if (!zaloUser || zaloUser.error) {
+      throw new UnauthorizedException({
+        status: HttpStatus.UNAUTHORIZED,
         errors: {
-          zaloUser: 'Something happened',
+          zaloUser: 'Cannot find zaloUser',
         },
       });
     }
-    const { id, name, picture } = zaloUser;
+    const { id } = zaloUser;
 
     let user = await this.usersService.findByZaloId(id);
 
@@ -86,7 +84,7 @@ export class AuthService {
       //   },
       // });
       const avatarObject = await this.fileService.create({
-        path: picture?.data?.url,
+        path: loginDto.avatar,
       });
 
       if (!avatarObject) {
@@ -100,7 +98,7 @@ export class AuthService {
 
       user = await this.usersService.create({
         zaloId: loginDto.zaloAccessToken,
-        userName: name,
+        userName: loginDto.name,
         phoneNumber: loginDto.phoneNumber,
         role: { id: RoleEnum.user },
         avatar: avatarObject,

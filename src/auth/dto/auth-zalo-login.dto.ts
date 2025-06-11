@@ -11,4 +11,12 @@ export class AuthZaloLoginDto {
   @ApiProperty({ example: '0000000001', type: String })
   @IsNotEmpty()
   phoneNumber: string;
+
+  @ApiProperty({ example: 'https://path/to/avatar', type: String })
+  @IsNotEmpty()
+  avatar: string;
+
+  @ApiProperty({ example: 'Gustav', type: String })
+  @IsNotEmpty()
+  name: string;
 }

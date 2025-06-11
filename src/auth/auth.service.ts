@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
   UnauthorizedException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import ms from 'ms';
 import crypto from 'crypto';
@@ -21,6 +22,7 @@ import { User } from '../users/domain/user';
 import { AuthZaloLoginDto } from './dto/auth-zalo-login.dto';
 import { RoleEnum } from '../roles/roles.enum';
 import axios from 'axios';
+import { FilesService } from '../files/files.service';
 
 @Injectable()
 export class AuthService {
@@ -29,6 +31,7 @@ export class AuthService {
     private usersService: UsersService,
     private sessionService: SessionService,
     private configService: ConfigService<AllConfigType>,
+    private fileService: FilesService,
   ) {}
 
   async validateLogin(loginDto: AuthZaloLoginDto): Promise<LoginResponseDto> {
@@ -71,7 +74,7 @@ export class AuthService {
         },
       });
     }
-    const { id, name } = zaloUser;
+    const { id, name, picture } = zaloUser;
 
     let user = await this.usersService.findByZaloId(id);
 
@@ -82,11 +85,25 @@ export class AuthService {
       //     email: 'notFound',
       //   },
       // });
+      const avatarObject = await this.fileService.create({
+        path: picture?.data?.url,
+      });
+
+      if (!avatarObject) {
+        throw new UnprocessableEntityException({
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          errors: {
+            avatar: 'notFound',
+          },
+        });
+      }
+
       user = await this.usersService.create({
         zaloId: loginDto.zaloAccessToken,
         userName: name,
         phoneNumber: loginDto.zaloAccessToken,
         role: { id: RoleEnum.user },
+        avatar: avatarObject,
       });
     }
     const hash = crypto

@@ -11,8 +11,6 @@ export class FilesService {
 
   create(createFileDto: CreateFileDto) {
     return this.fileRepository.create({
-      // Do not remove comment below.
-      // <creating-property-payload />
       path: createFileDto.path,
     });
   }

@@ -2781,9 +2781,13 @@
           "zaloAccessToken": {
             "type": "string",
             "example": "1231234"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "0000000001"
           }
         },
-        "required": ["zaloAccessToken"]
+        "required": ["zaloAccessToken", "phoneNumber"]
       },
       "LoginResponseDto": {
         "type": "object",

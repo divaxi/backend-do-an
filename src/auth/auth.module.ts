@@ -8,9 +8,16 @@ import { AnonymousStrategy } from './strategies/anonymous.strategy';
 import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 import { SessionModule } from '../session/session.module';
 import { UsersModule } from '../users/users.module';
+import { FilesModule } from '../files/files.module';
 
 @Module({
-  imports: [UsersModule, SessionModule, PassportModule, JwtModule.register({})],
+  imports: [
+    UsersModule,
+    FilesModule,
+    SessionModule,
+    PassportModule,
+    JwtModule.register({}),
+  ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, JwtRefreshStrategy, AnonymousStrategy],
   exports: [AuthService],

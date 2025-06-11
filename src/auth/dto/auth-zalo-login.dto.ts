@@ -8,7 +8,7 @@ export class AuthZaloLoginDto {
   @IsNotEmpty()
   zaloAccessToken: string;
 
-  // @ApiProperty()
-  // @IsNotEmpty()
-  // password: string;
+  @ApiProperty({ example: '0000000001', type: String })
+  @IsNotEmpty()
+  phoneNumber: string;
 }

@@ -70,7 +70,7 @@ export class AuthService {
       throw new InternalServerErrorException({
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         errors: {
-          email: 'something happened',
+          zaloUser: 'Something happened',
         },
       });
     }
@@ -101,7 +101,7 @@ export class AuthService {
       user = await this.usersService.create({
         zaloId: loginDto.zaloAccessToken,
         userName: name,
-        phoneNumber: loginDto.zaloAccessToken,
+        phoneNumber: loginDto.phoneNumber,
         role: { id: RoleEnum.user },
         avatar: avatarObject,
       });

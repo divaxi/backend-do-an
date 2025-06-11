@@ -1,20 +1,13 @@
 import {
-  // HttpStatus,
+  HttpStatus,
   Injectable,
-  // NotFoundException,
+  InternalServerErrorException,
   UnauthorizedException,
-  // UnprocessableEntityException,
 } from '@nestjs/common';
 import ms from 'ms';
 import crypto from 'crypto';
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
 import { JwtService } from '@nestjs/jwt';
-// import bcrypt from 'bcryptjs';
-// import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
-// import { AuthUpdateDto } from './dto/auth-update.dto';
-// import { AuthProvidersEnum } from './auth-providers.enum';
-// import { SocialInterface } from '../social/interfaces/social.interface';
-// import { AuthRegisterLoginDto } from './dto/auth-register-login.dto';
 import { NullableType } from '../utils/types/nullable.type';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { ConfigService } from '@nestjs/config';
@@ -22,14 +15,12 @@ import { JwtRefreshPayloadType } from './strategies/types/jwt-refresh-payload.ty
 import { JwtPayloadType } from './strategies/types/jwt-payload.type';
 import { UsersService } from '../users/users.service';
 import { AllConfigType } from '../config/config.type';
-// import { MailService } from '../mail/mail.service';
-// import { RoleEnum } from '../roles/roles.enum';
 import { Session } from '../session/domain/session';
 import { SessionService } from '../session/session.service';
-// import { StatusEnum } from '../statuses/statuses.enum';
 import { User } from '../users/domain/user';
 import { AuthZaloLoginDto } from './dto/auth-zalo-login.dto';
 import { RoleEnum } from '../roles/roles.enum';
+import axios from 'axios';
 
 @Injectable()
 export class AuthService {
@@ -41,7 +32,48 @@ export class AuthService {
   ) {}
 
   async validateLogin(loginDto: AuthZaloLoginDto): Promise<LoginResponseDto> {
-    let user = await this.usersService.findByZaloId(loginDto.zaloAccessToken);
+    const zaloAppSecret = this.configService.getOrThrow<string>(
+      'zalo.zaloAppSecretKey',
+      {
+        infer: true,
+      },
+    );
+
+    const calculateHMacSHA256 = (data: string, secretKey: string) => {
+      const hmac = crypto.createHmac('sha256', secretKey);
+      hmac.update(data);
+      return hmac.digest('hex');
+    };
+
+    const appsecretProof = calculateHMacSHA256(
+      loginDto.zaloAccessToken,
+      zaloAppSecret,
+    );
+
+    const { data: zaloUser } = await axios.get(
+      'https://graph.zalo.me/v2.0/me',
+      {
+        headers: {
+          access_token: loginDto.zaloAccessToken,
+          appsecret_proof: appsecretProof,
+        },
+        params: {
+          fields: 'id,name,birthday,picture',
+        },
+      },
+    );
+
+    if (!zaloUser) {
+      throw new InternalServerErrorException({
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        errors: {
+          email: 'something happened',
+        },
+      });
+    }
+    const { id, name } = zaloUser;
+
+    let user = await this.usersService.findByZaloId(id);
 
     if (!user) {
       // throw new UnprocessableEntityException({
@@ -52,7 +84,7 @@ export class AuthService {
       // });
       user = await this.usersService.create({
         zaloId: loginDto.zaloAccessToken,
-        userName: 'Gustav',
+        userName: name,
         phoneNumber: loginDto.zaloAccessToken,
         role: { id: RoleEnum.user },
       });

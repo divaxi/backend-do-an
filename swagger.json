@@ -1,0 +1,3035 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/v1/users": {
+      "post": {
+        "operationId": "UsersController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      },
+      "get": {
+        "operationId": "UsersController_findAll_v1",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "filters",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfinityPaginationUserResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/v1/users/{id}": {
+      "get": {
+        "operationId": "UsersController_findOne_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      },
+      "patch": {
+        "operationId": "UsersController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      },
+      "delete": {
+        "operationId": "UsersController_remove_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/v1/assign": {
+      "post": {
+        "operationId": "FilesController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileType"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Files"
+        ]
+      }
+    },
+    "/api/v1/files/upload": {
+      "post": {
+        "operationId": "FilesLocalController_uploadFile_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Files"
+        ]
+      }
+    },
+    "/api/v1/customer-records": {
+      "post": {
+        "operationId": "CustomerRecordsController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCustomerRecordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerRecord"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Customerrecords"
+        ]
+      },
+      "get": {
+        "operationId": "CustomerRecordsController_findAll_v1",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfinityPaginationCustomerRecordResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Customerrecords"
+        ]
+      }
+    },
+    "/api/v1/customer-records/user/{userId}": {
+      "get": {
+        "operationId": "CustomerRecordsController_findByUser_v1",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomerRecord"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Customerrecords"
+        ]
+      }
+    },
+    "/api/v1/customer-records/{id}": {
+      "get": {
+        "operationId": "CustomerRecordsController_findById_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerRecord"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Customerrecords"
+        ]
+      },
+      "patch": {
+        "operationId": "CustomerRecordsController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCustomerRecordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerRecord"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Customerrecords"
+        ]
+      },
+      "delete": {
+        "operationId": "CustomerRecordsController_remove_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Customerrecords"
+        ]
+      }
+    },
+    "/api/v1/services": {
+      "post": {
+        "operationId": "ServicesController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateServiceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Services"
+        ]
+      },
+      "get": {
+        "operationId": "ServicesController_findAll_v1",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfinityPaginationServiceResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Services"
+        ]
+      }
+    },
+    "/api/v1/services/{id}": {
+      "get": {
+        "operationId": "ServicesController_findById_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Services"
+        ]
+      },
+      "patch": {
+        "operationId": "ServicesController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateServiceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Services"
+        ]
+      },
+      "delete": {
+        "operationId": "ServicesController_remove_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Services"
+        ]
+      }
+    },
+    "/api/v1/schedules": {
+      "post": {
+        "operationId": "SchedulesController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateScheduleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Schedule"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Schedules"
+        ]
+      },
+      "get": {
+        "operationId": "SchedulesController_findAll_v1",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "staffId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfinityPaginationScheduleResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Schedules"
+        ]
+      }
+    },
+    "/api/v1/schedules/by-day": {
+      "get": {
+        "operationId": "SchedulesController_findByDay_v1",
+        "parameters": [
+          {
+            "name": "date",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Schedule"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Schedules"
+        ]
+      }
+    },
+    "/api/v1/schedules/{id}": {
+      "get": {
+        "operationId": "SchedulesController_findById_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Schedule"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Schedules"
+        ]
+      },
+      "patch": {
+        "operationId": "SchedulesController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateScheduleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Schedule"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Schedules"
+        ]
+      },
+      "delete": {
+        "operationId": "SchedulesController_remove_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Schedules"
+        ]
+      }
+    },
+    "/api/v1/schedules/staff/{staffId}": {
+      "get": {
+        "operationId": "SchedulesController_findByStaff_v1",
+        "parameters": [
+          {
+            "name": "staffId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Schedule"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Schedules"
+        ]
+      }
+    },
+    "/api/v1/staffs": {
+      "post": {
+        "operationId": "StaffsController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStaffDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Staff"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staffs"
+        ]
+      },
+      "get": {
+        "operationId": "StaffsController_findAll_v1",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfinityPaginationStaffResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staffs"
+        ]
+      }
+    },
+    "/api/v1/staffs/user/{id}": {
+      "get": {
+        "operationId": "StaffsController_findByUser_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Staff"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staffs"
+        ]
+      }
+    },
+    "/api/v1/staffs/{id}": {
+      "get": {
+        "operationId": "StaffsController_findById_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Staff"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staffs"
+        ]
+      },
+      "patch": {
+        "operationId": "StaffsController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStaffDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Staff"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staffs"
+        ]
+      },
+      "delete": {
+        "operationId": "StaffsController_remove_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staffs"
+        ]
+      }
+    },
+    "/api/v1/receptions": {
+      "post": {
+        "operationId": "ReceptionsController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReceptionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reception"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Receptions"
+        ]
+      },
+      "get": {
+        "operationId": "ReceptionsController_findAll_v1",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfinityPaginationReceptionResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Receptions"
+        ]
+      }
+    },
+    "/api/v1/receptions/{id}": {
+      "get": {
+        "operationId": "ReceptionsController_findById_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reception"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Receptions"
+        ]
+      },
+      "delete": {
+        "operationId": "ReceptionsController_remove_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Receptions"
+        ]
+      }
+    },
+    "/api/v1/receptions/appointment/{appointmentId}": {
+      "get": {
+        "operationId": "ReceptionsController_findByAppointment_v1",
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reception"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Receptions"
+        ]
+      }
+    },
+    "/api/v1/receptions/checkin/{id}/{appointmentId}": {
+      "patch": {
+        "operationId": "ReceptionsController_checkin_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID của reception cần check-in",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "appointmentId",
+            "required": true,
+            "in": "path",
+            "description": "ID của cuộc hẹn liên quan đến reception",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Check-in thành công",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reception"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Receptions"
+        ]
+      }
+    },
+    "/api/v1/appointments": {
+      "post": {
+        "operationId": "AppointmentsController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAppointmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointment"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ]
+      },
+      "get": {
+        "operationId": "AppointmentsController_findAllByCustomer_v1",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "startTime",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "endTime",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfinityPaginationAppointmentResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ]
+      }
+    },
+    "/api/v1/appointments/staff": {
+      "get": {
+        "operationId": "AppointmentsController_findAllByStaff_v1",
+        "parameters": [
+          {
+            "name": "staffId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfinityPaginationAppointmentResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ]
+      }
+    },
+    "/api/v1/appointments/countCustomer": {
+      "get": {
+        "operationId": "AppointmentsController_countByCustomer_v1",
+        "parameters": [
+          {
+            "name": "startTime",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "endTime",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppointmentSatisticDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ]
+      }
+    },
+    "/api/v1/appointments/count": {
+      "get": {
+        "operationId": "AppointmentsController_count_v1",
+        "parameters": [
+          {
+            "name": "startTime",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "endTime",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppointmentSatisticDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ]
+      }
+    },
+    "/api/v1/appointments/{id}": {
+      "get": {
+        "operationId": "AppointmentsController_findById_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointment"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ]
+      },
+      "patch": {
+        "operationId": "AppointmentsController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAppointmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointment"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ]
+      },
+      "delete": {
+        "operationId": "AppointmentsController_remove_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ]
+      }
+    },
+    "/api/v1/bot/chat": {
+      "post": {
+        "operationId": "ChatbotController_ask_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatbotResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Chatbot"
+        ]
+      }
+    },
+    "/api/v1/satistic/count-order": {
+      "get": {
+        "operationId": "SatisticController_countOrderByTime_v1",
+        "parameters": [
+          {
+            "name": "enumerateBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startDate",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnumerateResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Satistic"
+        ]
+      }
+    },
+    "/api/v1/auth/zalo/login": {
+      "post": {
+        "operationId": "AuthController_login_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthZaloLoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "operationId": "AuthController_me_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/refresh": {
+      "post": {
+        "operationId": "AuthController_refresh_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "operationId": "AuthController_logout_v1",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/": {
+      "get": {
+        "operationId": "HomeController_appInfo",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Home"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "API",
+    "description": "API docs",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "FileDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "RoleDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "object",
+            "example": 1
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "phoneNumber": {
+            "type": "string",
+            "example": "1234567890"
+          },
+          "userName": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "avatar": {
+            "$ref": "#/components/schemas/FileDto"
+          },
+          "role": {
+            "$ref": "#/components/schemas/RoleDto"
+          }
+        },
+        "required": [
+          "phoneNumber",
+          "userName"
+        ]
+      },
+      "FileType": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "cbcfa8b8-3a25-4adb-a9c6-e325f0d0f3ae"
+          },
+          "path": {
+            "type": "string",
+            "example": "https://example.com/path/to/file.jpg"
+          }
+        },
+        "required": [
+          "id",
+          "path"
+        ]
+      },
+      "Role": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string",
+            "example": "admin"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "zaloId": {
+            "type": "string",
+            "example": "1234567890"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "1234567890"
+          },
+          "userName": {
+            "type": "string",
+            "example": "John"
+          },
+          "avatar": {
+            "example": "avatar image link",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FileType"
+              }
+            ]
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "deletedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "zaloId",
+          "phoneNumber",
+          "userName",
+          "avatar",
+          "role",
+          "createdAt",
+          "updatedAt",
+          "deletedAt"
+        ]
+      },
+      "InfinityPaginationUserResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            }
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "data",
+          "hasNextPage"
+        ]
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {
+          "phoneNumber": {
+            "type": "string",
+            "example": "1234567890"
+          },
+          "userName": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "avatar": {
+            "$ref": "#/components/schemas/FileDto"
+          },
+          "role": {
+            "$ref": "#/components/schemas/RoleDto"
+          }
+        }
+      },
+      "CreateFileDto": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "example": "https://example.com/path/to/file.jpg"
+          }
+        },
+        "required": [
+          "path"
+        ]
+      },
+      "FileResponseDto": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "$ref": "#/components/schemas/FileType"
+          }
+        },
+        "required": [
+          "file"
+        ]
+      },
+      "CreateCustomerRecordDto": {
+        "type": "object",
+        "properties": {
+          "BHYTNumber": {
+            "type": "string"
+          },
+          "CCCDNumber": {
+            "type": "string"
+          },
+          "DOB": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "sex": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "DOB",
+          "sex",
+          "fullName"
+        ]
+      },
+      "CustomerRecord": {
+        "type": "object",
+        "properties": {
+          "active": {
+            "type": "boolean",
+            "nullable": false
+          },
+          "BHYTNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "CCCDNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "DOB": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": false
+          },
+          "sex": {
+            "type": "string",
+            "nullable": false
+          },
+          "fullName": {
+            "type": "string",
+            "nullable": false
+          },
+          "user": {
+            "nullable": false,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "active",
+          "BHYTNumber",
+          "CCCDNumber",
+          "DOB",
+          "sex",
+          "fullName",
+          "user",
+          "id",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "InfinityPaginationCustomerRecordResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerRecord"
+            }
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "data",
+          "hasNextPage"
+        ]
+      },
+      "UpdateCustomerRecordDto": {
+        "type": "object",
+        "properties": {
+          "BHYTNumber": {
+            "type": "string"
+          },
+          "CCCDNumber": {
+            "type": "string"
+          },
+          "DOB": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "sex": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          }
+        }
+      },
+      "ImageDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateServiceDto": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "$ref": "#/components/schemas/ImageDto"
+          },
+          "price": {
+            "type": "number"
+          },
+          "description": {
+            "type": "string"
+          },
+          "serviceName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "serviceName"
+        ]
+      },
+      "Service": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FileType"
+              }
+            ]
+          },
+          "price": {
+            "type": "number",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "serviceName": {
+            "type": "string",
+            "nullable": false
+          },
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "image",
+          "price",
+          "description",
+          "serviceName",
+          "id",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "InfinityPaginationServiceResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Service"
+            }
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "data",
+          "hasNextPage"
+        ]
+      },
+      "UpdateServiceDto": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "$ref": "#/components/schemas/ImageDto"
+          },
+          "price": {
+            "type": "number"
+          },
+          "description": {
+            "type": "string"
+          },
+          "serviceName": {
+            "type": "string"
+          }
+        }
+      },
+      "StaffDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "CreateScheduleDto": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string"
+          },
+          "endTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "startTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "staff": {
+            "$ref": "#/components/schemas/StaffDto"
+          }
+        },
+        "required": [
+          "endTime",
+          "startTime",
+          "staff"
+        ]
+      },
+      "Staff": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "specialization": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string"
+          },
+          "user": {
+            "example": "userId",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "note",
+          "specialization",
+          "id",
+          "user",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "Schedule": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "active": {
+            "type": "boolean",
+            "nullable": false
+          },
+          "endTime": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": false
+          },
+          "startTime": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": false
+          },
+          "staff": {
+            "nullable": false,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Staff"
+              }
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "note",
+          "active",
+          "endTime",
+          "startTime",
+          "staff",
+          "id",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "InfinityPaginationScheduleResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Schedule"
+            }
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "data",
+          "hasNextPage"
+        ]
+      },
+      "UpdateScheduleDto": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string"
+          },
+          "endTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "startTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "staff": {
+            "$ref": "#/components/schemas/StaffDto"
+          }
+        }
+      },
+      "CreateStaffDto": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string"
+          },
+          "specialization": {
+            "type": "string"
+          }
+        }
+      },
+      "InfinityPaginationStaffResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Staff"
+            }
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "data",
+          "hasNextPage"
+        ]
+      },
+      "UpdateStaffDto": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string"
+          },
+          "specialization": {
+            "type": "string"
+          }
+        }
+      },
+      "AppointmentDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "CreateReceptionDto": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string"
+          },
+          "checkinTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "Appointment": {
+            "$ref": "#/components/schemas/AppointmentDto"
+          }
+        },
+        "required": [
+          "Appointment"
+        ]
+      },
+      "StatusEnum": {
+        "type": "number",
+        "enum": [
+          1,
+          2
+        ],
+        "description": "Status of the appointment (1 = notCheckin, 2 = checkin)"
+      },
+      "Appointment": {
+        "type": "object",
+        "properties": {
+          "service": {
+            "nullable": false,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Service"
+              }
+            ]
+          },
+          "schedule": {
+            "nullable": false,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Schedule"
+              }
+            ]
+          },
+          "specificTime": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": false
+          },
+          "active": {
+            "type": "boolean",
+            "nullable": false
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "description": "Status of the appointment (1 = pending, 2 = inprogress, 3 = done)",
+            "example": 1,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusEnum"
+              }
+            ]
+          },
+          "customerRecord": {
+            "nullable": false,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerRecord"
+              }
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "service",
+          "schedule",
+          "specificTime",
+          "active",
+          "note",
+          "status",
+          "customerRecord",
+          "id",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "Reception": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "description": "Status of the appointment (1 = notCheckin, 2 = checkin)",
+            "example": 1,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusEnum"
+              }
+            ]
+          },
+          "checkinTime": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "Appointment": {
+            "nullable": false,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Appointment"
+              }
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "note",
+          "status",
+          "checkinTime",
+          "Appointment",
+          "id",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "InfinityPaginationReceptionResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Reception"
+            }
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "data",
+          "hasNextPage"
+        ]
+      },
+      "ServiceDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "ScheduleDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "CustomerRecordDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "CreateAppointmentDto": {
+        "type": "object",
+        "properties": {
+          "service": {
+            "$ref": "#/components/schemas/ServiceDto"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/ScheduleDto"
+          },
+          "specificTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "customerRecord": {
+            "$ref": "#/components/schemas/CustomerRecordDto"
+          }
+        },
+        "required": [
+          "service",
+          "schedule",
+          "specificTime",
+          "customerRecord"
+        ]
+      },
+      "InfinityPaginationAppointmentResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Appointment"
+            }
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "data",
+          "hasNextPage"
+        ]
+      },
+      "AppointmentSatisticDto": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "count"
+        ]
+      },
+      "UpdateAppointmentDto": {
+        "type": "object",
+        "properties": {
+          "service": {
+            "$ref": "#/components/schemas/ServiceDto"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/ScheduleDto"
+          },
+          "specificTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "customerRecord": {
+            "$ref": "#/components/schemas/CustomerRecordDto"
+          },
+          "status": {
+            "description": "Status of the appointment (1 = pending, 2 = inprogress, 3 = done)",
+            "example": 1,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusEnum"
+              }
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "MessageContentDto": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "example": "user"
+          },
+          "content": {
+            "type": "string",
+            "example": "hahahahhah"
+          }
+        },
+        "required": [
+          "role",
+          "content"
+        ]
+      },
+      "MessageDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "description": "Danh sách nội dung tin nhắn của user",
+            "example": [
+              {
+                "role": "user",
+                "content": "hahahahhah"
+              }
+            ],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageContentDto"
+            }
+          },
+          "initiate": {
+            "type": "boolean",
+            "description": "Dùng để xác định có lấy lịch sử tin nhắn không",
+            "example": true
+          }
+        },
+        "required": [
+          "content",
+          "initiate"
+        ]
+      },
+      "ChatbotResponseDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "example": "This is message response from chatbot"
+          }
+        },
+        "required": [
+          "content"
+        ]
+      },
+      "EnumerateResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "AuthZaloLoginDto": {
+        "type": "object",
+        "properties": {
+          "zaloAccessToken": {
+            "type": "string",
+            "example": "1231234"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "0000000001"
+          },
+          "avatar": {
+            "type": "string",
+            "example": "https://path/to/avatar"
+          },
+          "name": {
+            "type": "string",
+            "example": "Gustav"
+          }
+        },
+        "required": [
+          "zaloAccessToken",
+          "phoneNumber",
+          "avatar",
+          "name"
+        ]
+      },
+      "LoginResponseDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          },
+          "tokenExpires": {
+            "type": "number"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "required": [
+          "token",
+          "refreshToken",
+          "tokenExpires",
+          "user"
+        ]
+      },
+      "RefreshResponseDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          },
+          "tokenExpires": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "token",
+          "refreshToken",
+          "tokenExpires"
+        ]
+      }
+    }
+  }
+}

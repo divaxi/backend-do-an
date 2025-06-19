@@ -72,6 +72,26 @@ export class AuthService {
         },
       });
     }
+
+    const { data: phoneNumber } = await axios.get(
+      'https://graph.zalo.me/v2.0/me/info',
+      {
+        headers: {
+          access_token: loginDto.zaloAccessToken,
+          code: loginDto.phoneNumber,
+          secret_key: zaloAppSecret,
+        },
+      },
+    );
+    if (!phoneNumber || phoneNumber.error) {
+      throw new UnauthorizedException({
+        status: HttpStatus.UNAUTHORIZED,
+        errors: {
+          phoneNumber: 'Cannot find userPhoneNumber',
+        },
+      });
+    }
+
     const { id } = zaloUser;
 
     let user = await this.usersService.findByZaloId(id);
@@ -99,7 +119,7 @@ export class AuthService {
       user = await this.usersService.create({
         zaloId: loginDto.zaloAccessToken,
         userName: loginDto.name,
-        phoneNumber: loginDto.phoneNumber,
+        phoneNumber: phoneNumber.number,
         role: { id: RoleEnum.user },
         avatar: avatarObject,
       });

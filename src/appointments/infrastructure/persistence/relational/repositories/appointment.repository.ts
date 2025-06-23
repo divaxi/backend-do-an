@@ -74,8 +74,9 @@ export class AppointmentRelationalRepository implements AppointmentRepository {
     page: number;
     limit: number;
   }): Promise<Appointment[]> {
+    console.log('>>>>>>>>>', staffId);
     const entities = await this.appointmentRepository.find({
-      where: { schedule: { staff: { id: staffId }, active: true } },
+      where: { schedule: { staff: { id: staffId } } },
       order: { specificTime: 'DESC' },
       skip: (page - 1) * limit,
       take: limit,

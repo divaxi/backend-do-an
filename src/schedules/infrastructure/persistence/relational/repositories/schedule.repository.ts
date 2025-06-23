@@ -7,7 +7,6 @@ import { Schedule } from '../../../../domain/schedule';
 import { ScheduleRepository } from '../../schedule.repository';
 import { ScheduleMapper } from '../mappers/schedule.mapper';
 import { IPaginationOptions } from '../../../../../utils/types/pagination-options';
-import { endOfDay, startOfDay } from 'date-fns';
 
 @Injectable()
 export class ScheduleRelationalRepository implements ScheduleRepository {
@@ -41,10 +40,9 @@ export class ScheduleRelationalRepository implements ScheduleRepository {
     const entities = await this.scheduleRepository.find({
       where: {
         staff: { id: staffId },
-        startTime: Between(startOfDay(new Date()), endOfDay(new Date())),
         active: true,
       },
-      order: { startTime: 'ASC' },
+      order: { startTime: 'DESC' },
       skip: (paginationOptions.page - 1) * paginationOptions.limit,
       take: paginationOptions.limit,
     });

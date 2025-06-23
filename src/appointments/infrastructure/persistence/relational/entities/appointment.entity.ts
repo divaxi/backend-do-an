@@ -54,7 +54,11 @@ export class AppointmentEntity extends EntityRelationalHelper {
   })
   status: StatusEnum;
 
-  @ManyToOne(() => CustomerRecordEntity, { eager: true, nullable: false })
+  @ManyToOne(() => CustomerRecordEntity, {
+    eager: true,
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
   customerRecord: CustomerRecordEntity;
 
   @PrimaryGeneratedColumn('uuid')

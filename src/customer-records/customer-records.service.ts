@@ -45,8 +45,6 @@ export class CustomerRecordsService {
     }
 
     return this.customerRecordRepository.create({
-      // Do not remove comment below.
-      // <creating-property-payload />
       active: createCustomerRecordDto.active,
 
       BHYTNumber: createCustomerRecordDto.BHYTNumber,

@@ -155,6 +155,6 @@ export class AppointmentsService {
   }
 
   remove(id: Appointment['id']) {
-    return this.appointmentRepository.remove(id);
+    return this.appointmentRepository.update(id, { active: false });
   }
 }

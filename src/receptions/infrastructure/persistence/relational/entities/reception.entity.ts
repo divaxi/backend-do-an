@@ -35,7 +35,11 @@ export class ReceptionEntity extends EntityRelationalHelper {
   })
   checkinTime?: Date | null;
 
-  @OneToOne(() => AppointmentEntity, { eager: true, nullable: false })
+  @OneToOne(() => AppointmentEntity, {
+    eager: true,
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
   @JoinColumn()
   Appointment: AppointmentEntity;
 

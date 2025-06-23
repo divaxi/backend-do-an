@@ -79,7 +79,7 @@ export class ScheduleRelationalRepository implements ScheduleRepository {
         start,
         end,
       })
-      .andWhere('schedule.active = true')
+      .andWhere('schedule.active = true', { active: true })
       .orderBy('schedule.startTime', 'ASC')
       .getMany();
 

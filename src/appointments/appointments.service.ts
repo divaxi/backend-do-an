@@ -57,8 +57,11 @@ export class AppointmentsService {
       });
     }
 
-    const scheduleObject = await this.scheduleService.findById(
+    const scheduleObject = await this.scheduleService.update(
       createAppointmentDto.schedule.id,
+      {
+        active: false,
+      },
     );
     if (!scheduleObject) {
       throw new UnprocessableEntityException({
@@ -154,7 +157,36 @@ export class AppointmentsService {
     });
   }
 
-  remove(id: Appointment['id']) {
-    return this.appointmentRepository.update(id, { active: false });
+  async remove(id: Appointment['id']) {
+    const appointmentObject = await this.appointmentRepository.update(id, {
+      active: false,
+    });
+
+    if (!appointmentObject) {
+      throw new UnprocessableEntityException({
+        status: HttpStatus.UNPROCESSABLE_ENTITY,
+        errors: {
+          appintment: 'notExists',
+        },
+      });
+    }
+
+    const scheduleObject = await this.scheduleService.update(
+      appointmentObject.schedule.id,
+      {
+        active: true,
+      },
+    );
+
+    if (!scheduleObject) {
+      throw new UnprocessableEntityException({
+        status: HttpStatus.UNPROCESSABLE_ENTITY,
+        errors: {
+          schedule: 'notExists',
+        },
+      });
+    }
+
+    return appointmentObject;
   }
 }

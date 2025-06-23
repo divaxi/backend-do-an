@@ -44,6 +44,7 @@ export class AppointmentRelationalRepository implements AppointmentRepository {
           id: userId,
         },
       },
+      active: true,
     };
 
     if (status) {
@@ -74,7 +75,7 @@ export class AppointmentRelationalRepository implements AppointmentRepository {
     limit: number;
   }): Promise<Appointment[]> {
     const entities = await this.appointmentRepository.find({
-      where: { schedule: { staff: { id: staffId } } },
+      where: { schedule: { staff: { id: staffId }, active: true } },
       order: { specificTime: 'DESC' },
       skip: (page - 1) * limit,
       take: limit,

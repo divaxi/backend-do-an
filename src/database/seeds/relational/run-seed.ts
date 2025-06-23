@@ -2,10 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { StaffSeedService } from './staff/staff-seed.service';
 import { ServiceSeedService } from './service/service-seed.service';
 import { ScheduleSeedService } from './schedule/schedule-seed.service';
-import { ReceptionSeedService } from './reception/reception-seed.service';
+// import { ReceptionSeedService } from './reception/reception-seed.service';
 import { FileSeedService } from './file/file-seed.service';
-import { AppointmentSeedService } from './appointment/appointment-seed.service';
-import { CustomerRecordSeedService } from './customer-record/customer-record-seed.service';
+// import { AppointmentSeedService } from './appointment/appointment-seed.service';
+// import { CustomerRecordSeedService } from './customer-record/customer-record-seed.service';
 import { RoleSeedService } from './role/role-seed.service';
 import { SeedModule } from './seed.module';
 import { UserSeedService } from './user/user-seed.service';
@@ -22,7 +22,7 @@ const runSeed = async () => {
 
   await app.get(UserSeedService).run();
 
-  await app.get(CustomerRecordSeedService).run();
+  // await app.get(CustomerRecordSeedService).run();
 
   await app.get(StaffSeedService).run();
 
@@ -30,9 +30,9 @@ const runSeed = async () => {
 
   await app.get(ScheduleSeedService).run();
 
-  await app.get(AppointmentSeedService).run();
+  // await app.get(AppointmentSeedService).run();
 
-  await app.get(ReceptionSeedService).run();
+  // await app.get(ReceptionSeedService).run();
 
   await app.close();
 };

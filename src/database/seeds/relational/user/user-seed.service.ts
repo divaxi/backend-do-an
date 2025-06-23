@@ -21,9 +21,9 @@ export class UserSeedService {
 
       // Tạo người dùng với role roles[1]
       const user1 = this.repository.create({
-        zaloId: '0000000001',
+        zaloId: '7321013989298890468',
         userName: faker.person.fullName(),
-        phoneNumber: '0000000001',
+        phoneNumber: '84377438701',
         role: roles[1],
       });
 

@@ -158,9 +158,7 @@ export class AppointmentsService {
   }
 
   async remove(id: Appointment['id']) {
-    const appointmentObject = await this.appointmentRepository.update(id, {
-      active: false,
-    });
+    const appointmentObject = await this.appointmentRepository.findById(id);
 
     if (!appointmentObject) {
       throw new UnprocessableEntityException({
@@ -187,6 +185,6 @@ export class AppointmentsService {
       });
     }
 
-    return appointmentObject;
+    return this.appointmentRepository.remove(id);
   }
 }

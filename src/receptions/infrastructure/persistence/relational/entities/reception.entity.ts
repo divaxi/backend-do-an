@@ -37,8 +37,7 @@ export class ReceptionEntity extends EntityRelationalHelper {
 
   @OneToOne(() => AppointmentEntity, {
     eager: true,
-    nullable: true,
-    onDelete: 'SET NULL',
+    onDelete: 'CASCADE',
   })
   @JoinColumn()
   Appointment: AppointmentEntity;

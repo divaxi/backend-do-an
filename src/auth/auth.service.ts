@@ -22,6 +22,7 @@ import { AuthZaloLoginDto } from './dto/auth-zalo-login.dto';
 import { RoleEnum } from '../roles/roles.enum';
 import axios from 'axios';
 import { FilesService } from '../files/files.service';
+import { HttpsProxyAgent } from 'https-proxy-agent';
 
 @Injectable()
 export class AuthService {
@@ -39,6 +40,9 @@ export class AuthService {
       {
         infer: true,
       },
+    );
+    const proxyAgent = new HttpsProxyAgent(
+      this.configService.getOrThrow<string>('app.proxyServer', { infer: true }),
     );
 
     const calculateHMacSHA256 = (data: string, secretKey: string) => {
@@ -62,6 +66,8 @@ export class AuthService {
         params: {
           fields: 'id,name,birthday,picture',
         },
+        httpsAgent: proxyAgent,
+        proxy: false,
       },
     );
     if (!zaloUser || zaloUser.error) {
@@ -73,17 +79,17 @@ export class AuthService {
       });
     }
 
-    const { data: phoneNumber } = await axios.get(
-      'https://graph.zalo.me/v2.0/me/info',
-      {
-        headers: {
-          access_token: loginDto.zaloAccessToken,
-          code: loginDto.phoneNumber,
-          secret_key: zaloAppSecret,
-        },
+    const { data } = await axios.get('https://graph.zalo.me/v2.0/me/info', {
+      headers: {
+        access_token: loginDto.zaloAccessToken,
+        code: loginDto.phoneNumber,
+        secret_key: zaloAppSecret,
       },
-    );
-    if (!phoneNumber || phoneNumber.error) {
+      httpsAgent: proxyAgent,
+      proxy: false,
+    });
+
+    if (!data || data.error) {
       throw new UnauthorizedException({
         status: HttpStatus.UNAUTHORIZED,
         errors: {
@@ -117,9 +123,9 @@ export class AuthService {
       }
 
       user = await this.usersService.create({
-        zaloId: loginDto.zaloAccessToken,
+        zaloId: id,
         userName: loginDto.name,
-        phoneNumber: phoneNumber.number,
+        phoneNumber: data.data.number,
         role: { id: RoleEnum.user },
         avatar: avatarObject,
       });

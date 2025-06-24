@@ -7,7 +7,6 @@ import {
 @Injectable()
 export class SatisticService {
   constructor(private readonly appointmentService: AppointmentsService) {}
-
   async countOrderByTime(searchQuery: EnumerateCountAppointmentDto) {
     switch (searchQuery.enumerateBy) {
       case EnumerateByEnum.DAY:

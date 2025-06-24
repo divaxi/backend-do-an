@@ -12,7 +12,7 @@ import { AppointmentSatisticDto } from '../../../../dto/satistic.dto';
 import { TimeRangeDto } from '../../../../dto/time-range.dto';
 import { EnumerateCountAppointmentDto } from '../../../../../satistic/dto/count-order.dto';
 import { EnumerateResponseDto } from '../../../../../satistic/dto/satistic.dto';
-import { format } from 'date-fns';
+import { format, isAfter, addDays } from 'date-fns';
 
 @Injectable()
 export class AppointmentRelationalRepository implements AppointmentRepository {
@@ -129,37 +129,35 @@ export class AppointmentRelationalRepository implements AppointmentRepository {
   ): Promise<EnumerateResponseDto> {
     const result = await this.appointmentRepository
       .createQueryBuilder('appointment')
-      .select('DATE(appointment.specificTime)', 'date')
+      .select('DATE("specificTime")', 'date')
       .addSelect('COUNT(*)', 'count')
-      .where('appointment.specificTime BETWEEN :start AND :end', {
+      .where('"specificTime" BETWEEN :start AND :end', {
         start: query.startDate,
         end: query.endDate,
       })
-      .groupBy('DATE(appointment.specificTime)')
-      .orderBy('DATE(appointment.specificTime)', 'ASC')
+      .groupBy('DATE("specificTime")')
+      .orderBy('DATE("specificTime")', 'ASC')
       .getRawMany();
 
-    const countsByDate = new Map<string, number>();
-    result.forEach((r) => {
-      countsByDate.set(r.date, parseInt(r.count));
-    });
+    // Map ngày đã đếm từ DB
+    const countsByDate = new Map<string, number>(
+      result.map((r) => [format(r.date, 'yyyy-MM-dd'), Number(r.count)]),
+    );
 
-    const allDates: EnumerateResponseDto = {
-      data: [],
-    };
-    const current = new Date(query.startDate);
+    const data: EnumerateResponseDto['data'] = [];
+    let current = new Date(query.startDate);
     const end = new Date(query.endDate);
 
-    while (current <= end) {
+    while (!isAfter(current, end)) {
       const dateStr = format(current, 'yyyy-MM-dd');
-      allDates.data.push({
+      data.push({
         day: dateStr,
         count: countsByDate.get(dateStr) || 0,
       });
-      current.setDate(current.getDate() + 1);
+      current = addDays(current, 1);
     }
 
-    return allDates;
+    return { data };
   }
 
   async countMonthByMonth(
